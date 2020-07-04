@@ -10,7 +10,8 @@
     "typescript": "^3.9.6"
   },
   "dependencies": {
-    "@hapi/hapi": "^19.1.1"
+    "@hapi/hapi": "^19.1.1",
+    "sqlite3": "^5.0.0"
   },
   "scripts": {
     "start": "./node_modules/nodemon/bin/nodemon.js -e ts  --exec \"yarn run compile\"",
