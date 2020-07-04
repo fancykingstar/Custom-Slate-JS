@@ -1,10 +1,7 @@
-'use strict'
-
-const Hapi = require('@hapi/hapi')
+import { Server, Request, ResponseToolkit } from "@hapi/hapi"
 
 const init = async () => {
-
-    const server = Hapi.server({
+    const server: Server = new Server({
         port: 3000,
         host: 'localhost'
     })
@@ -12,8 +9,7 @@ const init = async () => {
     server.route({
         method: 'GET',
         path: '/',
-        handler: (request, h) => {
-
+        handler: (request: Request, h: ResponseToolkit) => {
             return 'Hello World!'
         }
     })
@@ -23,7 +19,6 @@ const init = async () => {
 }
 
 process.on('unhandledRejection', (err) => {
-
     console.log(err)
     process.exit(1)
 })
