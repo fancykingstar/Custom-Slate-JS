@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const hapi_1 = require("@hapi/hapi");
+const sqlite3 = require("sqlite3");
 const init = () => __awaiter(void 0, void 0, void 0, function* () {
     const server = new hapi_1.Server({
         port: 3000,
@@ -19,6 +20,7 @@ const init = () => __awaiter(void 0, void 0, void 0, function* () {
         method: 'GET',
         path: '/',
         handler: (request, h) => {
+            var db = new sqlite3.Database("db/prototype.db");
             return 'Hello World!';
         }
     });

@@ -1,5 +1,7 @@
 import { Server, Request, ResponseToolkit } from "@hapi/hapi"
 
+import * as sqlite3 from 'sqlite3'
+
 const init = async () => {
     const server: Server = new Server({
         port: 3000,
@@ -10,6 +12,7 @@ const init = async () => {
         method: 'GET',
         path: '/',
         handler: (request: Request, h: ResponseToolkit) => {
+            var db = new sqlite3.Database("db/prototype.db")
             return 'Hello World!'
         }
     })
