@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from 'react'
-import { Node, createEditor } from 'slate'
+import React, { useCallback, useMemo, useState } from 'react'
+import { Editor, Node, Transforms, createEditor } from 'slate'
 import { Editable, Slate, withReact } from 'slate-react'
 
 const App = () => {
@@ -11,18 +11,47 @@ const App = () => {
     },
   ])
 
+  const renderElement = useCallback(props => {
+    switch (props.element.type) {
+      case 'code':
+        return <CodeElement {...props} />
+      default:
+        return <DefaultElement {...props} />
+    }
+  }, [])
+
   return (
     <Slate editor={editor} value={value} onChange={value => setValue(value)}>
       <Editable
+        renderElement={renderElement}
         onKeyDown={event => {
           if (event.key === '/') {
             event.preventDefault()
             editor.insertText("menu")
+          } else if (event.key === '`') {
+            event.preventDefault()
+            Transforms.setNodes(
+              editor,
+              { type: 'code' },
+              { match: n => Editor.isBlock(editor, n) }
+            )
           }
         }}
       />
     </Slate>
   )
+}
+
+const CodeElement = (props: any) => {
+  return (
+    <pre {...props.attributes}>
+      <code>{props.children}</code>
+    </pre>
+  )
+}
+
+const DefaultElement = (props: any) => {
+  return <p {...props.attributes}>{props.children}</p>
 }
 
 export default App
