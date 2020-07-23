@@ -30,9 +30,12 @@ const App = () => {
             editor.insertText("menu")
           } else if (event.key === '`') {
             event.preventDefault()
+            const [match] = Editor.nodes(editor, {
+              match: n => n.type === 'code',
+            })
             Transforms.setNodes(
               editor,
-              { type: 'code' },
+              { type: match ? 'paragraph' : 'code' },
               { match: n => Editor.isBlock(editor, n) }
             )
           }
