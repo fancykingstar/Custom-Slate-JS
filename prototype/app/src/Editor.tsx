@@ -11,9 +11,7 @@ import {
   ELEMENT_H1,
   ELEMENT_H2,
   ELEMENT_H3,
-  ELEMENT_H4,
-  ELEMENT_H5,
-  ELEMENT_H6,
+  MARK_BOLD,
 } from '@udecode/slate-plugins'
 import {
   BoldPlugin,
@@ -27,14 +25,13 @@ import {
 import {
   HeadingToolbar,
   ToolbarElement,
+  ToolbarMark,
   SlateDocument,
   pipe,
 } from '@udecode/slate-plugins'
 import {
+  FormatBold,
   Looks3,
-  Looks4,
-  Looks5,
-  Looks6,
   LooksOne,
   LooksTwo,
 } from '@styled-icons/material'
@@ -43,9 +40,6 @@ const headingTypes = [
   ELEMENT_H1,
   ELEMENT_H2,
   ELEMENT_H3,
-  ELEMENT_H4,
-  ELEMENT_H5,
-  ELEMENT_H6,
 ]
 
 const initialValue: Node[] = [
@@ -93,14 +87,22 @@ export const Editor = () => {
     <Slate
       editor={editor}
       value={value}
-      onChange={newValue => setValue(newValue as SlateDocument)}
+      onChange={newValue => {
+        console.log(newValue)
+        setValue(newValue as SlateDocument)
+      }}
     >
       <HeadingToolbar>
         <ToolbarElement type={DEFAULTS_HEADING.h1.type} icon={<LooksOne />} />
         <ToolbarElement type={DEFAULTS_HEADING.h2.type} icon={<LooksTwo />} />
         <ToolbarElement type={DEFAULTS_HEADING.h3.type} icon={<Looks3 />} />
+        <ToolbarMark type={MARK_BOLD} icon={<FormatBold />} />
       </HeadingToolbar>
-      <EditablePlugins plugins={plugins} placeholder="Enter some text..." />
+      <EditablePlugins
+        plugins={plugins}
+        placeholder="Enter some text..."
+        autoFocus
+      />
     </Slate>
   )
 }
