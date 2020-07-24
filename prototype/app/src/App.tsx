@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import { Editor, Node, Transforms, createEditor } from 'slate'
+import { Editor, Node, Text, Transforms, createEditor } from 'slate'
 import { Editable, Slate, withReact } from 'slate-react'
 
 const App = () => {
@@ -25,19 +25,33 @@ const App = () => {
       <Editable
         renderElement={renderElement}
         onKeyDown={event => {
-          if (event.key === '/') {
-            event.preventDefault()
-            editor.insertText("menu")
-          } else if (event.key === '`') {
-            event.preventDefault()
-            const [match] = Editor.nodes(editor, {
-              match: n => n.type === 'code',
-            })
-            Transforms.setNodes(
-              editor,
-              { type: match ? 'paragraph' : 'code' },
-              { match: n => Editor.isBlock(editor, n) }
-            )
+          if (event.ctrlKey) {
+            switch (event.key) {
+              case 'b': {
+                event.preventDefault()
+                Transforms.setNodes(
+                  editor,
+                  { bold: true },
+                  { match: n => Text.isText(n), split: true }
+                )
+                break
+              }
+            }
+          } else {
+            if (event.key === '/') {
+              event.preventDefault()
+              editor.insertText("menu")
+            } else if (event.key === '`') {
+              event.preventDefault()
+              const [match] = Editor.nodes(editor, {
+                match: n => n.type === 'code',
+              })
+              Transforms.setNodes(
+                editor,
+                { type: match ? 'paragraph' : 'code' },
+                { match: n => Editor.isBlock(editor, n) }
+              )
+            }
           }
         }}
       />
