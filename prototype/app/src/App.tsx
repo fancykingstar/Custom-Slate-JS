@@ -20,10 +20,22 @@ const App = () => {
     }
   }, [])
 
+  const renderLeaf = useCallback(props => {
+    return <Leaf {...props} />
+  }, [])
+
   return (
-    <Slate editor={editor} value={value} onChange={value => setValue(value)}>
+    <Slate
+      editor={editor}
+      value={value}
+      onChange={value => {
+        console.log(JSON.stringify(value))
+        setValue(value)
+      }}
+    >
       <Editable
         renderElement={renderElement}
+        renderLeaf={renderLeaf}
         onKeyDown={event => {
           if (event.ctrlKey) {
             switch (event.key) {
@@ -69,6 +81,17 @@ const CodeElement = (props: any) => {
 
 const DefaultElement = (props: any) => {
   return <p {...props.attributes}>{props.children}</p>
+}
+
+const Leaf = (props: any) => {
+  return (
+    <span
+      {...props.attributes}
+      style={{ fontWeight: props.leaf.bold ? 'bold' : 'normal' }}
+    >
+      {props.children}
+    </span>
+  )
 }
 
 export default App
