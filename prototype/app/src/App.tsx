@@ -2,12 +2,49 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { Editor, Node, Text, Transforms, createEditor } from 'slate'
 import { Editable, Slate, withReact } from 'slate-react'
 
+const CustomEditor = {
+  isBoldMarkActive(editor: Editor) {
+    const [match] = Editor.nodes(editor, {
+      match: n => n.bold === true,
+      universal: true,
+    })
+
+    return !!match
+  },
+
+  isCodeBlockActive(editor: Editor) {
+    const [match] = Editor.nodes(editor, {
+      match: n => n.type === 'code',
+    })
+
+    return !!match
+  },
+
+  toggleBoldMark(editor: Editor) {
+    const isActive = CustomEditor.isBoldMarkActive(editor)
+    Transforms.setNodes(
+      editor,
+      { bold: isActive ? null : true },
+      { match: n => Text.isText(n), split: true }
+    )
+  },
+
+  toggleCodeBlock(editor: Editor) {
+    const isActive = CustomEditor.isCodeBlockActive(editor)
+    Transforms.setNodes(
+      editor,
+      { type: isActive ? null : 'code' },
+      { match: n => Editor.isBlock(editor, n) }
+    )
+  },
+}
+
 const App = () => {
   const editor = useMemo(() => withReact(createEditor()), [])
   const [value, setValue] = useState<Node[]>([
     {
       type: 'paragraph',
-      children: [{ text: 'A line of text in a paragraph.' }],
+      children: [{ text: 'Start writing or press /' }],
     },
   ])
 
@@ -41,11 +78,7 @@ const App = () => {
             switch (event.key) {
               case 'b': {
                 event.preventDefault()
-                Transforms.setNodes(
-                  editor,
-                  { bold: true },
-                  { match: n => Text.isText(n), split: true }
-                )
+                CustomEditor.toggleBoldMark(editor)
                 break
               }
             }
@@ -55,14 +88,7 @@ const App = () => {
               editor.insertText("menu")
             } else if (event.key === '`') {
               event.preventDefault()
-              const [match] = Editor.nodes(editor, {
-                match: n => n.type === 'code',
-              })
-              Transforms.setNodes(
-                editor,
-                { type: match ? 'paragraph' : 'code' },
-                { match: n => Editor.isBlock(editor, n) }
-              )
+              CustomEditor.toggleCodeBlock(editor)
             }
           }
         }}
