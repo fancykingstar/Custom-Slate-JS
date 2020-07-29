@@ -1,7 +1,7 @@
-import Head from "next/head";
-import styles from "../styles/Home.module.scss";
+import Head from 'next/head';
+import styles from '../styles/Home.module.scss';
 
-export default function Home() {
+export default function Home(): React.ReactNode {
   return (
     <div className={styles.container}>
       <Head>

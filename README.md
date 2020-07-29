@@ -16,4 +16,5 @@ It doesn't just collect your thinking — it aims to 10X it.
 
 ```
 yarn dev    # Start local dev server
+yarn lint   # Lint TypeScript files with eslint
 ```
