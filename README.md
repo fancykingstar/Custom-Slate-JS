@@ -15,6 +15,7 @@ It doesn't just collect your thinking — it aims to 10X it.
 ## Commands
 
 ```
-yarn dev    # Start local dev server
-yarn lint   # Lint TypeScript files with eslint
+yarn dev      # Start local dev server
+yarn lint     # Lint Typescript files with eslint
+yarn lin:fix  # Fix Typescript files for lint or formatting errors
 ```
