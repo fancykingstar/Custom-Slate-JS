@@ -1,9 +1,10 @@
 import Head from 'next/head';
+import Editor from '../components/Editor';
 import styles from '../styles/Home.module.scss';
 
-export default function Home(): React.ReactNode {
+export default function Home(): JSX.Element {
   return (
-    <div className={styles.container}>
+    <>
       <Head>
         <title>Deca</title>
         <link rel="icon" href="/favicon.ico" />
@@ -15,13 +16,9 @@ export default function Home(): React.ReactNode {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://deca.works/">Deca</a>!
-        </h1>
-        <p className={styles.description}>
-          A Deca doc gives you decision-making superpowers.
-        </p>
+        <h1>Deca Prototype</h1>
+        <Editor />
       </main>
-    </div>
+    </>
   );
 }
