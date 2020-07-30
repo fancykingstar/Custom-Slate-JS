@@ -45,7 +45,7 @@ export const MENU_ITEMS: MenuItem[] = [
   },
   {
     category: Category.Thinking,
-    title: '2nd-Order Comparing',
+    title: '2nd Order Thinking',
     description: 'Duis id quam fringilla, vehicula quam non, posuere tortor.',
     icon: '2️⃣',
   },
@@ -57,7 +57,7 @@ export const MENU_ITEMS: MenuItem[] = [
   },
   {
     category: Category.Comparing,
-    title: 'Pros/Cons',
+    title: 'Pros / Cons',
     description: 'Duis id quam fringilla, vehicula quam non, posuere tortor.',
     icon: '🧾',
   },
