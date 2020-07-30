@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import Editor from '../components/Editor';
+import DecaEditor from '../components/DecaEditor';
 import styles from '../styles/Home.module.scss';
 
 export default function Home(): JSX.Element {
@@ -17,7 +17,7 @@ export default function Home(): JSX.Element {
 
       <main className={styles.main}>
         <h1>Deca Prototype</h1>
-        <Editor />
+        <DecaEditor />
       </main>
     </>
   );

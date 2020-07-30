@@ -4,14 +4,10 @@
   border-radius: 0.6rem;
   box-shadow: 0 0.1rem 1rem var(--color-shadow-large),
     0 0.1rem 0.3rem var(--color-shadow-small);
-  left: 10rem;
   max-height: 40rem;
   overflow-y: scroll;
-  position: absolute;
-  top: 10rem;
   transition: opacity 200ms ease;
   width: 24rem;
-  z-index: 10;
   -webkit-overflow-scrolling: touch;
 }
 
