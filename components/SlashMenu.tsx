@@ -1,3 +1,4 @@
+import { useRef, useEffect } from 'react';
 import styles from './SlashMenu.module.scss';
 
 interface Props {
@@ -17,7 +18,7 @@ interface MenuItem {
   icon: string;
 }
 
-const MENU_ITEMS: MenuItem[] = [
+export const MENU_ITEMS: MenuItem[] = [
   {
     category: Category.Planning,
     title: 'Choice',
@@ -75,14 +76,18 @@ export default function SlashMenu(props: Props): JSX.Element {
           const prevItem = MENU_ITEMS[index - 1];
           if (prevItem == null || item.category !== prevItem.category) {
             output.push(
-              <li>
+              <li key={item.category}>
                 <h2>{item.category}</h2>
               </li>
             );
           }
 
           output.push(
-            <SlashMenuItem isActive={activeIndex === index} item={item} />
+            <SlashMenuItem
+              key={item.title}
+              isActive={activeIndex === index}
+              item={item}
+            />
           );
           return output;
         })}
@@ -97,9 +102,21 @@ interface MenuItemProps {
 }
 
 function SlashMenuItem(props: MenuItemProps): JSX.Element {
+  const ref = useRef<HTMLLIElement>(null);
   const { isActive, item } = props;
+
+  useEffect(() => {
+    if (!isActive || ref.current == null) {
+      return;
+    }
+    ref.current.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    });
+  }, [isActive]);
+
   return (
-    <li key={item.title}>
+    <li ref={ref}>
       <button
         className={`${styles.item} ${isActive ? styles.active : ''}`}
         type="button"

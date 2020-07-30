@@ -1,8 +1,8 @@
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState, useEffect, useCallback } from 'react';
 import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
-import { createEditor, Editor, Node, Range } from 'slate';
+import { createEditor, Editor, Node, Range, Transforms } from 'slate';
 import styles from './DecaEditor.module.scss';
-import SlashMenu from './SlashMenu';
+import SlashMenu, { MENU_ITEMS } from './SlashMenu';
 import ClientOnlyPortal from './ClientOnlyPortal';
 
 export interface SlashPoint {
@@ -21,6 +21,43 @@ export default function DecaEditor(): JSX.Element {
   const [slashRange, setSlashRange] = useState<Range | null>(null);
   const [slashPos, setSlashPos] = useState<SlashPoint | null>(null);
   const [slashIndex, setSlashIndex] = useState(0);
+
+  const onKeyDown = useCallback(
+    (event) => {
+      if (slashRange == null) {
+        return;
+      }
+
+      switch (event.key) {
+        case 'ArrowDown':
+          event.preventDefault();
+          setSlashIndex(
+            slashIndex >= MENU_ITEMS.length - 1 ? 0 : slashIndex + 1
+          );
+          break;
+        case 'ArrowUp':
+          event.preventDefault();
+          setSlashIndex(
+            slashIndex <= 0 ? MENU_ITEMS.length - 1 : slashIndex - 1
+          );
+          break;
+        case 'Tab':
+        case 'Enter':
+          event.preventDefault();
+          Transforms.select(editor, slashRange);
+          Transforms.insertText(editor, '<FIXME: Tool goes here>');
+          // TODO: Add insertion of element
+          setSlashRange(null);
+          break;
+        case 'Escape':
+          event.preventDefault();
+          setSlashRange(null);
+          break;
+        default:
+      }
+    },
+    [slashIndex, slashRange]
+  );
 
   useEffect(() => {
     if (slashRange == null) {
@@ -69,7 +106,11 @@ export default function DecaEditor(): JSX.Element {
           }
         }}
       >
-        <Editable autoFocus placeholder="Enter some text or press /..." />
+        <Editable
+          autoFocus
+          onKeyDown={onKeyDown}
+          placeholder="Enter some text or press /..."
+        />
         {slashRange != null && slashPos != null ? (
           <ClientOnlyPortal>
             <div
