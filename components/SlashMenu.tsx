@@ -3,6 +3,7 @@ import styles from './SlashMenu.module.scss';
 
 interface Props {
   activeIndex: number;
+  onAddTool: (item: MenuItem) => void;
 }
 
 enum Category {
@@ -11,7 +12,7 @@ enum Category {
   Comparing = 'Comparing',
 }
 
-interface MenuItem {
+export interface MenuItem {
   category: Category;
   title: string;
   description: string;
@@ -64,7 +65,7 @@ export const MENU_ITEMS: MenuItem[] = [
 ];
 
 export default function SlashMenu(props: Props): JSX.Element {
-  const { activeIndex } = props;
+  const { activeIndex, onAddTool } = props;
 
   return (
     <div className={styles.wrapper}>
@@ -87,6 +88,7 @@ export default function SlashMenu(props: Props): JSX.Element {
               key={item.title}
               isActive={activeIndex === index}
               item={item}
+              onAddTool={onAddTool}
             />
           );
           return output;
@@ -99,11 +101,12 @@ export default function SlashMenu(props: Props): JSX.Element {
 interface MenuItemProps {
   isActive: boolean;
   item: MenuItem;
+  onAddTool: (item: MenuItem) => void;
 }
 
 function SlashMenuItem(props: MenuItemProps): JSX.Element {
   const ref = useRef<HTMLLIElement>(null);
-  const { isActive, item } = props;
+  const { isActive, item, onAddTool } = props;
 
   useEffect(() => {
     if (!isActive || ref.current == null) {
@@ -120,10 +123,7 @@ function SlashMenuItem(props: MenuItemProps): JSX.Element {
       <button
         className={`${styles.item} ${isActive ? styles.active : ''}`}
         type="button"
-        onClick={() => {
-          // TODO: Add tool `Element` into doc
-          // console.log(item);
-        }}
+        onClick={() => onAddTool(item)}
       >
         <div className={styles.icon}>{item.icon}</div>
         <div className={styles.itemContent}>

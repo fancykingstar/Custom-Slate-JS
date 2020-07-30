@@ -2,7 +2,7 @@ import { useMemo, useState, useEffect, useCallback } from 'react';
 import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
 import { createEditor, Editor, Node, Range, Transforms } from 'slate';
 import styles from './DecaEditor.module.scss';
-import SlashMenu, { MENU_ITEMS } from './SlashMenu';
+import SlashMenu, { MENU_ITEMS, MenuItem } from './SlashMenu';
 import ClientOnlyPortal from './ClientOnlyPortal';
 
 export interface SlashPoint {
@@ -21,6 +21,26 @@ export default function DecaEditor(): JSX.Element {
   const [slashRange, setSlashRange] = useState<Range | null>(null);
   const [slashPos, setSlashPos] = useState<SlashPoint | null>(null);
   const [slashIndex, setSlashIndex] = useState(0);
+
+  const onAddTool = useCallback(
+    (item: MenuItem) => {
+      if (slashRange == null) {
+        return;
+      }
+
+      // TODO: Add insertion of element
+      Transforms.select(editor, slashRange);
+      Transforms.insertText(
+        editor,
+        `<FIXME: ${item.title} tool gets inserted here>`
+      );
+
+      // Return focus to the editor (ex: when clicking on a slash menu item causes blur)
+      ReactEditor.focus(editor);
+      setSlashRange(null);
+    },
+    [editor, slashRange]
+  );
 
   const onKeyDown = useCallback(
     (event) => {
@@ -44,9 +64,7 @@ export default function DecaEditor(): JSX.Element {
         case 'Tab':
         case 'Enter':
           event.preventDefault();
-          Transforms.select(editor, slashRange);
-          Transforms.insertText(editor, '<FIXME: Tool goes here>');
-          // TODO: Add insertion of element
+          onAddTool(MENU_ITEMS[slashIndex]);
           setSlashRange(null);
           break;
         case 'Escape':
@@ -119,7 +137,7 @@ export default function DecaEditor(): JSX.Element {
                 transform: `translate3d(${slashPos.x}px, ${slashPos.y}px, 0)`,
               }}
             >
-              <SlashMenu activeIndex={slashIndex} />
+              <SlashMenu activeIndex={slashIndex} onAddTool={onAddTool} />
             </div>
           </ClientOnlyPortal>
         ) : null}
