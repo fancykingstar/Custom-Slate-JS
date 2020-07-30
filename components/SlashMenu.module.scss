@@ -1,10 +1,65 @@
 .wrapper {
+  background: var(--color-bg-white);
   border: solid 0.1rem var(--color-bg-gray-secondary);
   border-radius: 0.6rem;
-  left: 0;
-  padding: 0.8rem;
+  box-shadow: 0 0.1rem 1rem var(--color-shadow-large),
+    0 0.1rem 0.3rem var(--color-shadow-small);
+  left: 10rem;
+  max-height: 40rem;
+  overflow-y: scroll;
   position: absolute;
-  top: 0;
+  top: 10rem;
   transition: opacity 200ms ease;
   width: 24rem;
+  z-index: 10;
+  -webkit-overflow-scrolling: touch;
+}
+
+.menu,
+.submenu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu h2 {
+  background: rgba(20, 20, 20, 0.04);
+  color: var(--color-bg-gray-primary);
+  font-size: 1.1rem;
+  line-height: 1.3rem;
+  margin: 0;
+  padding: 0.6rem 0.8rem;
+}
+
+.menu li {
+  border-top: solid 0.1rem var(--color-bg-gray-tertiary);
+}
+
+.menu > li:first-child {
+  border: none;
+}
+
+.submenu li {
+  align-items: flex-start;
+  border-top: solid 0.1rem var(--color-bg-gray-tertiary);
+  display: flex;
+  padding: 0.8rem 1rem;
+}
+
+.icon {
+  margin: 0.2rem 1.2rem 0 0;
+}
+
+.submenu h3 {
+  font-size: 1.4rem;
+  font-weight: 500;
+  line-height: 1.7rem;
+  margin: 0;
+}
+
+.submenu p {
+  color: var(--color-fg-gray-primary);
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+  margin: 0.2rem 0 0;
 }

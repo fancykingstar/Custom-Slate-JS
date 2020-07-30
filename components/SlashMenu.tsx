@@ -1,68 +1,97 @@
-import { useState, useEffect, useRef } from 'react';
-import { Editor } from 'slate';
-import { useSlate } from 'slate-react';
 import styles from './SlashMenu.module.scss';
-import ClientOnlyPortal from './ClientOnlyPortal';
 
-interface DescendentChild {
-  text: string;
+interface MenuGroup {
+  title: string;
+  children: MenuItem[];
 }
 
+interface MenuItem {
+  title: string;
+  description: string;
+  icon: string;
+}
+
+const MENU_GROUPS: MenuGroup[] = [
+  {
+    title: 'Basic',
+    children: [
+      {
+        title: 'Choice',
+        description:
+          'Duis id quam fringilla, vehicula quam non, posuere tortor.',
+        icon: '🌈',
+      },
+      {
+        title: 'Goals',
+        description:
+          'Duis id quam fringilla, vehicula quam non, posuere tortor.',
+        icon: '⭐️',
+      },
+    ],
+  },
+  {
+    title: 'Group Alpha',
+    children: [
+      {
+        title: 'Inversion',
+        description:
+          'Duis id quam fringilla, vehicula quam non, posuere tortor.',
+        icon: '⏳',
+      },
+      {
+        title: '2nd-Order Thinking',
+        description:
+          'Duis id quam fringilla, vehicula quam non, posuere tortor.',
+        icon: '2️⃣',
+      },
+      {
+        title: 'Categorizer',
+        description:
+          'Duis id quam fringilla, vehicula quam non, posuere tortor.',
+        icon: '🍊',
+      },
+    ],
+  },
+  {
+    title: 'Group Beta',
+    children: [
+      {
+        title: 'Comparison of Choices',
+        description:
+          'Duis id quam fringilla, vehicula quam non, posuere tortor.',
+        icon: '🛒',
+      },
+      {
+        title: 'Pros/Cons',
+        description:
+          'Duis id quam fringilla, vehicula quam non, posuere tortor.',
+        icon: '🧾',
+      },
+    ],
+  },
+];
+
 export default function SlashMenu(): JSX.Element {
-  const ref = useRef<HTMLDivElement>(null);
-  const editor = useSlate();
-  const [open, setOpen] = useState<boolean>(false);
-  const [pos, setPos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const el = ref.current;
-    if (el == null || editor.selection == null) {
-      return;
-    }
-
-    const fragments = Editor.fragment(editor, editor.selection.anchor.path);
-    const fragment = fragments[0];
-    const { text } = (fragment.children as DescendentChild[])[0];
-
-    if (!text.startsWith('/')) {
-      if (open) {
-        setOpen(false);
-      }
-      return;
-    }
-
-    const domSelection = window.getSelection();
-    const domRange = domSelection?.getRangeAt(0);
-    const rect = domRange?.getBoundingClientRect();
-    if (rect == null) {
-      return;
-    }
-
-    if (!open) {
-      setOpen(true);
-      setPos({
-        x: rect.left + window.pageXOffset,
-        y: rect.top + window.pageYOffset + el.offsetHeight,
-      });
-    }
-  }, [editor.selection]);
-
   return (
-    <>
-      <ClientOnlyPortal>
-        <div>
-          <div
-            className={styles.wrapper}
-            ref={ref}
-            style={{
-              opacity: open ? 1 : 0,
-              transform: `translate3d(${pos.x}px, ${pos.y}px, 0)`,
-            }}
-          >
-            Menu
-          </div>
-        </div>
-      </ClientOnlyPortal>
-    </>
+    <div className={styles.wrapper}>
+      <ul className={styles.menu}>
+        {MENU_GROUPS.map((group) => (
+          <li key={group.title}>
+            <h2>{group.title}</h2>
+            <ul className={styles.submenu}>
+              {group.children.map((item) => (
+                <li key={item.title}>
+                  <div className={styles.icon}>{item.icon}</div>
+                  <div className={styles.itemContent}>
+                    <h3>{item.title}</h3>
+                    <p>{item.description}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
