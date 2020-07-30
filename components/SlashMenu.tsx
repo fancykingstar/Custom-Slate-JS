@@ -22,7 +22,7 @@ export interface MenuItem {
 export const MENU_ITEMS: MenuItem[] = [
   {
     category: Category.Planning,
-    title: 'Choice',
+    title: 'Choices',
     description: 'Duis id quam fringilla, vehicula quam non, posuere tortor.',
     icon: '🌈',
   },

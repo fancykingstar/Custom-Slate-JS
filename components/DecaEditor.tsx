@@ -4,6 +4,7 @@ import { createEditor, Editor, Node, Range, Transforms } from 'slate';
 import styles from './DecaEditor.module.scss';
 import SlashMenu, { MENU_ITEMS, MenuItem } from './SlashMenu';
 import ClientOnlyPortal from './ClientOnlyPortal';
+import { insertChoicesTool } from './tools/Choices';
 
 export interface SlashPoint {
   x: number;
@@ -30,10 +31,15 @@ export default function DecaEditor(): JSX.Element {
 
       // TODO: Add insertion of element
       Transforms.select(editor, slashRange);
-      Transforms.insertText(
-        editor,
-        `<FIXME: ${item.title} tool gets inserted here>`
-      );
+
+      if (item.title === 'Choices') {
+        insertChoicesTool(editor);
+      } else {
+        Transforms.insertText(
+          editor,
+          `<FIXME: ${item.title} tool gets inserted here>`
+        );
+      }
 
       // Return focus to the editor (ex: when clicking on a slash menu item causes blur)
       ReactEditor.focus(editor);
