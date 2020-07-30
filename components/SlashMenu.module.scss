@@ -1,0 +1,10 @@
+.wrapper {
+  border: solid 0.1rem var(--color-bg-gray-secondary);
+  border-radius: 0.6rem;
+  left: 0;
+  padding: 0.8rem;
+  position: absolute;
+  top: 0;
+  transition: opacity 200ms ease;
+  width: 24rem;
+}
