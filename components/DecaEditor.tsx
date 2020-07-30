@@ -20,6 +20,7 @@ export default function DecaEditor(): JSX.Element {
   ]);
   const [slashRange, setSlashRange] = useState<Range | null>(null);
   const [slashPos, setSlashPos] = useState<SlashPoint | null>(null);
+  const [slashIndex, setSlashIndex] = useState(0);
 
   useEffect(() => {
     if (slashRange == null) {
@@ -58,6 +59,7 @@ export default function DecaEditor(): JSX.Element {
           // Open the slash menu if slash is the first and only char
           if (slashRange == null && lineRange != null && node.text === '/') {
             setSlashRange(lineRange);
+            setSlashIndex(0);
             return;
           }
 
@@ -76,7 +78,7 @@ export default function DecaEditor(): JSX.Element {
                 transform: `translate3d(${slashPos.x}px, ${slashPos.y}px, 0)`,
               }}
             >
-              <SlashMenu />
+              <SlashMenu activeIndex={slashIndex} />
             </div>
           </ClientOnlyPortal>
         ) : null}

@@ -1,97 +1,119 @@
 import styles from './SlashMenu.module.scss';
 
-interface MenuGroup {
-  title: string;
-  children: MenuItem[];
+interface Props {
+  activeIndex: number;
+}
+
+enum Category {
+  Planning = 'Planning',
+  Thinking = 'Thinking',
+  Comparing = 'Comparing',
 }
 
 interface MenuItem {
+  category: Category;
   title: string;
   description: string;
   icon: string;
 }
 
-const MENU_GROUPS: MenuGroup[] = [
+const MENU_ITEMS: MenuItem[] = [
   {
-    title: 'Basic',
-    children: [
-      {
-        title: 'Choice',
-        description:
-          'Duis id quam fringilla, vehicula quam non, posuere tortor.',
-        icon: '🌈',
-      },
-      {
-        title: 'Goals',
-        description:
-          'Duis id quam fringilla, vehicula quam non, posuere tortor.',
-        icon: '⭐️',
-      },
-    ],
+    category: Category.Planning,
+    title: 'Choice',
+    description: 'Duis id quam fringilla, vehicula quam non, posuere tortor.',
+    icon: '🌈',
   },
   {
-    title: 'Group Alpha',
-    children: [
-      {
-        title: 'Inversion',
-        description:
-          'Duis id quam fringilla, vehicula quam non, posuere tortor.',
-        icon: '⏳',
-      },
-      {
-        title: '2nd-Order Thinking',
-        description:
-          'Duis id quam fringilla, vehicula quam non, posuere tortor.',
-        icon: '2️⃣',
-      },
-      {
-        title: 'Categorizer',
-        description:
-          'Duis id quam fringilla, vehicula quam non, posuere tortor.',
-        icon: '🍊',
-      },
-    ],
+    category: Category.Planning,
+    title: 'Goals',
+    description: 'Duis id quam fringilla, vehicula quam non, posuere tortor.',
+    icon: '⭐️',
   },
   {
-    title: 'Group Beta',
-    children: [
-      {
-        title: 'Comparison of Choices',
-        description:
-          'Duis id quam fringilla, vehicula quam non, posuere tortor.',
-        icon: '🛒',
-      },
-      {
-        title: 'Pros/Cons',
-        description:
-          'Duis id quam fringilla, vehicula quam non, posuere tortor.',
-        icon: '🧾',
-      },
-    ],
+    category: Category.Planning,
+    title: 'Categorizer',
+    description: 'Duis id quam fringilla, vehicula quam non, posuere tortor.',
+    icon: '🍊',
+  },
+  {
+    category: Category.Thinking,
+    title: 'Inversion',
+    description: 'Duis id quam fringilla, vehicula quam non, posuere tortor.',
+    icon: '⏳',
+  },
+  {
+    category: Category.Thinking,
+    title: '2nd-Order Comparing',
+    description: 'Duis id quam fringilla, vehicula quam non, posuere tortor.',
+    icon: '2️⃣',
+  },
+  {
+    category: Category.Comparing,
+    title: 'Comparison of Choices',
+    description: 'Duis id quam fringilla, vehicula quam non, posuere tortor.',
+    icon: '🛒',
+  },
+  {
+    category: Category.Comparing,
+    title: 'Pros/Cons',
+    description: 'Duis id quam fringilla, vehicula quam non, posuere tortor.',
+    icon: '🧾',
   },
 ];
 
-export default function SlashMenu(): JSX.Element {
+export default function SlashMenu(props: Props): JSX.Element {
+  const { activeIndex } = props;
+
   return (
     <div className={styles.wrapper}>
       <ul className={styles.menu}>
-        {MENU_GROUPS.map((group) => (
-          <li key={group.title}>
-            <h2>{group.title}</h2>
-            <ul className={styles.submenu}>
-              {group.children.map((item) => (
-                <li key={item.title}>
-                  <div className={styles.icon}>{item.icon}</div>
-                  <div className={styles.itemContent}>
-                    <h3>{item.title}</h3>
-                    <p>{item.description}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </li>
-        ))}
+        {MENU_ITEMS.map((item, index) => {
+          const output = [];
+
+          // If it's a new group, add a header
+          const prevItem = MENU_ITEMS[index - 1];
+          if (prevItem == null || item.category !== prevItem.category) {
+            output.push(
+              <li>
+                <h2>{item.category}</h2>
+              </li>
+            );
+          }
+
+          output.push(
+            <SlashMenuItem isActive={activeIndex === index} item={item} />
+          );
+          return output;
+        })}
       </ul>
     </div>
+  );
+}
+
+interface MenuItemProps {
+  isActive: boolean;
+  item: MenuItem;
+}
+
+function SlashMenuItem(props: MenuItemProps): JSX.Element {
+  const { isActive, item } = props;
+  return (
+    <li key={item.title}>
+      <button
+        className={`${styles.item} ${isActive ? styles.active : ''}`}
+        type="button"
+        onClick={() => {
+          // TODO: Add tool `Element` into doc
+          // console.log(item);
+        }}
+      >
+        <div className={styles.icon}>{item.icon}</div>
+        <div className={styles.itemContent}>
+          <h3>{item.title}</h3>
+          <p>{item.description}</p>
+        </div>
+      </button>
+    </li>
   );
 }
