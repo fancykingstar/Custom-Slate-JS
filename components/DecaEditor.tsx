@@ -35,10 +35,12 @@ export default function DecaEditor(): JSX.Element {
   ]);
   const renderElement = useCallback((props) => <Element {...props} />, []);
 
-  const { phVisible, phPosY, onChangePlaceholder } = usePlaceholder(
-    editor,
-    wrapperRef
-  );
+  const {
+    phInlineVisible,
+    phInlinePosY,
+    phTitleVisible,
+    onChangePlaceholder,
+  } = usePlaceholder(editor, wrapperRef);
 
   const [slashRange, setSlashRange] = useState<Range | null>(null);
   const [slashPos, setSlashPos] = useState<SlashPoint | null>(null);
@@ -152,11 +154,17 @@ export default function DecaEditor(): JSX.Element {
           }
         }}
       >
+        {phTitleVisible ? (
+          <div className={styles.placeholderTitle}>Untitled Deca Doc</div>
+        ) : null}
+        {/* <div className={styles.placeholderFirstLine}>
+          Your decision awaits...
+        </div> */}
         <div
           className={styles.placeholder}
           style={{
-            opacity: phVisible ? 1.0 : 0.0,
-            transform: `translate3d(0, ${phPosY}px, 0)`,
+            opacity: phInlineVisible ? 1.0 : 0.0,
+            transform: `translate3d(0, ${phInlinePosY}px, 0)`,
           }}
         >
           Start typing or press <kbd>/</kbd>

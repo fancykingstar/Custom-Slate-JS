@@ -1,5 +1,6 @@
 .wrapper {
   max-width: 64rem;
+  position: relative;
   width: 100%;
 }
 
@@ -16,7 +17,7 @@
   display: flex;
   height: 1.8rem;
   position: absolute;
-  transition: opacity 100ms ease;
+  z-index: -1;
 }
 
 .placeholder kbd {
@@ -32,4 +33,20 @@
   margin-left: 0.6rem;
   margin-top: 0.2rem;
   width: 2rem;
+}
+
+.placeholderTitle {
+  color: var(--color-bg-gray-secondary);
+  font-size: 4.4rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 4.8rem;
+  position: absolute;
+  z-index: -1;
+}
+
+.placeholderFirstLine {
+  color: var(--color-bg-gray-primary);
+  position: absolute;
+  top: 6.4rem;
 }
