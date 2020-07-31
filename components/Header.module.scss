@@ -1,0 +1,29 @@
+.header {
+  align-items: center;
+  background: var(--color-bg-white);
+  border-bottom: solid 0.1rem var(--color-bg-gray-tertiary);
+  display: flex;
+  height: 5.2rem;
+  justify-content: center;
+  width: 100%;
+}
+
+.content {
+  align-items: center;
+  display: flex;
+  max-width: 114rem;
+  padding: 0 0.8rem;
+  width: 100%;
+}
+
+.logo {
+  color: var(--color-fg-black);
+  font-size: 1.6rem;
+  font-weight: 500;
+  letter-spacing: -0.05rem;
+  text-decoration: none;
+}
+
+.logo:hover {
+  text-decoration: underline;
+}
