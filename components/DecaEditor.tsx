@@ -1,6 +1,6 @@
-import { useMemo, useState, useEffect, useCallback } from 'react';
+import { useMemo, useState, useEffect, useCallback, useRef } from 'react';
 import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
-import { createEditor, Editor, Node, Range, Transforms } from 'slate';
+import { createEditor, Editor, Node, Range, Transforms, Point } from 'slate';
 import styles from './DecaEditor.module.scss';
 import SlashMenu, { MENU_ITEMS, MenuItem } from './SlashMenu';
 import ClientOnlyPortal from './ClientOnlyPortal';
@@ -12,6 +12,7 @@ export interface SlashPoint {
 }
 
 export default function DecaEditor(): JSX.Element {
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const editor = useMemo(() => withReact(createEditor()), []);
   const [value, setValue] = useState<Node[]>([
     {
@@ -97,8 +98,30 @@ export default function DecaEditor(): JSX.Element {
     });
   }, [slashRange]);
 
+  const [placeholderRange, setPlaceholderRange] = useState<Range | null>();
+  const [placeholderPosY, setPlaceholderPosY] = useState(0);
+
+  useEffect(() => {
+    if (placeholderRange == null || !Range.isCollapsed(placeholderRange)) {
+      return;
+    }
+
+    // Get the bounds of the current cursor
+    const domRange = ReactEditor.toDOMRange(editor, placeholderRange);
+    const rect = domRange.getBoundingClientRect();
+
+    // Get bounds of the editor wrapper
+    if (wrapperRef.current == null) {
+      return;
+    }
+    const wrapperRect = wrapperRef.current.getBoundingClientRect();
+
+    // TODO: Fix -1px offset due to mismatching of leaf rendering height to the placeholder
+    setPlaceholderPosY(rect.top - wrapperRect.top + 1.0);
+  }, [placeholderRange, wrapperRef]);
+
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} ref={wrapperRef}>
       <Slate
         editor={editor}
         value={value}
@@ -109,6 +132,7 @@ export default function DecaEditor(): JSX.Element {
           // Close slash menu on editor blur
           if (selection == null || !Range.isCollapsed(selection)) {
             setSlashRange(null);
+            setPlaceholderRange(null);
             return;
           }
 
@@ -116,6 +140,18 @@ export default function DecaEditor(): JSX.Element {
           const lineStart = Editor.before(editor, start, { unit: 'line' });
           const lineRange = lineStart && Editor.range(editor, lineStart, start);
           const [node] = Editor.node(editor, start);
+
+          // If active line has changed (or is unset), update placeholder state
+          if (
+            placeholderRange == null ||
+            !Point.equals(selection.anchor, placeholderRange.anchor)
+          ) {
+            if (node.text === '') {
+              setPlaceholderRange(selection);
+            } else {
+              setPlaceholderRange(null);
+            }
+          }
 
           // Open the slash menu if slash is the first and only char
           if (slashRange == null && lineRange != null && node.text === '/') {
@@ -130,11 +166,16 @@ export default function DecaEditor(): JSX.Element {
           }
         }}
       >
-        <Editable
-          autoFocus
-          onKeyDown={onKeyDown}
-          placeholder="Enter some text or press /..."
-        />
+        <div
+          className={styles.placeholder}
+          style={{
+            opacity: placeholderRange != null ? 1.0 : 0.0,
+            transform: `translate3d(0, ${placeholderPosY}px, 0)`,
+          }}
+        >
+          Start typing or press <kbd>/</kbd>
+        </div>
+        <Editable autoFocus onKeyDown={onKeyDown} />
         {slashRange != null && slashPos != null ? (
           <ClientOnlyPortal>
             <div

@@ -9,3 +9,27 @@
   top: 0;
   z-index: 10;
 }
+
+.placeholder {
+  align-items: center;
+  color: var(--color-bg-gray-primary);
+  display: flex;
+  height: 1.8rem;
+  position: absolute;
+  transition: opacity 100ms ease;
+}
+
+.placeholder kbd {
+  align-items: center;
+  border: solid 0.1rem var(--color-bg-gray-tertiary);
+  border-radius: 0.4rem;
+  display: inline-flex;
+  font-size: 1.2rem;
+  font-weight: 500;
+  height: 2rem;
+  justify-content: center;
+  line-height: 2rem;
+  margin-left: 0.6rem;
+  margin-top: 0.2rem;
+  width: 2rem;
+}
