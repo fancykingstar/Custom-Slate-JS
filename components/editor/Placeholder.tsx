@@ -31,6 +31,8 @@ export default function Placeholder(props: Props): JSX.Element {
     const firstBodyNode = nodes[1];
     const firstBodyNodeEmpty = Node.string(firstBodyNode) === '';
 
+    // TODO: Fix tabbing out of editor leaving assistant placeholder visible instead of body
+
     // If editor is blurred or has multi-character selection...
     if (selection == null || !Range.isCollapsed(selection)) {
       // Hide the assistant if it's visible
