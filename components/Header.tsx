@@ -6,7 +6,7 @@ export default function Header(): JSX.Element {
     <header className={styles.header}>
       <div className={styles.content}>
         <Link href="/">
-          <a className={styles.logo}>Untitled Deca Doc</a>
+          <a className={styles.logo}>Deca</a>
         </Link>
       </div>
     </header>
