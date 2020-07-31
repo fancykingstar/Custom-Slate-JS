@@ -3,12 +3,13 @@
 import { useMemo, useState, useEffect, useCallback, useRef } from 'react';
 import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
 import { createEditor, Editor, Node, Range, Transforms } from 'slate';
-import styles from './DecaEditor.module.scss';
 import SlashMenu, { MENU_ITEMS, MenuItem } from './SlashMenu';
 import ClientOnlyPortal from './ClientOnlyPortal';
-import Element from './Element';
+import Element, { BaseElement } from './Element';
 import { insertChoicesTool } from './tools/Choices';
 import usePlaceholder from './editor/usePlaceholder';
+import withLayout from './editor/withLayout';
+import styles from './DecaEditor.module.scss';
 
 export interface SlashPoint {
   x: number;
@@ -17,13 +18,14 @@ export interface SlashPoint {
 
 export default function DecaEditor(): JSX.Element {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const editor = useMemo(() => withReact(createEditor()), []);
+  const editor = useMemo(() => withLayout(withReact(createEditor())), []);
   const [value, setValue] = useState<Node[]>([
     {
-      type: 'paragraph',
+      type: BaseElement.Title,
       children: [{ text: '' }],
     },
   ]);
+  const renderElement = useCallback((props) => <Element {...props} />, []);
 
   const { phVisible, phPosY, onChangePlaceholder } = usePlaceholder(
     editor,
@@ -107,8 +109,6 @@ export default function DecaEditor(): JSX.Element {
       y: rect.top + window.pageYOffset + 24,
     });
   }, [slashRange]);
-
-  const renderElement = useCallback((props) => <Element {...props} />, []);
 
   return (
     <div className={styles.wrapper} ref={wrapperRef}>
