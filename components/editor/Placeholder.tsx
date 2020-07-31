@@ -23,8 +23,8 @@ export default function Placeholder(props: Props): JSX.Element {
   useEffect(() => {
     const { selection } = editor;
     const nodes = editor.children;
-    const secondNode = nodes[1];
-    const secondNodeIsEmpty = Node.string(secondNode) === '';
+    const firstBodyNode = nodes[1];
+    const firstBodyNodeEmpty = Node.string(firstBodyNode) === '';
 
     // If editor is blurred or has multi-character selection...
     if (selection == null || !Range.isCollapsed(selection)) {
@@ -34,7 +34,7 @@ export default function Placeholder(props: Props): JSX.Element {
       }
 
       // Show the body placeholder if doc body is empty
-      if (nodes.length <= 2 && secondNodeIsEmpty) {
+      if (nodes.length <= 2 && firstBodyNodeEmpty) {
         setBodyVisible(true);
       }
       return;
@@ -43,31 +43,31 @@ export default function Placeholder(props: Props): JSX.Element {
     // NOTE: We can directly use `.anchor` as `.anchor` and `.focus` are equivalent for a collapsed selection
     const caretPoint = selection.anchor;
     const [caretLine] = caretPoint.path;
-    const [node] = Editor.node(editor, caretPoint);
-    const nodeIsEmpty = node.text === '';
+    const [caretNode] = Editor.node(editor, caretPoint);
+    const caretNodeEmpty = caretNode.text === '';
 
     // Show the body placeholder if doc body is empty
-    if (!bodyVisible && nodes.length <= 2 && secondNodeIsEmpty) {
+    if (nodes.length <= 2 && firstBodyNodeEmpty) {
       setBodyVisible(true);
     }
 
-    // Hide body placeholder if doc has content
     if (
-      bodyVisible &&
-      ((nodes.length > 2 && bodyVisible) || (caretLine === 1 && nodeIsEmpty))
+      // Hide body placeholder if doc has content
+      nodes.length > 2 ||
+      (caretLine === 1 && caretNodeEmpty)
     ) {
       setBodyVisible(false);
     }
 
     // If it's the 1st line, focus on the title placeholder
     if (caretLine === 0) {
-      setTitleVisible(nodeIsEmpty);
+      setTitleVisible(caretNodeEmpty);
       // Never show assistant on 1st line
       setAssistantVisible(false);
       return;
     }
 
-    if (nodeIsEmpty) {
+    if (caretNodeEmpty) {
       // Get bounds of current cursor
       const selectionDOMRange = ReactEditor.toDOMRange(editor, selection);
       const selectionRect = selectionDOMRange.getBoundingClientRect();
