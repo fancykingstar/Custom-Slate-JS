@@ -7,8 +7,8 @@ import SlashMenu, { MENU_ITEMS, MenuItem } from './SlashMenu';
 import ClientOnlyPortal from './ClientOnlyPortal';
 import Element, { BaseElement } from './Element';
 import { insertChoicesTool } from './tools/Choices';
-import usePlaceholder from './editor/usePlaceholder';
 import withLayout from './editor/withLayout';
+import Placeholder from './editor/Placeholder';
 import styles from './DecaEditor.module.scss';
 
 export interface SlashPoint {
@@ -34,13 +34,6 @@ export default function DecaEditor(): JSX.Element {
     },
   ]);
   const renderElement = useCallback((props) => <Element {...props} />, []);
-
-  const {
-    phInlineVisible,
-    phInlinePosY,
-    phTitleVisible,
-    onChangePlaceholder,
-  } = usePlaceholder(editor, wrapperRef);
 
   const [slashRange, setSlashRange] = useState<Range | null>(null);
   const [slashPos, setSlashPos] = useState<SlashPoint | null>(null);
@@ -128,7 +121,6 @@ export default function DecaEditor(): JSX.Element {
         onChange={(newValue) => {
           const { selection } = editor;
           setValue(newValue);
-          onChangePlaceholder(selection);
 
           // Close slash menu on editor blur
           if (selection == null || !Range.isCollapsed(selection)) {
@@ -154,21 +146,7 @@ export default function DecaEditor(): JSX.Element {
           }
         }}
       >
-        {phTitleVisible ? (
-          <div className={styles.placeholderTitle}>Untitled Deca Doc</div>
-        ) : null}
-        {/* <div className={styles.placeholderFirstLine}>
-          Your decision awaits...
-        </div> */}
-        <div
-          className={styles.placeholder}
-          style={{
-            opacity: phInlineVisible ? 1.0 : 0.0,
-            transform: `translate3d(0, ${phInlinePosY}px, 0)`,
-          }}
-        >
-          Start typing or press <kbd>/</kbd>
-        </div>
+        <Placeholder wrapperRef={wrapperRef} />
         <Editable
           autoFocus
           onKeyDown={onKeyDown}
