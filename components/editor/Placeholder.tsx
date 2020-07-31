@@ -1,6 +1,6 @@
 import { ReactEditor, useSlate } from 'slate-react';
 import { useEffect, useState, RefObject } from 'react';
-import { Range, Editor } from 'slate';
+import { Range, Editor, Node } from 'slate';
 import styles from './Placeholder.module.scss';
 
 interface Props {
@@ -8,9 +8,13 @@ interface Props {
 }
 
 export default function Placeholder(props: Props): JSX.Element {
-  const [inlineVisible, setInlineVisible] = useState(false);
-  const [inlinePosY, setInlinePosY] = useState(0);
-  const [titleVisible, setTitleVisible] = useState(false);
+  const [assistantVisible, setAssistantVisible] = useState(false);
+  const [assistantPosY, setAssistantPosY] = useState(0);
+  // TODO: When loading data from storage, change initial value to avoid flash of placeholder
+  const [titleVisible, setTitleVisible] = useState(true);
+
+  const [bodyVisible, setBodyVisible] = useState(true);
+  const [bodyPosY, setBodyPosY] = useState(63);
 
   // Add `useSlate` to listen to every `onChange` event (unlike `useEditor`)
   const editor = useSlate();
@@ -18,9 +22,20 @@ export default function Placeholder(props: Props): JSX.Element {
 
   useEffect(() => {
     const { selection } = editor;
+    const nodes = editor.children;
+    const secondNode = nodes[1];
+    const secondNodeIsEmpty = Node.string(secondNode) === '';
+
+    // If editor is blurred or has multi-character selection...
     if (selection == null || !Range.isCollapsed(selection)) {
-      if (inlineVisible) {
-        setInlineVisible(false);
+      // Hide the assistant if it's visible
+      if (assistantVisible) {
+        setAssistantVisible(false);
+      }
+
+      // Show the body placeholder if doc body is empty
+      if (nodes.length <= 2 && secondNodeIsEmpty) {
+        setBodyVisible(true);
       }
       return;
     }
@@ -31,11 +46,24 @@ export default function Placeholder(props: Props): JSX.Element {
     const [node] = Editor.node(editor, caretPoint);
     const nodeIsEmpty = node.text === '';
 
+    // Show the body placeholder if doc body is empty
+    if (!bodyVisible && nodes.length <= 2 && secondNodeIsEmpty) {
+      setBodyVisible(true);
+    }
+
+    // Hide body placeholder if doc has content
+    if (
+      bodyVisible &&
+      ((nodes.length > 2 && bodyVisible) || (caretLine === 1 && nodeIsEmpty))
+    ) {
+      setBodyVisible(false);
+    }
+
     // If it's the 1st line, focus on the title placeholder
     if (caretLine === 0) {
       setTitleVisible(nodeIsEmpty);
-      // Never show inline assistant on 1st line
-      setInlineVisible(false);
+      // Never show assistant on 1st line
+      setAssistantVisible(false);
       return;
     }
 
@@ -49,16 +77,15 @@ export default function Placeholder(props: Props): JSX.Element {
         const wrapperRect = wrapperRef.current.getBoundingClientRect();
 
         // TODO: Fix -1px offset due to mismatching of leaf rendering height to the placeholder
-        setInlinePosY(selectionRect.top - wrapperRect.top + 1.0);
-        setInlineVisible(true);
+        setAssistantPosY(selectionRect.top - wrapperRect.top + 1.0);
+        setAssistantVisible(true);
       } else {
         // noop: Hide the assistant if we can't properly place it
       }
-
       return;
     }
 
-    setInlineVisible(false);
+    setAssistantVisible(false);
   }, [editor.selection, wrapperRef]);
 
   return (
@@ -66,12 +93,21 @@ export default function Placeholder(props: Props): JSX.Element {
       {titleVisible ? (
         <div className={styles.placeholderTitle}>Untitled Deca Doc</div>
       ) : null}
-      {/* <div className={styles.placeholderFirstLine}>Your decision awaits...</div> */}
-      {inlineVisible ? (
+      {bodyVisible ? (
         <div
           className={styles.placeholder}
           style={{
-            transform: `translate3d(0, ${inlinePosY}px, 0)`,
+            transform: `translate3d(0, ${bodyPosY}px, 0)`,
+          }}
+        >
+          An excellent decision awaits…
+        </div>
+      ) : null}
+      {assistantVisible ? (
+        <div
+          className={styles.placeholder}
+          style={{
+            transform: `translate3d(0, ${assistantPosY}px, 0)`,
           }}
         >
           Start typing or press <kbd>/</kbd> to think
