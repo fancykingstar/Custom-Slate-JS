@@ -1,3 +1,5 @@
+// @refresh reset
+
 import { useMemo, useState, useEffect, useCallback, useRef } from 'react';
 import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
 import { createEditor, Editor, Node, Range, Transforms } from 'slate';
