@@ -1,5 +1,6 @@
 import { DefaultElement, RenderElementProps } from 'slate-react';
 import ChoicesTool, { ChoicesName } from './tools/Choices';
+import styles from './Element.module.scss';
 
 export enum BaseElement {
   Title = 'title',
@@ -11,13 +12,21 @@ export default function Element(props: RenderElementProps): JSX.Element {
 
   switch (element.type) {
     case BaseElement.Title:
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      return <h1 {...attributes}>{children}</h1>;
+      return (
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        <h1 {...attributes} className={styles.title}>
+          {children}
+        </h1>
+      );
     case ChoicesName.Type:
       return <ChoicesTool />;
     case BaseElement.Paragraph:
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      return <p {...attributes}>{children}</p>;
+      return (
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        <p {...attributes} className={styles.p}>
+          {children}
+        </p>
+      );
     default:
       return <DefaultElement {...props} />;
   }

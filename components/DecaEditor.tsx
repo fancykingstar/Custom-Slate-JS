@@ -24,6 +24,14 @@ export default function DecaEditor(): JSX.Element {
       type: BaseElement.Title,
       children: [{ text: '' }],
     },
+    {
+      type: BaseElement.Paragraph,
+      children: [
+        {
+          text: '',
+        },
+      ],
+    },
   ]);
   const renderElement = useCallback((props) => <Element {...props} />, []);
 
