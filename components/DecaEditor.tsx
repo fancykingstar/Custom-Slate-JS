@@ -115,7 +115,6 @@ export default function DecaEditor(): JSX.Element {
       <Slate
         editor={editor}
         value={value}
-        renderElement={renderElement}
         onChange={(newValue) => {
           const { selection } = editor;
           setValue(newValue);
@@ -154,7 +153,11 @@ export default function DecaEditor(): JSX.Element {
         >
           Start typing or press <kbd>/</kbd>
         </div>
-        <Editable autoFocus onKeyDown={onKeyDown} />
+        <Editable
+          autoFocus
+          onKeyDown={onKeyDown}
+          renderElement={renderElement}
+        />
         {slashRange != null && slashPos != null ? (
           <ClientOnlyPortal>
             <div
