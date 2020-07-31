@@ -3,6 +3,11 @@ import { useEffect, useState, RefObject } from 'react';
 import { Range, Editor, Node } from 'slate';
 import styles from './Placeholder.module.scss';
 
+// TODO: Fix -1px offset due to mismatching of leaf rendering height to the placeholder
+const PLACEHOLDER_OFFSET = 1.0; // px
+const BODY_TOP_DEFAULT = 64 - PLACEHOLDER_OFFSET; // px
+const TITLE_HEIGHT = 48; // px
+
 interface Props {
   wrapperRef: RefObject<HTMLDivElement>;
 }
@@ -14,7 +19,7 @@ export default function Placeholder(props: Props): JSX.Element {
   const [titleVisible, setTitleVisible] = useState(true);
 
   const [bodyVisible, setBodyVisible] = useState(true);
-  const [bodyPosY, setBodyPosY] = useState(63);
+  const [bodyPosY, setBodyPosY] = useState(BODY_TOP_DEFAULT);
 
   // Add `useSlate` to listen to every `onChange` event (unlike `useEditor`)
   const editor = useSlate();
@@ -53,7 +58,7 @@ export default function Placeholder(props: Props): JSX.Element {
 
     if (
       // Hide body placeholder if doc has content
-      nodes.length > 2 ||
+      (bodyVisible && nodes.length > 2) ||
       (caretLine === 1 && caretNodeEmpty)
     ) {
       setBodyVisible(false);
@@ -64,6 +69,19 @@ export default function Placeholder(props: Props): JSX.Element {
       setTitleVisible(caretNodeEmpty);
       // Never show assistant on 1st line
       setAssistantVisible(false);
+
+      // Determine whether to push body placeholder due to text wrap
+      const titleElement = ReactEditor.toDOMNode(editor, caretNode)
+        .parentElement;
+      if (titleElement == null) {
+        return;
+      }
+
+      const titleBounds = titleElement.getBoundingClientRect();
+      const bodyTop = BODY_TOP_DEFAULT + titleBounds.height - TITLE_HEIGHT;
+      if (bodyTop !== bodyPosY) {
+        setBodyPosY(bodyTop);
+      }
       return;
     }
 
@@ -77,7 +95,9 @@ export default function Placeholder(props: Props): JSX.Element {
         const wrapperRect = wrapperRef.current.getBoundingClientRect();
 
         // TODO: Fix -1px offset due to mismatching of leaf rendering height to the placeholder
-        setAssistantPosY(selectionRect.top - wrapperRect.top + 1.0);
+        setAssistantPosY(
+          selectionRect.top - wrapperRect.top + PLACEHOLDER_OFFSET
+        );
         setAssistantVisible(true);
       } else {
         // noop: Hide the assistant if we can't properly place it
