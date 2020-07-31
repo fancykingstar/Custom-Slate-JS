@@ -4,6 +4,7 @@ import { createEditor, Editor, Node, Range, Transforms } from 'slate';
 import styles from './DecaEditor.module.scss';
 import SlashMenu, { MENU_ITEMS, MenuItem } from './SlashMenu';
 import ClientOnlyPortal from './ClientOnlyPortal';
+import Element from './Element';
 import { insertChoicesTool } from './tools/Choices';
 import usePlaceholder from './editor/usePlaceholder';
 
@@ -105,11 +106,14 @@ export default function DecaEditor(): JSX.Element {
     });
   }, [slashRange]);
 
+  const renderElement = useCallback((props) => <Element {...props} />, []);
+
   return (
     <div className={styles.wrapper} ref={wrapperRef}>
       <Slate
         editor={editor}
         value={value}
+        renderElement={renderElement}
         onChange={(newValue) => {
           const { selection } = editor;
           setValue(newValue);
