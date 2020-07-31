@@ -107,6 +107,7 @@ export default function DecaEditor(): JSX.Element {
     const domRange = ReactEditor.toDOMRange(editor, slashRange);
     const rect = domRange.getBoundingClientRect();
 
+    // TODO: Move slash menu on window resize
     setSlashPos({
       x: rect.left + window.pageXOffset,
       y: rect.top + window.pageYOffset + 24,
@@ -128,13 +129,29 @@ export default function DecaEditor(): JSX.Element {
             return;
           }
 
-          const [start] = Range.edges(selection);
-          const lineStart = Editor.before(editor, start, { unit: 'line' });
-          const lineRange = lineStart && Editor.range(editor, lineStart, start);
-          const [node] = Editor.node(editor, start);
+          const caretPoint = selection.anchor;
+          const [caretLine] = caretPoint.path;
 
-          // Open the slash menu if slash is the first and only char
-          if (slashRange == null && lineRange != null && node.text === '/') {
+          // Determine if slash should be available
+          const [selectionStart] = Range.edges(selection);
+          const [node] = Editor.node(editor, selectionStart);
+          const slashAvailable =
+            node.text === '/' && selectionStart.offset === 1;
+
+          // Store selection range to calculate position of menu
+          const lineStart = Editor.before(editor, selectionStart, {
+            unit: 'line',
+          });
+          const lineRange =
+            lineStart && Editor.range(editor, lineStart, selectionStart);
+
+          // Open the slash menu if slash is the first and only char in a body line
+          if (
+            slashRange == null &&
+            lineRange != null &&
+            slashAvailable &&
+            caretLine > 0
+          ) {
             setSlashRange(lineRange);
             setSlashIndex(0);
             return;
