@@ -41,6 +41,17 @@ const withLayout = (editor: ReactEditor): ReactEditor => {
           { type: BaseElement.Title },
           { at: childPath }
         );
+
+        // Hack: Move cursor to start of doc b/c Slate is out-of-sync (?)
+        // - Fixes `Select-All+Delete` leaving first two lines selected, even though
+        //   Slate's selection object says nothing should be selected.
+        // - https://developer.mozilla.org/en-US/docs/Web/API/Selection/collapse
+        if (editor.selection != null && typeof window !== 'undefined') {
+          const windowSelection = window.getSelection();
+          if (windowSelection != null) {
+            windowSelection.collapse(windowSelection.anchorNode, 0);
+          }
+        }
       }
 
       // Enforce: No other element can be a title
