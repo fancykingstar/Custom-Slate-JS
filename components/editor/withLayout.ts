@@ -48,7 +48,7 @@ const withLayout = (editor: ReactEditor): ReactEditor => {
         // - https://developer.mozilla.org/en-US/docs/Web/API/Selection/collapse
         if (editor.selection != null && typeof window !== 'undefined') {
           const windowSelection = window.getSelection();
-          if (windowSelection != null) {
+          if (windowSelection != null && windowSelection.type === 'Range') {
             windowSelection.collapse(windowSelection.anchorNode, 0);
           }
         }
