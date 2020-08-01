@@ -2,6 +2,7 @@ import { ReactEditor, useSlate } from 'slate-react';
 import { useEffect, useState, RefObject } from 'react';
 import { Range, Editor, Node } from 'slate';
 import styles from './Placeholder.module.scss';
+import { BaseElement } from '../Element';
 
 // TODO: Fix -1px offset due to mismatching of leaf rendering height to the placeholder
 const PLACEHOLDER_OFFSET = 1.0; // px
@@ -29,7 +30,10 @@ export default function Placeholder(props: Props): JSX.Element {
     const { selection } = editor;
     const nodes = editor.children;
     const firstBodyNode = nodes[1];
-    const firstBodyNodeEmpty = !Node.string(firstBodyNode).length;
+    const bodyIsEmpty =
+      nodes.length <= 2 &&
+      !Node.string(firstBodyNode).length &&
+      firstBodyNode.type === BaseElement.Paragraph;
 
     // TODO: Fix tabbing out of editor leaving assistant placeholder visible instead of body
 
@@ -41,7 +45,7 @@ export default function Placeholder(props: Props): JSX.Element {
       }
 
       // Show the body placeholder if doc body is empty
-      if (nodes.length <= 2 && firstBodyNodeEmpty) {
+      if (bodyIsEmpty) {
         setBodyVisible(true);
       }
       return;
@@ -54,15 +58,14 @@ export default function Placeholder(props: Props): JSX.Element {
     const caretNodeEmpty = !Node.string(caretNode).length;
 
     // Show the body placeholder if doc body is empty
-    if (nodes.length <= 2 && firstBodyNodeEmpty) {
+    if (bodyIsEmpty) {
       setBodyVisible(true);
     }
 
     if (
       // Hide body placeholder if doc has content
-      (bodyVisible && nodes.length > 2) ||
-      (caretLine === 1 && caretNodeEmpty) ||
-      !firstBodyNodeEmpty
+      !bodyIsEmpty ||
+      (caretLine === 1 && caretNodeEmpty)
     ) {
       setBodyVisible(false);
     }
@@ -88,7 +91,16 @@ export default function Placeholder(props: Props): JSX.Element {
       return;
     }
 
-    if (caretNodeEmpty) {
+    // Determine whether or not to show the assistant placeholder
+    const nearestBlock = Editor.above(editor, {
+      match: (node) => Editor.isBlock(editor, node),
+    });
+
+    if (
+      caretNodeEmpty &&
+      nearestBlock != null &&
+      nearestBlock[0].type === BaseElement.Paragraph
+    ) {
       // Get bounds of current cursor
       const selectionDOMRange = ReactEditor.toDOMRange(editor, selection);
       const selectionRect = selectionDOMRange.getBoundingClientRect();
