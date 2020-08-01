@@ -14,18 +14,14 @@ interface Props {
 }
 
 export default function Placeholder(props: Props): JSX.Element {
-  const [assistantVisible, setAssistantVisible] = useState(false);
-  const [assistantPosY, setAssistantPosY] = useState(0);
+  // Add `useSlate` to listen to every `onChange` event (unlike `useEditor`)
+  const editor = useSlate();
   // TODO: When loading data from storage, change initial value to avoid flash of placeholder
   const [titleVisible, setTitleVisible] = useState(true);
-
   const [bodyVisible, setBodyVisible] = useState(true);
   const [bodyPosY, setBodyPosY] = useState(BODY_TOP_DEFAULT);
 
-  // Add `useSlate` to listen to every `onChange` event (unlike `useEditor`)
-  const editor = useSlate();
-  const { wrapperRef } = props;
-
+  // Handle title and body placeholder visibility
   useEffect(() => {
     const { selection } = editor;
     const nodes = editor.children;
@@ -39,11 +35,6 @@ export default function Placeholder(props: Props): JSX.Element {
 
     // If editor is blurred or has multi-character selection...
     if (selection == null || !Range.isCollapsed(selection)) {
-      // Hide the assistant if it's visible
-      if (assistantVisible) {
-        setAssistantVisible(false);
-      }
-
       // Show the body placeholder if doc body is empty
       if (bodyIsEmpty) {
         setBodyVisible(true);
@@ -70,34 +61,60 @@ export default function Placeholder(props: Props): JSX.Element {
       setBodyVisible(false);
     }
 
-    // If it's the 1st line, focus on the title placeholder
-    if (caretLine === 0) {
-      setTitleVisible(caretNodeEmpty);
-      // Never show assistant on 1st line
-      setAssistantVisible(false);
+    // We only care about the title line
+    if (caretLine !== 0) {
+      return;
+    }
 
-      // Determine whether to push body placeholder due to text wrap
-      const titleElement = ReactEditor.toDOMNode(editor, caretNode)
-        .parentElement;
-      if (titleElement == null) {
-        return;
-      }
+    setTitleVisible(caretNodeEmpty);
+    // Determine whether to push body placeholder due to text wrap
+    const titleElement = ReactEditor.toDOMNode(editor, caretNode).parentElement;
+    if (titleElement == null) {
+      return;
+    }
 
-      const titleBounds = titleElement.getBoundingClientRect();
-      const bodyTop = BODY_TOP_DEFAULT + titleBounds.height - TITLE_HEIGHT;
-      if (bodyTop !== bodyPosY) {
-        setBodyPosY(bodyTop);
+    const titleBounds = titleElement.getBoundingClientRect();
+    const bodyTop = BODY_TOP_DEFAULT + titleBounds.height - TITLE_HEIGHT;
+    if (bodyTop !== bodyPosY) {
+      setBodyPosY(bodyTop);
+    }
+  }, [editor.selection]);
+
+  const [assistantVisible, setAssistantVisible] = useState(false);
+  const [assistantPosY, setAssistantPosY] = useState(0);
+
+  const { wrapperRef } = props;
+
+  // Handle assistant placeholder visibility
+  useEffect(() => {
+    const { selection } = editor;
+
+    // If editor is blurred or has multi-character selection...
+    if (selection == null || !Range.isCollapsed(selection)) {
+      // Hide the assistant if it's visible
+      if (assistantVisible) {
+        setAssistantVisible(false);
       }
       return;
     }
 
-    // Determine whether or not to show the assistant placeholder
+    const caretPoint = selection.anchor;
+    const [caretLine] = caretPoint.path;
+
+    // Never show assistant on 1st line
+    if (caretLine === 0) {
+      setAssistantVisible(false);
+      return;
+    }
+
+    const [caretNode] = Editor.node(editor, caretPoint);
     const nearestBlock = Editor.above(editor, {
       match: (node) => Editor.isBlock(editor, node),
     });
 
+    // Determine whether or not to show the assistant placeholder
     if (
-      caretNodeEmpty &&
+      !Node.string(caretNode).length &&
       nearestBlock != null &&
       nearestBlock[0].type === BaseElement.Paragraph
     ) {
