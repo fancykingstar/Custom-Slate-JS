@@ -125,29 +125,31 @@ export default function Placeholder(props: Props): JSX.Element {
 
   return (
     <>
-      {titleVisible ? (
-        <div className={styles.placeholderTitle}>What’s your question?</div>
-      ) : null}
-      {bodyVisible ? (
-        <div
-          className={styles.placeholder}
-          style={{
-            transform: `translate3d(0, ${bodyPosY / 10}rem, 0)`,
-          }}
-        >
-          An excellent decision awaits…
-        </div>
-      ) : null}
-      {assistantVisible ? (
-        <div
-          className={styles.placeholder}
-          style={{
-            transform: `translate3d(0, ${assistantPosY / 10}rem, 0)`,
-          }}
-        >
-          Start typing or press <kbd>/</kbd> to think
-        </div>
-      ) : null}
+      <div
+        className={`${styles.placeholderTitle} ${
+          !titleVisible ? styles.hidden : ''
+        }`}
+      >
+        What’s your question?
+      </div>
+      <div
+        className={`${styles.placeholder} ${!bodyVisible ? styles.hidden : ''}`}
+        style={{
+          transform: `translate3d(0, ${bodyPosY / 10}rem, 0)`,
+        }}
+      >
+        An excellent decision awaits…
+      </div>
+      <div
+        className={`${styles.placeholder} ${
+          !assistantVisible ? styles.hidden : ''
+        }`}
+        style={{
+          transform: `translate3d(0, ${assistantPosY / 10}rem, 0)`,
+        }}
+      >
+        Start typing or press <kbd>/</kbd> to think
+      </div>
     </>
   );
 }
