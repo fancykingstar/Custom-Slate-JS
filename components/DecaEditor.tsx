@@ -191,7 +191,9 @@ export default function DecaEditor(): JSX.Element {
             <div
               className={styles.slashWrapper}
               style={{
-                transform: `translate3d(${slashPos.x}px, ${slashPos.y}px, 0)`,
+                transform: `translate3d(${slashPos.x / 10}rem, ${
+                  slashPos.y / 10
+                }rem, 0)`,
               }}
             >
               <SlashMenu activeIndex={slashIndex} onAddTool={onAddTool} />

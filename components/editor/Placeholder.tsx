@@ -120,7 +120,7 @@ export default function Placeholder(props: Props): JSX.Element {
         <div
           className={styles.placeholder}
           style={{
-            transform: `translate3d(0, ${bodyPosY}px, 0)`,
+            transform: `translate3d(0, ${bodyPosY / 10}rem, 0)`,
           }}
         >
           An excellent decision awaits…
@@ -130,7 +130,7 @@ export default function Placeholder(props: Props): JSX.Element {
         <div
           className={styles.placeholder}
           style={{
-            transform: `translate3d(0, ${assistantPosY}px, 0)`,
+            transform: `translate3d(0, ${assistantPosY / 10}rem, 0)`,
           }}
         >
           Start typing or press <kbd>/</kbd> to think
