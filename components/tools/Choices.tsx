@@ -29,6 +29,5 @@ export function insertChoicesTool(editor: Editor): void {
 export default function ChoicesTool(props: RenderElementProps): JSX.Element {
   const { attributes, children } = props;
 
-  // eslint-disable-next-line react/jsx-props-no-spreading
   return <div {...attributes}>{children}</div>;
 }
