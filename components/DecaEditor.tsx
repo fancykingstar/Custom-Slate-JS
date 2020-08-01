@@ -9,6 +9,7 @@ import ClientOnlyPortal from './ClientOnlyPortal';
 import Element, { BaseElement } from './Element';
 import { insertChoicesTool } from './tools/Choices';
 import withLayout from './editor/withLayout';
+import withMarkdown from './editor/withMarkdown';
 import Placeholder from './editor/Placeholder';
 import styles from './DecaEditor.module.scss';
 
@@ -20,7 +21,7 @@ export interface SlashPoint {
 export default function DecaEditor(): JSX.Element {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const editor = useMemo(
-    () => withLayout(withHistory(withReact(createEditor()))),
+    () => withMarkdown(withLayout(withHistory(withReact(createEditor())))),
     []
   );
   const [value, setValue] = useState<Node[]>([
