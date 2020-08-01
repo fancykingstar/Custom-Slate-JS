@@ -1,5 +1,5 @@
 import { DefaultElement, RenderElementProps } from 'slate-react';
-import ChoicesTool, { ChoicesName } from './tools/Choices';
+import * as Choices from './tools/Choices';
 import styles from './Element.module.scss';
 
 export enum BaseElement {
@@ -33,8 +33,14 @@ export default function Element(props: RenderElementProps): JSX.Element {
       );
     case BaseElement.ListItem:
       return <li {...attributes}>{children}</li>;
-    case ChoicesName.ToolType:
-      return <ChoicesTool {...props} />;
+    case Choices.Type.Tool:
+      return <Choices.ToolElement {...props} />;
+    case Choices.Type.Choice:
+      return <Choices.ChoiceElement {...props} />;
+    case Choices.Type.Name:
+      return <Choices.NameElement {...props} />;
+    case Choices.Type.Explanation:
+      return <Choices.ExplanationElement {...props} />;
     default:
       return <DefaultElement {...props} />;
   }
