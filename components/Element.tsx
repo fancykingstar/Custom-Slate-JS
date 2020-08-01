@@ -28,8 +28,12 @@ export default function Element(props: RenderElementProps): JSX.Element {
         </p>
       );
     case BaseElement.UnorderedList:
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      return <ul {...attributes}>{children}</ul>;
+      return (
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        <ul {...attributes} className={styles.ul}>
+          {children}
+        </ul>
+      );
     case BaseElement.ListItem:
       // eslint-disable-next-line react/jsx-props-no-spreading
       return <li {...attributes}>{children}</li>;
