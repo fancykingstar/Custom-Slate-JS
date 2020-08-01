@@ -29,7 +29,7 @@ export default function Placeholder(props: Props): JSX.Element {
     const { selection } = editor;
     const nodes = editor.children;
     const firstBodyNode = nodes[1];
-    const firstBodyNodeEmpty = Node.string(firstBodyNode) === '';
+    const firstBodyNodeEmpty = !Node.string(firstBodyNode).length;
 
     // TODO: Fix tabbing out of editor leaving assistant placeholder visible instead of body
 
@@ -51,7 +51,7 @@ export default function Placeholder(props: Props): JSX.Element {
     const caretPoint = selection.anchor;
     const [caretLine] = caretPoint.path;
     const [caretNode] = Editor.node(editor, caretPoint);
-    const caretNodeEmpty = caretNode.text === '';
+    const caretNodeEmpty = !Node.string(caretNode).length;
 
     // Show the body placeholder if doc body is empty
     if (nodes.length <= 2 && firstBodyNodeEmpty) {
@@ -61,7 +61,8 @@ export default function Placeholder(props: Props): JSX.Element {
     if (
       // Hide body placeholder if doc has content
       (bodyVisible && nodes.length > 2) ||
-      (caretLine === 1 && caretNodeEmpty)
+      (caretLine === 1 && caretNodeEmpty) ||
+      !firstBodyNodeEmpty
     ) {
       setBodyVisible(false);
     }
