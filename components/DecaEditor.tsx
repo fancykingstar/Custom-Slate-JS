@@ -1,6 +1,7 @@
 // @refresh reset
 
 import { useMemo, useState, useEffect, useCallback, useRef } from 'react';
+import { withHistory } from 'slate-history';
 import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
 import { createEditor, Editor, Node, Range, Transforms } from 'slate';
 import SlashMenu, { MENU_ITEMS, MenuItem } from './SlashMenu';
@@ -18,7 +19,10 @@ export interface SlashPoint {
 
 export default function DecaEditor(): JSX.Element {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const editor = useMemo(() => withLayout(withReact(createEditor())), []);
+  const editor = useMemo(
+    () => withLayout(withHistory(withReact(createEditor()))),
+    []
+  );
   const [value, setValue] = useState<Node[]>([
     {
       type: BaseElement.Title,
