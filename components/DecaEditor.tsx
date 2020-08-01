@@ -66,6 +66,23 @@ export default function DecaEditor(): JSX.Element {
 
   const onKeyDown = useCallback(
     (event) => {
+      const { selection } = editor;
+
+      // Prevent creation of a new starter node from title when pressing enter
+      if (
+        event.key === 'Enter' &&
+        editor.children.length <= 2 &&
+        selection != null &&
+        Range.isCollapsed(selection)
+      ) {
+        const caretPoint = selection.anchor;
+        const [caretLine] = caretPoint.path;
+        if (caretLine === 0) {
+          Transforms.select(editor, [1, 0]);
+          event.preventDefault();
+        }
+      }
+
       if (slashRange == null) {
         return;
       }
