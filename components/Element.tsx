@@ -5,6 +5,8 @@ import styles from './Element.module.scss';
 export enum BaseElement {
   Title = 'title',
   Paragraph = 'paragraph',
+  UnorderedList = 'unordered-list',
+  ListItem = 'list-item',
 }
 
 export default function Element(props: RenderElementProps): JSX.Element {
@@ -18,8 +20,6 @@ export default function Element(props: RenderElementProps): JSX.Element {
           {children}
         </h1>
       );
-    case ChoicesName.ToolType:
-      return <ChoicesTool {...props} />;
     case BaseElement.Paragraph:
       return (
         // eslint-disable-next-line react/jsx-props-no-spreading
@@ -27,6 +27,14 @@ export default function Element(props: RenderElementProps): JSX.Element {
           {children}
         </p>
       );
+    case BaseElement.UnorderedList:
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      return <ul {...attributes}>{children}</ul>;
+    case BaseElement.ListItem:
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      return <li {...attributes}>{children}</li>;
+    case ChoicesName.ToolType:
+      return <ChoicesTool {...props} />;
     default:
       return <DefaultElement {...props} />;
   }
