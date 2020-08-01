@@ -18,8 +18,8 @@ export default function Element(props: RenderElementProps): JSX.Element {
           {children}
         </h1>
       );
-    case ChoicesName.Type:
-      return <ChoicesTool />;
+    case ChoicesName.ToolType:
+      return <ChoicesTool {...props} />;
     case BaseElement.Paragraph:
       return (
         // eslint-disable-next-line react/jsx-props-no-spreading
