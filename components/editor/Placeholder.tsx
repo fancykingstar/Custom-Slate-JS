@@ -113,7 +113,7 @@ export default function Placeholder(props: Props): JSX.Element {
   return (
     <>
       {titleVisible ? (
-        <div className={styles.placeholderTitle}>Untitled Deca Doc</div>
+        <div className={styles.placeholderTitle}>What’s your question?</div>
       ) : null}
       {bodyVisible ? (
         <div
