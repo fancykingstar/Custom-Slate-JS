@@ -10,6 +10,7 @@ import Element, { BaseElement } from './Element';
 import { insertChoicesTool } from './tools/Choices';
 import withLayout from './editor/withLayout';
 import withMarkdown from './editor/withMarkdown';
+import Assistant from './editor/Assistant';
 import Placeholder from './editor/Placeholder';
 import styles from './DecaEditor.module.scss';
 
@@ -185,7 +186,8 @@ export default function DecaEditor(): JSX.Element {
           }
         }}
       >
-        <Placeholder wrapperRef={wrapperRef} />
+        <Placeholder />
+        <Assistant wrapperRef={wrapperRef} />
         <Editable
           autoFocus
           onKeyDown={onKeyDown}
