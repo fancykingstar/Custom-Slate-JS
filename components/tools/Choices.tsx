@@ -1,5 +1,6 @@
 import { Editor, Transforms } from 'slate';
 import { RenderElementProps } from 'slate-react';
+import styles from './Choices.module.scss';
 
 export enum Type {
   Tool = 'tool-choices',
@@ -47,7 +48,11 @@ export function insertChoicesTool(editor: Editor): void {
 export function ToolElement(props: RenderElementProps): JSX.Element {
   const { attributes, children } = props;
 
-  return <div {...attributes}>{children}</div>;
+  return (
+    <div {...attributes} className={styles.tool}>
+      {children}
+    </div>
+  );
 }
 
 export function ChoiceElement(props: RenderElementProps): JSX.Element {
@@ -59,7 +64,11 @@ export function ChoiceElement(props: RenderElementProps): JSX.Element {
 export function NameElement(props: RenderElementProps): JSX.Element {
   const { attributes, children } = props;
 
-  return <p {...attributes}>{children}</p>;
+  return (
+    <p {...attributes} className={styles.name}>
+      {children}
+    </p>
+  );
 }
 
 export function ExplanationElement(props: RenderElementProps): JSX.Element {
