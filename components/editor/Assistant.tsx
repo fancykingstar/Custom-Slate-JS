@@ -12,6 +12,12 @@ interface Props {
   wrapperRef: RefObject<HTMLDivElement>;
 }
 
+const defaultPrompt: JSX.Element = (
+  <>
+    Start typing or press <kbd>/</kbd> to think
+  </>
+);
+
 export default function Assistant(props: Props): JSX.Element {
   // Add `useSlate` to listen to every `onChange` event (unlike `useEditor`)
   const editor = useSlate();
@@ -75,27 +81,19 @@ export default function Assistant(props: Props): JSX.Element {
     setVisible(false);
   }, [editor.selection, wrapperRef]);
 
-  const [content, setContent] = useState(
-    <>
-      Start typing or press <kbd>/</kbd> to think
-    </>
-  );
+  const [content, setContent] = useState(defaultPrompt);
   const timeoutId = useRef<number | null>(null);
 
   // Handle assistant content
   useEffect(() => {
     if (visible && timeoutId.current == null) {
-      // TODO: function is not called when the assistant is not visible
       timeoutId.current = window.setTimeout(() => {
-        setContent(<>Have you already made your decision?</>);
+        setContent(<>Could it be you’ve already made up your mind?</>);
+        timeoutId.current = window.setTimeout(() => {
+          setContent(defaultPrompt);
+        }, 5000);
       }, 5000);
     }
-
-    return () => {
-      if (timeoutId.current != null) {
-        window.clearTimeout(timeoutId.current);
-      }
-    };
   }, [visible]);
 
   return (
