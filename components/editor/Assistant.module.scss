@@ -3,7 +3,7 @@
   color: var(--color-bg-gray-primary);
   display: flex;
   height: 1.8rem;
-  left: 0;
+  left: var(--editor-side-padding);
   position: absolute;
   top: 0;
   user-select: none;

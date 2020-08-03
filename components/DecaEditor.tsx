@@ -193,6 +193,7 @@ export default function DecaEditor(): JSX.Element {
         <Assistant wrapperRef={wrapperRef} />
         <Editable
           autoFocus
+          className={styles.editor}
           onKeyDown={onKeyDown}
           renderElement={renderElement}
         />
