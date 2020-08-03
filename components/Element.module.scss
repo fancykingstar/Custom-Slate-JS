@@ -22,7 +22,7 @@
   padding-left: 2.4rem;
 }
 
-// Add alternating disc/circle/square styles up to 10 levels deep
+// Alternate disc/circle/square styles up to 10 levels deep
 .ul,
 .ul ul ul ul,
 .ul ul ul ul ul ul ul,
@@ -40,4 +40,24 @@
 .ul ul ul ul ul ul,
 .ul ul ul ul ul ul ul ul ul {
   list-style-type: square;
+}
+
+// Alternate decimal/lower-latin/lower-roman styles up to 10 levels deep
+.ol,
+.ol ol ol ol,
+.ol ol ol ol ol ol ol,
+.ol ol ol ol ol ol ol ol ol ol {
+  list-style-type: decimal;
+}
+
+.ol ol,
+.ol ol ol ol ol,
+.ol ol ol ol ol ol ol ol {
+  list-style-type: lower-latin;
+}
+
+.ol ol ol,
+.ol ol ol ol ol ol,
+.ol ol ol ol ol ol ol ol ol {
+  list-style-type: lower-roman;
 }
