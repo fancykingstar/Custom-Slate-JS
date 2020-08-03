@@ -1,5 +1,5 @@
 import { ReactEditor, useSlate } from 'slate-react';
-import { useEffect, useState, RefObject } from 'react';
+import { useEffect, useRef, useState, RefObject } from 'react';
 import { Range, Editor, Node } from 'slate';
 import styles from './Assistant.module.scss';
 import { BaseElement } from '../Element';
@@ -15,8 +15,8 @@ export default function Assistant(props: Props): JSX.Element {
   // Add `useSlate` to listen to every `onChange` event (unlike `useEditor`)
   const editor = useSlate();
 
-  const [assistantVisible, setAssistantVisible] = useState(false);
-  const [assistantPosY, setAssistantPosY] = useState(0);
+  const [visible, setVisible] = useState(false);
+  const [posY, setPosY] = useState(0);
 
   const { wrapperRef } = props;
 
@@ -27,8 +27,8 @@ export default function Assistant(props: Props): JSX.Element {
     // If editor is blurred or has multi-character selection...
     if (selection == null || !Range.isCollapsed(selection)) {
       // Hide the assistant if it's visible
-      if (assistantVisible) {
-        setAssistantVisible(false);
+      if (visible) {
+        setVisible(false);
       }
       return;
     }
@@ -38,7 +38,7 @@ export default function Assistant(props: Props): JSX.Element {
 
     // Never show assistant on 1st line
     if (caretLine === 0) {
-      setAssistantVisible(false);
+      setVisible(false);
       return;
     }
 
@@ -62,29 +62,48 @@ export default function Assistant(props: Props): JSX.Element {
         const wrapperRect = wrapperRef.current.getBoundingClientRect();
 
         // TODO: Fix -1px offset due to mismatching of leaf rendering height to the placeholder
-        setAssistantPosY(
-          selectionRect.top - wrapperRect.top + PLACEHOLDER_OFFSET
-        );
-        setAssistantVisible(true);
+        setPosY(selectionRect.top - wrapperRect.top + PLACEHOLDER_OFFSET);
+        setVisible(true);
       } else {
         // noop: Hide the assistant if we can't properly place it
       }
       return;
     }
 
-    setAssistantVisible(false);
+    setVisible(false);
   }, [editor.selection, wrapperRef]);
+
+  const [content, setContent] = useState(
+    <>
+      Start typing or press <kbd>/</kbd> to think
+    </>
+  );
+  const timeoutId = useRef<number | null>(null);
+
+  // Handle assistant content
+  useEffect(() => {
+    if (visible && timeoutId.current == null) {
+      // TODO: function is not called when the assistant is not visible
+      timeoutId.current = window.setTimeout(() => {
+        setContent(<>Have you already made your decision?</>);
+      }, 5000);
+    }
+
+    return () => {
+      if (timeoutId.current != null) {
+        window.clearTimeout(timeoutId.current);
+      }
+    };
+  }, [visible]);
 
   return (
     <div
-      className={`${styles.placeholder} ${
-        !assistantVisible ? styles.hidden : ''
-      }`}
+      className={`${styles.placeholder} ${!visible ? styles.hidden : ''}`}
       style={{
-        transform: `translate3d(0, ${assistantPosY / 10}rem, 0)`,
+        transform: `translate3d(0, ${posY / 10}rem, 0)`,
       }}
     >
-      Start typing or press <kbd>/</kbd> to think
+      {content}
     </div>
   );
 }

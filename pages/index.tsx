@@ -15,7 +15,7 @@ export default function Home(): JSX.Element {
           rel="stylesheet"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&display=swap"
           rel="stylesheet"
         />
       </Head>
