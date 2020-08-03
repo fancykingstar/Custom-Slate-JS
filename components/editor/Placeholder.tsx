@@ -1,5 +1,5 @@
 import { ReactEditor, useSlate } from 'slate-react';
-import { useEffect, useState, RefObject } from 'react';
+import { useEffect, useState } from 'react';
 import { Range, Editor, Node } from 'slate';
 import styles from './Placeholder.module.scss';
 import { BaseElement } from '../Element';
