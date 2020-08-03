@@ -6,8 +6,8 @@ import { BaseElement } from '../Element';
 
 // TODO: Fix -1px offset due to mismatching of leaf rendering height to the placeholder
 const PLACEHOLDER_OFFSET = 1.0; // px
-const BODY_TOP_DEFAULT = 64 - PLACEHOLDER_OFFSET; // px
-const TITLE_HEIGHT = 48; // px
+const BODY_TOP_DEFAULT = 72 - PLACEHOLDER_OFFSET; // px
+const TITLE_HEIGHT = 56; // px
 
 export default function Placeholder(): JSX.Element {
   // Add `useSlate` to listen to every `onChange` event (unlike `useEditor`)

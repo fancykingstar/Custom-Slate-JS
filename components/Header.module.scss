@@ -3,7 +3,7 @@
   background: var(--color-bg-white);
   border-bottom: solid 0.1rem var(--color-bg-gray-tertiary);
   display: flex;
-  height: 5.2rem;
+  height: 5.6rem;
   justify-content: center;
   width: 100%;
 }
@@ -17,14 +17,29 @@
 }
 
 .logo {
+  align-items: center;
   color: var(--color-fg-black);
+  display: flex;
   font-family: var(--font-serif);
-  font-size: 1.6rem;
+  font-size: 2.4rem;
   font-weight: 700;
-  letter-spacing: -0.05rem;
+  letter-spacing: -0.04em;
   text-decoration: none;
 }
 
 .logo:hover {
   text-decoration: underline;
+}
+
+.beta {
+  align-items: center;
+  border: solid 0.1rem var(--color-fg-black);
+  border-radius: 50%;
+  color: var(--color-fg-black);
+  display: flex;
+  font-size: 1.2rem;
+  height: 1.6rem;
+  justify-content: center;
+  margin: 0.2rem 0 0 1.2rem;
+  width: 1.6rem;
 }

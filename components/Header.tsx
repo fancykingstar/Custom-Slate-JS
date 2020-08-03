@@ -8,6 +8,7 @@ export default function Header(): JSX.Element {
         <Link href="/">
           <a className={styles.logo}>Deca</a>
         </Link>
+        <span className={styles.beta}>β</span>
       </div>
     </header>
   );
