@@ -4,6 +4,7 @@ import { useMemo, useState, useEffect, useCallback, useRef } from 'react';
 import { withHistory } from 'slate-history';
 import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
 import { createEditor, Editor, Node, Range, Transforms } from 'slate';
+import { isKeyHotkey } from 'is-hotkey';
 import SlashMenu, { MENU_ITEMS, MenuItem } from './SlashMenu';
 import ClientOnlyPortal from './ClientOnlyPortal';
 import Element, { BaseElement } from './Element';
@@ -12,7 +13,9 @@ import withLayout from './editor/withLayout';
 import withMarkdown from './editor/withMarkdown';
 import Assistant from './editor/Assistant';
 import Placeholder from './editor/Placeholder';
+import onKeyDownList from './elements/List/List';
 import styles from './DecaEditor.module.scss';
+import Keys from './editor/keys';
 
 export interface SlashPoint {
   x: number;
@@ -51,7 +54,6 @@ export default function DecaEditor(): JSX.Element {
         return;
       }
 
-      // TODO: Add insertion of element
       Transforms.select(editor, slashRange);
 
       if (item.title === 'Choices') {
@@ -73,10 +75,11 @@ export default function DecaEditor(): JSX.Element {
   const onKeyDown = useCallback(
     (event) => {
       const { selection } = editor;
+      onKeyDownList(editor, event);
 
       // Prevent creation of a new starter node from title when pressing enter
       if (
-        event.key === 'Enter' &&
+        isKeyHotkey(Keys.Enter, event) &&
         editor.children.length <= 2 &&
         selection != null &&
         Range.isCollapsed(selection)

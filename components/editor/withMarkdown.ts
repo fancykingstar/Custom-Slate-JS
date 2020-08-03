@@ -1,93 +1,97 @@
 import { ReactEditor } from 'slate-react';
-import { Range, Editor, Transforms, Point } from 'slate';
+import { Range, Editor, Transforms } from 'slate';
 import { BaseElement } from '../Element';
+import unwrapList from '../elements/List/unwrapList';
+import toggleList from './transforms';
 
-const MARKDOWN_MAP: { [key: string]: BaseElement } = {
-  '-': BaseElement.ListItem,
-};
+const MARKDOWN_TRIGGER = ' ';
+
+const preFormat = (editor: Editor) => unwrapList(editor);
+
+const MarkdownTypes: {
+  type: BaseElement;
+  triggers: string[];
+  preFormat?: (editor: Editor) => void;
+  format?: (editor: Editor) => void;
+}[] = [
+  {
+    type: BaseElement.ListItem,
+    triggers: ['*', '-', '+'],
+    preFormat,
+    format: (editor) => {
+      toggleList(editor, BaseElement.UnorderedList);
+    },
+  },
+  {
+    type: BaseElement.ListItem,
+    triggers: ['1.', '1)'],
+    preFormat,
+    format: (editor) => {
+      toggleList(editor, BaseElement.OrderedList);
+    },
+  },
+];
 
 const withMarkdown = (editor: ReactEditor): ReactEditor => {
-  const { deleteBackward, insertText } = editor;
+  const { insertText } = editor;
 
   // eslint-disable-next-line no-param-reassign
   editor.insertText = (text) => {
     const { selection } = editor;
 
-    // TODO: Add exception noop for title line
+    // Check if it's appropriate to do a markdown transform
+    if (
+      text !== MARKDOWN_TRIGGER ||
+      selection == null ||
+      !Range.isCollapsed(selection)
+    ) {
+      insertText(text);
+      return;
+    }
 
-    // Look for single empty space insertions (indicative of markdown invokation)
-    if (text === ' ' && selection != null && Range.isCollapsed(selection)) {
-      const { anchor } = selection;
-      // Get the nearest block ancestor
-      const block = Editor.above(editor, {
-        match: (node) => Editor.isBlock(editor, node),
-      });
+    // No-op for title line
+    const caretPoint = selection.anchor;
+    const [caretLine] = caretPoint.path;
+    if (caretLine === 0) {
+      insertText(text);
+      return;
+    }
 
-      // Get the text of the block up until the inputted whitespace
-      const path = block != null ? block[1] : [];
-      const start = Editor.start(editor, path);
-      const range = { anchor, focus: start };
-      const beforeText = Editor.string(editor, range);
+    // Get the nearest block ancestor
+    const aboveBlock = Editor.above(editor, {
+      match: (node) => Editor.isBlock(editor, node),
+    });
 
-      // See if it's a markdown shortcut
-      const type = MARKDOWN_MAP[beforeText];
+    // Look for markdown trigger
+    const aboveBlockPath = aboveBlock != null ? aboveBlock[1] : [];
+    const aboveBlockStart = Editor.start(editor, aboveBlockPath);
+    const rangeFromBlockStart = {
+      anchor: aboveBlockStart,
+      focus: selection.focus,
+    };
+    const textFromBlockStart = Editor.string(editor, rangeFromBlockStart);
 
-      if (type != null) {
-        Transforms.select(editor, range);
-        Transforms.delete(editor);
-        Transforms.setNodes(
-          editor,
-          { type },
-          { match: (node) => Editor.isBlock(editor, node) }
-        );
+    // Check for to see if the text matches a markdown type's triggers
+    const markdownType = MarkdownTypes.find((type) =>
+      type.triggers.includes(textFromBlockStart)
+    );
 
-        if (type === BaseElement.ListItem) {
-          const list = { type: BaseElement.UnorderedList, children: [] };
-          Transforms.wrapNodes(editor, list, {
-            match: (node) => node.type === BaseElement.ListItem,
-          });
-        }
+    if (markdownType != null) {
+      // Delete the markdown trigger
+      Transforms.delete(editor, { at: rangeFromBlockStart });
 
-        return;
+      markdownType.preFormat?.(editor);
+
+      if (!markdownType.format) {
+        // eslint-disable-next-line no-console
+        console.warn('Markdown type exists with an unimplemented format fn.');
+      } else {
+        markdownType.format(editor);
       }
+      return;
     }
 
     insertText(text);
-  };
-
-  // eslint-disable-next-line no-param-reassign
-  editor.deleteBackward = (unit) => {
-    const { selection } = editor;
-
-    if (selection != null && Range.isCollapsed(selection)) {
-      // Get the nearest block ancestor
-      const match = Editor.above(editor, {
-        match: (node) => Editor.isBlock(editor, node),
-      });
-
-      if (match != null) {
-        const [block, path] = match;
-        const start = Editor.start(editor, path);
-
-        if (
-          block.type !== BaseElement.Paragraph &&
-          Point.equals(selection.anchor, start)
-        ) {
-          Transforms.setNodes(editor, { type: BaseElement.Paragraph });
-
-          if (block.type === BaseElement.ListItem) {
-            Transforms.unwrapNodes(editor, {
-              match: (node) => node.type === BaseElement.UnorderedList,
-              split: true,
-            });
-          }
-
-          return;
-        }
-      }
-    }
-
-    deleteBackward(unit);
   };
 
   return editor;

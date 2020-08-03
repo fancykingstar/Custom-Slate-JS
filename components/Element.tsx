@@ -3,11 +3,21 @@ import * as Choices from './tools/Choices';
 import styles from './Element.module.scss';
 
 export enum BaseElement {
-  Title = 'title',
-  Paragraph = 'paragraph',
-  UnorderedList = 'unordered-list',
-  ListItem = 'list-item',
+  Title = 'h1',
+  Paragraph = 'p',
+  OrderedList = 'ol',
+  UnorderedList = 'ul',
+  ListItem = 'li',
 }
+
+export type ListElementTypes =
+  | BaseElement.OrderedList
+  | BaseElement.UnorderedList;
+
+export const ListElements = [
+  BaseElement.OrderedList,
+  BaseElement.UnorderedList,
+];
 
 export default function Element(props: RenderElementProps): JSX.Element {
   const { attributes, children, element } = props;
@@ -30,6 +40,12 @@ export default function Element(props: RenderElementProps): JSX.Element {
         <ul {...attributes} className={styles.ul}>
           {children}
         </ul>
+      );
+    case BaseElement.OrderedList:
+      return (
+        <ol {...attributes} className={styles.ol}>
+          {children}
+        </ol>
       );
     case BaseElement.ListItem:
       return <li {...attributes}>{children}</li>;

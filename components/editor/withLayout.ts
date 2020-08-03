@@ -15,7 +15,7 @@ const withLayout = (editor: ReactEditor): ReactEditor => {
     // Enforce: If doc is empty, add a blank title element
     if (editor.children.length < 1) {
       const title = {
-        type: 'title',
+        type: BaseElement.Title,
         children: [{ text: '' }],
       };
       Transforms.insertNodes(editor, title, { at: path.concat(0) });
@@ -63,6 +63,8 @@ const withLayout = (editor: ReactEditor): ReactEditor => {
         );
       }
     });
+
+    // TODO: Enforce title line is flat and only h1
 
     return normalizeNode(entry);
   };

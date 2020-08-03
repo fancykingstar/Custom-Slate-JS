@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, RefObject } from 'react';
 import { Range, Editor, Node } from 'slate';
 import styles from './Assistant.module.scss';
 import { BaseElement } from '../Element';
+import { isRangeAtRoot } from './queries';
 
 // TODO: Fix -1px offset due to mismatching of leaf rendering height to the placeholder
 const PLACEHOLDER_OFFSET = 1.0; // px
@@ -50,6 +51,7 @@ export default function Assistant(props: Props): JSX.Element {
     // Determine whether or not to show the assistant placeholder
     if (
       !Node.string(caretNode).length &&
+      isRangeAtRoot(selection) &&
       nearestBlock != null &&
       nearestBlock[0].type === BaseElement.Paragraph
     ) {
