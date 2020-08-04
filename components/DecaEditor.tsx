@@ -11,7 +11,7 @@ import Element, { BaseElement } from './Element';
 import { insertChoicesTool } from './tools/Choices';
 import withLayout from './editor/withLayout';
 import withMarkdown from './editor/withMarkdown';
-import Assistant, { defaultAssistantContent } from './editor/Assistant';
+import Assistant, { AssistantContent } from './editor/Assistant';
 import Placeholder from './editor/Placeholder';
 import onKeyDownList from './elements/List/List';
 import styles from './DecaEditor.module.scss';
@@ -44,6 +44,40 @@ export default function DecaEditor(): JSX.Element {
   ]);
   const renderElement = useCallback((props) => <Element {...props} />, []);
 
+  const [assistantContent, setAssistantContent] = useState<JSX.Element[]>([
+    AssistantContent.Default,
+  ]);
+
+  const pushAssistantContent = (newContent: JSX.Element) => {
+    setAssistantContent((content) => {
+      return [...content, newContent];
+    });
+  };
+
+  const shiftAssistantContent = () => {
+    setAssistantContent((content) => {
+      if (content.length === 1) {
+        return [AssistantContent.Default];
+      }
+      return content.slice(1);
+    });
+  };
+
+  const [, setToolCount] = useState<number>(0);
+  const incrementToolCount = () => {
+    setToolCount((prev) => {
+      const next = prev + 1;
+
+      if (next === 1) {
+        pushAssistantContent(AssistantContent.Eliminate);
+      } else if (next === 2) {
+        pushAssistantContent(AssistantContent.Nudge);
+      }
+
+      return next;
+    });
+  };
+
   const [slashRange, setSlashRange] = useState<Range | null>(null);
   const [slashPos, setSlashPos] = useState<SlashPoint | null>(null);
   const [slashIndex, setSlashIndex] = useState(0);
@@ -58,11 +92,13 @@ export default function DecaEditor(): JSX.Element {
 
       if (item.title === 'Choices') {
         insertChoicesTool(editor);
+        incrementToolCount();
       } else {
         Transforms.insertText(
           editor,
           `<FIXME: ${item.title} tool gets inserted here>`
         );
+        incrementToolCount();
       }
 
       // Return focus to the editor (ex: when clicking on a slash menu item causes blur)
@@ -72,30 +108,10 @@ export default function DecaEditor(): JSX.Element {
     [editor, slashRange]
   );
 
-  const [assistantContent, setAssistantContent] = useState<JSX.Element[]>([
-    defaultAssistantContent,
-  ]);
-
-  const pushAssistantContent = (newContent: JSX.Element) => {
-    setAssistantContent((content) => {
-      return [...content, newContent];
-    });
-  };
-
-  const shiftAssistantContent = () => {
-    setAssistantContent((content) => {
-      if (content.length === 1) {
-        return [defaultAssistantContent];
-      }
-      return content.slice(1);
-    });
-  };
-
   const onKeyDown = useCallback(
     (event) => {
       const { selection } = editor;
 
-      // onKeyDownAssistant(editor, event, setAssistantContent);
       onKeyDownList(editor, event);
 
       // Prevent creation of a new starter node from title when pressing enter

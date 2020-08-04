@@ -6,16 +6,6 @@ import styles from './Assistant.module.scss';
 import { BaseElement } from '../Element';
 import { isRangeAtRoot } from './queries';
 
-// export function onKeyDownAssistant(
-//   editor: Editor,
-//   event: KeyboardEvent,
-//   setAssistantContent: (content: JSX.Element) => void
-// ): void {
-//   if (isKeyHotkey(Keys.Enter, event)) {
-//     console.log('Key down');
-//   }
-// }
-
 // TODO: Fix -1px offset due to mismatching of leaf rendering height to the placeholder
 const PLACEHOLDER_OFFSET = 1.0; // px
 
@@ -26,11 +16,15 @@ interface Props {
   shiftContent: () => void;
 }
 
-export const defaultAssistantContent: JSX.Element = (
-  <>
-    Start typing or press <kbd>/</kbd> to think
-  </>
-);
+export const AssistantContent = {
+  Default: (
+    <>
+      Start typing or press <kbd>/</kbd> to think
+    </>
+  ),
+  Eliminate: <>Can you cross out some choices now?</>,
+  Nudge: <>Could it be you’ve already made up your mind?</>,
+};
 
 export default function Assistant(props: Props): JSX.Element {
   // Add `useSlate` to listen to every `onChange` event (unlike `useEditor`)
@@ -104,7 +98,7 @@ export default function Assistant(props: Props): JSX.Element {
   useEffect(() => {
     if (visible && timeoutId.current == null) {
       timeoutId.current = window.setTimeout(() => {
-        pushContent(<>Could it be you’ve already made up your mind?</>);
+        pushContent(AssistantContent.Nudge);
       }, 5000);
     }
   }, [visible]);
