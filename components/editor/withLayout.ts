@@ -1,6 +1,7 @@
 import { Node, NodeEntry, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { BaseElement } from '../Element';
+import { isEmptyElement } from './queries';
 
 const withLayout = (editor: ReactEditor): ReactEditor => {
   const { normalizeNode } = editor;
@@ -21,13 +22,15 @@ const withLayout = (editor: ReactEditor): ReactEditor => {
       Transforms.insertNodes(editor, title, { at: path.concat(0) });
     }
 
-    // Enforce: If no 2nd element, add a blank paragraph element
-    if (editor.children.length < 2) {
+    // Enforce: If last element isn't empty, add a blank paragraph element
+    if (!isEmptyElement(editor.children[editor.children.length - 1])) {
       const paragraph = {
         type: BaseElement.Paragraph,
         children: [{ text: '' }],
       };
-      Transforms.insertNodes(editor, paragraph, { at: path.concat(1) });
+      Transforms.insertNodes(editor, paragraph, {
+        at: path.concat(editor.children.length),
+      });
     }
 
     const children = Node.children(editor, path);

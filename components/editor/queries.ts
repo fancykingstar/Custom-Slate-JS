@@ -2,10 +2,12 @@ import {
   Ancestor,
   Descendant,
   Editor,
+  Element,
   Node,
   NodeEntry,
   Path,
   Range,
+  Text,
 } from 'slate';
 import { BaseElement, ListElements } from '../Element';
 
@@ -185,4 +187,19 @@ export function isList(node: Node): boolean {
   }
 
   return ListElements.includes(node.type as BaseElement);
+}
+
+/**
+ * Returns true if the given node is an empty Element.
+ */
+export function isEmptyElement(node: Node): boolean {
+  if (!Element.isElement(node)) {
+    return false;
+  }
+
+  const children = node.children as Node[];
+
+  return (
+    children.length === 1 && Text.isText(children[0]) && children[0].text === ''
+  );
 }
