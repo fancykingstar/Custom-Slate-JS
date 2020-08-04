@@ -1,18 +1,32 @@
 import { ReactEditor, useSlate } from 'slate-react';
 import { useEffect, useRef, useState, RefObject } from 'react';
 import { Range, Editor, Node } from 'slate';
+// import { isKeyHotkey } from 'is-hotkey';
 import styles from './Assistant.module.scss';
 import { BaseElement } from '../Element';
 import { isRangeAtRoot } from './queries';
+
+// export function onKeyDownAssistant(
+//   editor: Editor,
+//   event: KeyboardEvent,
+//   setAssistantContent: (content: JSX.Element) => void
+// ): void {
+//   if (isKeyHotkey(Keys.Enter, event)) {
+//     console.log('Key down');
+//   }
+// }
 
 // TODO: Fix -1px offset due to mismatching of leaf rendering height to the placeholder
 const PLACEHOLDER_OFFSET = 1.0; // px
 
 interface Props {
   wrapperRef: RefObject<HTMLDivElement>;
+  content: Array<JSX.Element>;
+  pushContent: (newContent: JSX.Element) => void;
+  shiftContent: () => void;
 }
 
-const defaultPrompt: JSX.Element = (
+export const defaultAssistantContent: JSX.Element = (
   <>
     Start typing or press <kbd>/</kbd> to think
   </>
@@ -25,7 +39,7 @@ export default function Assistant(props: Props): JSX.Element {
   const [visible, setVisible] = useState(false);
   const [posY, setPosY] = useState(0);
 
-  const { wrapperRef } = props;
+  const { wrapperRef, content, pushContent, shiftContent } = props;
 
   // Handle assistant placeholder visibility
   useEffect(() => {
@@ -36,6 +50,7 @@ export default function Assistant(props: Props): JSX.Element {
       // Hide the assistant if it's visible
       if (visible) {
         setVisible(false);
+        shiftContent();
       }
       return;
     }
@@ -46,6 +61,7 @@ export default function Assistant(props: Props): JSX.Element {
     // Never show assistant on 1st line
     if (caretLine === 0) {
       setVisible(false);
+      shiftContent();
       return;
     }
 
@@ -79,19 +95,16 @@ export default function Assistant(props: Props): JSX.Element {
     }
 
     setVisible(false);
+    shiftContent();
   }, [editor.selection, wrapperRef]);
 
-  const [content, setContent] = useState(defaultPrompt);
   const timeoutId = useRef<number | null>(null);
 
   // Handle assistant content
   useEffect(() => {
     if (visible && timeoutId.current == null) {
       timeoutId.current = window.setTimeout(() => {
-        setContent(<>Could it be you’ve already made up your mind?</>);
-        timeoutId.current = window.setTimeout(() => {
-          setContent(defaultPrompt);
-        }, 5000);
+        pushContent(<>Could it be you’ve already made up your mind?</>);
       }, 5000);
     }
   }, [visible]);
@@ -103,7 +116,7 @@ export default function Assistant(props: Props): JSX.Element {
         transform: `translate3d(0, ${posY / 10}rem, 0)`,
       }}
     >
-      {content}
+      {content[0]}
     </div>
   );
 }
