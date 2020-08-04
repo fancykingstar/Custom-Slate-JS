@@ -24,6 +24,7 @@ export default function Placeholder(): JSX.Element {
     const firstBodyNode = nodes[1];
     const bodyIsEmpty =
       nodes.length <= 2 &&
+      firstBodyNode != null &&
       !Node.string(firstBodyNode).length &&
       firstBodyNode.type === BaseElement.Paragraph;
 
