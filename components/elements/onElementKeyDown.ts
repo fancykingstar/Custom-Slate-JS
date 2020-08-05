@@ -1,6 +1,7 @@
 import { Editor } from 'slate';
 import onKeyDownList from 'components/elements/List/List';
 import onKeyDownChoices from 'components/elements/Choices/Choices';
+import onKeyDownGoals from 'components/elements/Goals/Goals';
 
 export default function onElementKeyDown(
   editor: Editor,
@@ -9,5 +10,8 @@ export default function onElementKeyDown(
   if (onKeyDownList(editor, event)) {
     return;
   }
-  onKeyDownChoices(editor, event);
+  if (onKeyDownChoices(editor, event)) {
+    return;
+  }
+  onKeyDownGoals(editor, event);
 }

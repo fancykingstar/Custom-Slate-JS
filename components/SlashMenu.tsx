@@ -12,6 +12,16 @@ enum Category {
   Comparing = 'Comparing',
 }
 
+export enum SlashTitle {
+  Categorizer = 'Categorizer',
+  Choices = 'Choices',
+  Comparison = 'Comparison of Choices',
+  Goals = 'Goals',
+  Inversion = 'Inversion',
+  ProsCons = 'Pros / Cons',
+  SecondOrder = '2nd Order Thinking',
+}
+
 export interface MenuItem {
   category: Category;
   title: string;
@@ -23,48 +33,47 @@ export interface MenuItem {
 export const MENU_ITEMS: MenuItem[] = [
   {
     category: Category.Planning,
-    title: 'Choices',
+    title: SlashTitle.Choices,
     description: 'What are my options?',
     icon: '🌈',
   },
   {
     category: Category.Planning,
-    title: 'Goals',
+    title: SlashTitle.Goals,
     description: "What's the point?",
     icon: '⭐️',
-    comingSoon: true,
   },
   {
     category: Category.Planning,
-    title: 'Categorizer',
+    title: SlashTitle.Categorizer,
     description: 'Know how to treat this decision',
     icon: '🍎',
     comingSoon: true,
   },
   {
     category: Category.Thinking,
-    title: 'Inversion',
+    title: SlashTitle.Inversion,
     description: 'Flip your point of view',
     icon: '⏳',
     comingSoon: true,
   },
   {
     category: Category.Thinking,
-    title: '2nd Order Thinking',
+    title: SlashTitle.SecondOrder,
     description: 'Look beyond immediate effects',
     icon: '2️⃣',
     comingSoon: true,
   },
   {
     category: Category.Comparing,
-    title: 'Comparison of Choices',
+    title: SlashTitle.Comparison,
     description: 'Compare choices by criteria',
     icon: '🛒',
     comingSoon: true,
   },
   {
     category: Category.Comparing,
-    title: 'Pros / Cons',
+    title: SlashTitle.ProsCons,
     description: 'Simply compare each choice',
     icon: '🧾',
     comingSoon: true,

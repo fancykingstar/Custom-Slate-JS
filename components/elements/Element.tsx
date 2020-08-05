@@ -5,6 +5,12 @@ import {
   ChoicesItemElement,
   ChoicesItemTitleElement,
 } from 'components/elements/Choices/ChoicesElement';
+import {
+  GoalsElement,
+  GoalsWrapperElement,
+  GoalsItemElement,
+  GoalsItemTitleElement,
+} from 'components/elements/Goals/GoalsElement';
 import styles from './Element.module.scss';
 
 /**
@@ -66,6 +72,12 @@ export default function Element(props: RenderElementProps): JSX.Element {
       return <ChoicesItemElement {...props} />;
     case ChoicesElement.ItemTitle:
       return <ChoicesItemTitleElement {...props} />;
+    case GoalsElement.Wrapper:
+      return <GoalsWrapperElement {...props} />;
+    case GoalsElement.Item:
+      return <GoalsItemElement {...props} />;
+    case GoalsElement.ItemTitle:
+      return <GoalsItemTitleElement {...props} />;
     default:
       return <DefaultElement {...props} />;
   }

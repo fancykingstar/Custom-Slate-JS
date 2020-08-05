@@ -17,7 +17,8 @@ import Placeholder from 'components/editor/Placeholder';
 import Keys from 'components/editor/keys';
 import onElementKeyDown from 'components/elements/onElementKeyDown';
 import insertChoicesTool from 'components/elements/Choices/insertChoicesTool';
-import SlashMenu, { MENU_ITEMS, MenuItem } from './SlashMenu';
+import insertGoalsTool from 'components/elements/Goals/insertGoalsTool';
+import SlashMenu, { MENU_ITEMS, MenuItem, SlashTitle } from './SlashMenu';
 import styles from './DecaEditor.module.scss';
 
 export interface SlashPoint {
@@ -89,8 +90,11 @@ export default function DecaEditor(): JSX.Element {
 
       Transforms.select(editor, slashRange);
 
-      if (item.title === 'Choices') {
+      if (item.title === SlashTitle.Choices) {
         insertChoicesTool(editor);
+        incrementToolCount();
+      } else if (item.title === SlashTitle.Goals) {
+        insertGoalsTool(editor);
         incrementToolCount();
       } else {
         Transforms.insertText(
