@@ -16,6 +16,7 @@ export enum SlashTitle {
   Categorizer = 'Categorizer',
   Choices = 'Choices',
   Comparison = 'Comparison of Choices',
+  Criteria = 'Criteria',
   Goals = 'Goals',
   Inversion = 'Inversion',
   ProsCons = 'Pros / Cons',
@@ -42,6 +43,12 @@ export const MENU_ITEMS: MenuItem[] = [
     title: SlashTitle.Goals,
     description: "What's the point?",
     icon: '⭐️',
+  },
+  {
+    category: Category.Planning,
+    title: SlashTitle.Criteria,
+    description: 'Ways to measure the options',
+    icon: '📏',
   },
   {
     category: Category.Planning,
