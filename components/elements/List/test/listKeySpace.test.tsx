@@ -15,7 +15,32 @@ describe('Space-key', () => {
     }
   ][] = [
     [
-      'Space key creates ul',
+      'Space key creates ul (*)',
+      {
+        input: (
+          <editor>
+            <p>Question</p>
+            <p>
+              *<cursor />
+            </p>
+          </editor>
+        ),
+        output: (
+          <editor>
+            <p>Question</p>
+            <ul>
+              <li>
+                <p>
+                  <cursor />
+                </p>
+              </li>
+            </ul>
+          </editor>
+        ),
+      },
+    ],
+    [
+      'Space key creates ul (-)',
       {
         input: (
           <editor>
@@ -40,13 +65,64 @@ describe('Space-key', () => {
       },
     ],
     [
-      'Space key creates ol',
+      'Space key creates ul (+)',
+      {
+        input: (
+          <editor>
+            <p>Question</p>
+            <p>
+              +<cursor />
+            </p>
+          </editor>
+        ),
+        output: (
+          <editor>
+            <p>Question</p>
+            <ul>
+              <li>
+                <p>
+                  <cursor />
+                </p>
+              </li>
+            </ul>
+          </editor>
+        ),
+      },
+    ],
+    [
+      'Space key creates ol (1.)',
       {
         input: (
           <editor>
             <p>Question</p>
             <p>
               1.
+              <cursor />
+            </p>
+          </editor>
+        ),
+        output: (
+          <editor>
+            <p>Question</p>
+            <ol>
+              <li>
+                <p>
+                  <cursor />
+                </p>
+              </li>
+            </ol>
+          </editor>
+        ),
+      },
+    ],
+    [
+      'Space key creates ol (1))',
+      {
+        input: (
+          <editor>
+            <p>Question</p>
+            <p>
+              1)
               <cursor />
             </p>
           </editor>
