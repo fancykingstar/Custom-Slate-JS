@@ -7,11 +7,11 @@ import {
   isBlockTextEmptyAfterSelection,
   isBlockAboveEmpty,
   doesSlateTreeMatchSequence,
-} from '../../editor/queries';
-import { ChoicesElement } from './ChoicesElement';
-import unwrapChoices from './unwrapChoices';
-import { BasicElement } from '../Element';
-import { unindentChoiceSublist } from './handleChoicesTabKey';
+} from 'components/editor/queries';
+import { ChoicesElement } from 'components/elements/Choices/ChoicesElement';
+import unwrapChoices from 'components/elements/Choices/unwrapChoices';
+import { BasicElement } from 'components/elements/Element';
+import { unindentChoiceSublist } from 'components/elements/Choices/handleChoicesTabKey';
 
 export default function handleChoicesEnterKey(
   editor: Editor,

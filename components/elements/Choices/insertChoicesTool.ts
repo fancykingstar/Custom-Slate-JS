@@ -1,5 +1,5 @@
 import { Editor, Transforms } from 'slate';
-import { ChoicesElement } from './ChoicesElement';
+import { ChoicesElement } from 'components/elements/Choices/ChoicesElement';
 
 /**
  * Converts the node at the current selection into a Choice tool.

@@ -1,5 +1,5 @@
 import { Node } from 'slate';
-import { ListElements, BasicElement } from '../Element';
+import { ListElements, BasicElement } from 'components/elements/Element';
 
 /**
  * Returns true if the given node is a list element.

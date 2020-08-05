@@ -1,6 +1,6 @@
 import { Editor, Transforms } from 'slate';
-import { BasicElement } from '../Element';
-import isList from './isList';
+import { BasicElement } from 'components/elements/Element';
+import isList from 'components/elements/List/isList';
 
 /**
  * Converts the current list item into a paragraph block.

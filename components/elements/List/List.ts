@@ -1,9 +1,9 @@
 import { Editor } from 'slate';
 import { isKeyHotkey } from 'is-hotkey';
-import Keys from '../../editor/keys';
-import handleListBackspaceKey from './handleListBackspaceKey';
-import handleListEnterKey from './handleListEnterKey';
-import handleListTabKey from './handleListTabKey';
+import Keys from 'components/editor/keys';
+import handleListBackspaceKey from 'components/elements/List/handleListBackspaceKey';
+import handleListEnterKey from 'components/elements/List/handleListEnterKey';
+import handleListTabKey from 'components/elements/List/handleListTabKey';
 
 // TODO: Better structure onKeyDown "plugins" so it's not as hacky
 export default function onKeyDownList(

@@ -1,6 +1,6 @@
 import { createHyperscript } from 'slate-hyperscript';
-import { BasicElement } from '../elements/Element';
-import { ChoicesElement } from '../elements/Choices/ChoicesElement';
+import { BasicElement } from 'components/elements/Element';
+import { ChoicesElement } from 'components/elements/Choices/ChoicesElement';
 
 export default createHyperscript({
   elements: {

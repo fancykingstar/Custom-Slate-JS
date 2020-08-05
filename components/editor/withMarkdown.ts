@@ -1,8 +1,8 @@
 import { ReactEditor } from 'slate-react';
 import { Range, Editor, Transforms } from 'slate';
-import { BasicElement } from '../elements/Element';
-import unwrapList from '../elements/List/unwrapList';
-import toggleList from './transforms';
+import { BasicElement } from 'components/elements/Element';
+import unwrapList from 'components/elements/List/unwrapList';
+import toggleList from 'components/editor/transforms';
 
 const MARKDOWN_TRIGGER = ' ';
 

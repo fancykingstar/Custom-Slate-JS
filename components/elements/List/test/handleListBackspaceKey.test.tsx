@@ -1,10 +1,10 @@
 /** @jsx jsx */
 
 import { Editor } from 'slate';
-import jsx from '../../../test/jsx';
-import removeMeta from '../../../test/removeMeta';
-import Keys from '../../../editor/keys';
-import onElementKeyDown from '../../onElementKeyDown';
+import jsx from 'components/test/jsx';
+import removeMeta from 'components/test/removeMeta';
+import Keys from 'components/editor/keys';
+import onElementKeyDown from 'components/elements/onElementKeyDown';
 
 describe('Backspace-key', () => {
   const backspaceCases: [

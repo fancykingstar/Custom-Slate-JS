@@ -1,9 +1,9 @@
 import { Editor } from 'slate';
 import { isKeyHotkey } from 'is-hotkey';
-import Keys from '../../editor/keys';
-import handleChoicesEnterKey from './handleChoicesEnterKey';
-import handleChoicesBackspaceKey from './handleChoicesBackspaceKey';
-import handleChoicesTabKey from './handleChoicesTabKey';
+import Keys from 'components/editor/keys';
+import handleChoicesEnterKey from 'components/elements/Choices/handleChoicesEnterKey';
+import handleChoicesBackspaceKey from 'components/elements/Choices/handleChoicesBackspaceKey';
+import handleChoicesTabKey from 'components/elements/Choices/handleChoicesTabKey';
 
 export default function onKeyDownChoices(
   editor: Editor,

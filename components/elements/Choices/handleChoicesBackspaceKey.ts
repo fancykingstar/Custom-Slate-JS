@@ -6,12 +6,11 @@ import {
   isFirstChild,
   doesSlateTreeMatchSequence,
   isRangeAtRoot,
-  getNodesWithType,
-} from '../../editor/queries';
-import { ChoicesElement } from './ChoicesElement';
-import unwrapChoices from './unwrapChoices';
-import { unindentChoiceSublist } from './handleChoicesTabKey';
-import { BasicElement } from '../Element';
+} from 'components/editor/queries';
+import { ChoicesElement } from 'components/elements/Choices/ChoicesElement';
+import unwrapChoices from 'components/elements/Choices/unwrapChoices';
+import { unindentChoiceSublist } from 'components/elements/Choices/handleChoicesTabKey';
+import { BasicElement } from 'components/elements/Element';
 
 export default function handleChoicesBackspaceKey(
   editor: Editor,

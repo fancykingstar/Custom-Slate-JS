@@ -1,10 +1,14 @@
 import { Editor, Node, Path, Transforms } from 'slate';
 import { isKeyHotkey } from 'is-hotkey';
-import Keys from '../../editor/keys';
-import { nodeIsType, isRangeAtRoot, isFirstChild } from '../../editor/queries';
-import { BasicElement } from '../Element';
-import { ChoicesElement } from './ChoicesElement';
-import isList from '../List/isList';
+import Keys from 'components/editor/keys';
+import {
+  nodeIsType,
+  isRangeAtRoot,
+  isFirstChild,
+} from 'components/editor/queries';
+import { BasicElement } from 'components/elements/Element';
+import { ChoicesElement } from 'components/elements/Choices/ChoicesElement';
+import isList from 'components/elements/List/isList';
 
 function indentChoice(editor: Editor): void {
   const { selection } = editor;

@@ -1,7 +1,7 @@
 import { Editor, Transforms } from 'slate';
-import { BasicElement, ListElementTypes } from '../elements/Element';
-import { nodeIsType, getNodesWithType } from './queries';
-import unwrapList from '../elements/List/unwrapList';
+import { BasicElement, ListElementTypes } from 'components/elements/Element';
+import { nodeIsType, getNodesWithType } from 'components/editor/queries';
+import unwrapList from 'components/elements/List/unwrapList';
 
 /**
  * Toggles whether or not the current block is a list.

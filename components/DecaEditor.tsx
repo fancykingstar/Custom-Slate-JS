@@ -5,17 +5,20 @@ import { withHistory } from 'slate-history';
 import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
 import { createEditor, Editor, Node, Range, Transforms } from 'slate';
 import { isKeyHotkey } from 'is-hotkey';
+import ClientOnlyPortal from 'components/ClientOnlyPortal';
+import Element, {
+  BasicElement,
+  ReservedElement,
+} from 'components/elements/Element';
+import withLayout from 'components/editor/withLayout';
+import withMarkdown from 'components/editor/withMarkdown';
+import Assistant, { AssistantContent } from 'components/editor/Assistant';
+import Placeholder from 'components/editor/Placeholder';
+import Keys from 'components/editor/keys';
+import onElementKeyDown from 'components/elements/onElementKeyDown';
+import insertChoicesTool from 'components/elements/Choices/insertChoicesTool';
 import SlashMenu, { MENU_ITEMS, MenuItem } from './SlashMenu';
-import ClientOnlyPortal from './ClientOnlyPortal';
-import Element, { BasicElement, ReservedElement } from './elements/Element';
-import withLayout from './editor/withLayout';
-import withMarkdown from './editor/withMarkdown';
-import Assistant, { AssistantContent } from './editor/Assistant';
-import Placeholder from './editor/Placeholder';
 import styles from './DecaEditor.module.scss';
-import Keys from './editor/keys';
-import onElementKeyDown from './elements/onElementKeyDown';
-import insertChoicesTool from './elements/Choices/insertChoicesTool';
 
 export interface SlashPoint {
   x: number;

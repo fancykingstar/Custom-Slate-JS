@@ -4,7 +4,7 @@ import {
   ChoicesWrapperElement,
   ChoicesItemElement,
   ChoicesItemTitleElement,
-} from './Choices/ChoicesElement';
+} from 'components/elements/Choices/ChoicesElement';
 import styles from './Element.module.scss';
 
 /**

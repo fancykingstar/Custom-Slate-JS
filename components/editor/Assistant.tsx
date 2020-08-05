@@ -1,10 +1,9 @@
 import { ReactEditor, useSlate } from 'slate-react';
 import { useEffect, useRef, useState, RefObject } from 'react';
 import { Range, Editor, Node } from 'slate';
-// import { isKeyHotkey } from 'is-hotkey';
+import { BasicElement } from 'components/elements/Element';
+import { isRangeAtRoot } from 'components/editor/queries';
 import styles from './Assistant.module.scss';
-import { BasicElement } from '../elements/Element';
-import { isRangeAtRoot } from './queries';
 
 // TODO: Fix -1px offset due to mismatching of leaf rendering height to the placeholder
 const PLACEHOLDER_OFFSET = 1.0; // px

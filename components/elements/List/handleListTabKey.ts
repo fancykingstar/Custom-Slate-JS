@@ -1,9 +1,13 @@
 import { Editor, Node, Path, Transforms, Ancestor } from 'slate';
 import { isKeyHotkey } from 'is-hotkey';
-import { BasicElement } from '../Element';
-import { isRangeAtRoot, nodeIsType, isFirstChild } from '../../editor/queries';
-import Keys from '../../editor/keys';
-import isList from './isList';
+import { BasicElement } from 'components/elements/Element';
+import {
+  isRangeAtRoot,
+  nodeIsType,
+  isFirstChild,
+} from 'components/editor/queries';
+import Keys from 'components/editor/keys';
+import isList from 'components/elements/List/isList';
 
 export function indentList(
   editor: Editor,

@@ -1,6 +1,6 @@
 import { Editor } from 'slate';
-import onKeyDownList from './List/List';
-import onKeyDownChoices from './Choices/Choices';
+import onKeyDownList from 'components/elements/List/List';
+import onKeyDownChoices from 'components/elements/Choices/Choices';
 
 export default function onElementKeyDown(
   editor: Editor,

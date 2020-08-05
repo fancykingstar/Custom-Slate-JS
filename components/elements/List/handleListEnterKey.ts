@@ -1,13 +1,13 @@
 import { Editor, Path, Range, Transforms } from 'slate';
-import { BasicElement } from '../Element';
+import { BasicElement } from 'components/elements/Element';
 import {
   isRangeAtRoot,
   isBlockTextEmptyAfterSelection,
   isBlockAboveEmpty,
   nodeIsType,
-} from '../../editor/queries';
-import unwrapList from './unwrapList';
-import { unindentList } from './handleListTabKey';
+} from 'components/editor/queries';
+import unwrapList from 'components/elements/List/unwrapList';
+import { unindentList } from 'components/elements/List/handleListTabKey';
 
 /**
  * Handles logic for the Enter-key in lists.

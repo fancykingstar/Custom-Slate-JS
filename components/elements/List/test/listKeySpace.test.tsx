@@ -2,9 +2,9 @@
 
 import { Editor } from 'slate';
 import { ReactEditor, withReact } from 'slate-react';
-import withMarkdown from '../../../editor/withMarkdown';
-import jsx from '../../../test/jsx';
-import removeMeta from '../../../test/removeMeta';
+import withMarkdown from 'components/editor/withMarkdown';
+import jsx from 'components/test/jsx';
+import removeMeta from 'components/test/removeMeta';
 
 describe('Space-key', () => {
   const spaceCases: [

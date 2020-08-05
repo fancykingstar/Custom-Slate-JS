@@ -1,8 +1,8 @@
 import { ReactEditor, useSlate } from 'slate-react';
 import { useEffect, useState } from 'react';
 import { Range, Editor, Node } from 'slate';
+import { BasicElement } from 'components/elements/Element';
 import styles from './Placeholder.module.scss';
-import { BasicElement } from '../elements/Element';
 
 // TODO: Fix -1px offset due to mismatching of leaf rendering height to the placeholder
 const PLACEHOLDER_OFFSET = 1.0; // px

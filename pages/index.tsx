@@ -1,7 +1,7 @@
 import Head from 'next/head';
-import DecaEditor from '../components/DecaEditor';
-import styles from '../styles/Home.module.scss';
-import Header from '../components/Header';
+import DecaEditor from 'components/DecaEditor';
+import styles from 'styles/Home.module.scss';
+import Header from 'components/Header';
 
 export default function Home(): JSX.Element {
   return (

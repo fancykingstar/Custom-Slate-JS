@@ -1,8 +1,8 @@
 import { Editor, Range } from 'slate';
-import { BasicElement } from '../Element';
-import { nodeIsType, isSelectionAtBlockStart } from '../../editor/queries';
-import unwrapList from './unwrapList';
-import { unindentList } from './handleListTabKey';
+import { BasicElement } from 'components/elements/Element';
+import { nodeIsType, isSelectionAtBlockStart } from 'components/editor/queries';
+import unwrapList from 'components/elements/List/unwrapList';
+import { unindentList } from 'components/elements/List/handleListTabKey';
 
 export default function handleListBackspaceKey(
   editor: Editor,
