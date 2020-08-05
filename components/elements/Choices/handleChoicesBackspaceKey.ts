@@ -73,7 +73,11 @@ export default function handleChoicesBackspaceKey(
   //        (A) Choice 1
   //          - Line 1|Line 2
 
-  if (caretAtStartOfBlock && isRangeAtRoot(selection)) {
+  if (
+    caretAtStartOfBlock &&
+    isRangeAtRoot(selection) &&
+    parentPath[parentPath.length - 1] > 0
+  ) {
     const previousParentPath = Path.previous(parentPath);
     const [previousParentNode] = Editor.node(editor, previousParentPath);
 
