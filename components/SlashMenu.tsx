@@ -17,6 +17,7 @@ export interface MenuItem {
   title: string;
   description: string;
   icon: string;
+  comingSoon?: boolean;
 }
 
 export const MENU_ITEMS: MenuItem[] = [
@@ -31,36 +32,42 @@ export const MENU_ITEMS: MenuItem[] = [
     title: 'Goals',
     description: "What's the point?",
     icon: '⭐️',
+    comingSoon: true,
   },
   {
     category: Category.Planning,
     title: 'Categorizer',
     description: 'Know how to treat this decision',
     icon: '🍎',
+    comingSoon: true,
   },
   {
     category: Category.Thinking,
     title: 'Inversion',
     description: 'Flip your point of view',
     icon: '⏳',
+    comingSoon: true,
   },
   {
     category: Category.Thinking,
     title: '2nd Order Thinking',
     description: 'Look beyond immediate effects',
     icon: '2️⃣',
+    comingSoon: true,
   },
   {
     category: Category.Comparing,
     title: 'Comparison of Choices',
     description: 'Compare choices by criteria',
     icon: '🛒',
+    comingSoon: true,
   },
   {
     category: Category.Comparing,
     title: 'Pros / Cons',
     description: 'Simply compare each choice',
     icon: '🧾',
+    comingSoon: true,
   },
 ];
 
@@ -83,10 +90,14 @@ export default function SlashMenu(props: Props): JSX.Element {
             );
           }
 
+          const availableMenuItems = MENU_ITEMS.filter(
+            (menuItem) => menuItem.comingSoon == null
+          );
+
           output.push(
             <SlashMenuItem
               key={item.title}
-              isActive={activeIndex === index}
+              isActive={item.title === availableMenuItems[activeIndex].title}
               item={item}
               onAddTool={onAddTool}
             />
@@ -118,19 +129,29 @@ function SlashMenuItem(props: MenuItemProps): JSX.Element {
     });
   }, [isActive]);
 
+  const content = (
+    <>
+      <div className={styles.icon}>{item.icon}</div>
+      <div className={styles.itemContent}>
+        <h3>{item.title}</h3>
+        <p>{item.description}</p>
+      </div>
+    </>
+  );
+
   return (
     <li ref={ref}>
-      <button
-        className={`${styles.item} ${isActive ? styles.active : ''}`}
-        type="button"
-        onClick={() => onAddTool(item)}
-      >
-        <div className={styles.icon}>{item.icon}</div>
-        <div className={styles.itemContent}>
-          <h3>{item.title}</h3>
-          <p>{item.description}</p>
-        </div>
-      </button>
+      {item.comingSoon ? (
+        <div className={`${styles.item} ${styles.comingSoon}`}>{content}</div>
+      ) : (
+        <button
+          className={`${styles.item} ${isActive ? styles.active : ''}`}
+          type="button"
+          onClick={() => onAddTool(item)}
+        >
+          {content}
+        </button>
+      )}
     </li>
   );
 }

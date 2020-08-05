@@ -131,23 +131,27 @@ export default function DecaEditor(): JSX.Element {
         return;
       }
 
+      const availableMenuItems = MENU_ITEMS.filter(
+        (item) => item.comingSoon == null
+      );
+
       switch (event.key) {
         case 'ArrowDown':
           event.preventDefault();
           setSlashIndex(
-            slashIndex >= MENU_ITEMS.length - 1 ? 0 : slashIndex + 1
+            slashIndex >= availableMenuItems.length - 1 ? 0 : slashIndex + 1
           );
           break;
         case 'ArrowUp':
           event.preventDefault();
           setSlashIndex(
-            slashIndex <= 0 ? MENU_ITEMS.length - 1 : slashIndex - 1
+            slashIndex <= 0 ? availableMenuItems.length - 1 : slashIndex - 1
           );
           break;
         case 'Tab':
         case 'Enter':
           event.preventDefault();
-          onAddTool(MENU_ITEMS[slashIndex]);
+          onAddTool(availableMenuItems[slashIndex]);
           setSlashRange(null);
           break;
         case 'Escape':
