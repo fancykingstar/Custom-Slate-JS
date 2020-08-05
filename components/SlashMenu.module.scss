@@ -1,13 +1,13 @@
 .wrapper {
   background: var(--color-bg-white);
   border: solid 0.1rem var(--color-bg-gray-secondary);
-  border-radius: 0.6rem;
+  border-radius: 0.8rem;
   box-shadow: 0 0.1rem 1rem var(--color-shadow-large),
     0 0.1rem 0.3rem var(--color-shadow-small);
-  max-height: 40rem;
+  max-height: 36rem;
   overflow-y: scroll;
   transition: opacity 200ms ease;
-  width: 24rem;
+  width: 26rem;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -18,20 +18,17 @@
 }
 
 .menu h2 {
-  background: rgba(20, 20, 20, 0.04);
-  color: var(--color-bg-gray-primary);
-  font-size: 1.1rem;
+  border-top: solid 0.1rem var(--color-bg-gray-tertiary);
+  color: var(--color-fg-black);
+  font-size: 1.4rem;
   line-height: 1.3rem;
-  margin: 0;
-  padding: 0.6rem 0.8rem;
+  margin: 0.4rem 0 0;
+  padding: 1.2rem 0.8rem 0.8rem;
 }
 
-.menu li {
-  border-top: solid 0.1rem rgba(20, 20, 20, 0.08);
-}
-
-.menu > li:first-child {
+.menu > li:first-child h2 {
   border: none;
+  margin: 0;
 }
 
 .item {
@@ -40,22 +37,41 @@
   border: none;
   cursor: pointer;
   display: flex;
-  padding: 0.6rem 1.2rem;
+  padding: 0.7rem 3.6rem 0.7rem 1.2rem;
+  position: relative;
   text-align: left;
   width: 100%;
 }
 
+.item > * {
+  position: relative;
+}
+
 .item:hover {
-  background: rgba(20, 20, 20, 0.04);
+  background: var(--color-bg-gray-tertiary);
 }
 
 .item.active {
-  background: #4b5cf4;
+  background: var(--color-blue);
   color: var(--color-bg-white);
+}
+
+.item.active::after {
+  content: '⏎';
+  display: block;
+  font-size: 1.2rem;
+  height: 1.2rem;
+  opacity: 0.8;
+  position: absolute;
+  right: 1.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.2rem;
 }
 
 .item.active p {
   color: var(--color-bg-white);
+  opacity: 0.8;
 }
 
 .icon {
@@ -74,5 +90,5 @@
   color: var(--color-fg-gray-primary);
   font-size: 1.1rem;
   line-height: 1.3rem;
-  margin: 0.2rem 0;
+  margin: 0.1rem 0 0;
 }

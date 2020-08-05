@@ -1,5 +1,5 @@
 import { Editor, Path, Range, Transforms } from 'slate';
-import { BaseElement } from '../../Element';
+import { BasicElement } from '../Element';
 import {
   isRangeAtRoot,
   isBlockTextEmptyAfterSelection,
@@ -7,7 +7,7 @@ import {
   nodeIsType,
 } from '../../editor/queries';
 import unwrapList from './unwrapList';
-import { unindentList } from './handleListIndentation';
+import { unindentList } from './handleListTabKey';
 
 /**
  * Handles logic for the Enter-key in lists.
@@ -15,20 +15,20 @@ import { unindentList } from './handleListIndentation';
 export default function handleListEnterKey(
   editor: Editor,
   event: KeyboardEvent
-): void {
+): boolean {
   const { selection } = editor;
   if (selection == null || isRangeAtRoot(selection)) {
-    return;
+    return false;
   }
 
   const [paragraphNode, paragraphPath] = Editor.parent(editor, selection);
-  if (paragraphNode.type !== BaseElement.Paragraph) {
-    return;
+  if (paragraphNode.type !== BasicElement.Paragraph) {
+    return false;
   }
 
   const [listItemNode, listItemPath] = Editor.parent(editor, paragraphPath);
-  if (listItemNode.type !== BaseElement.ListItem) {
-    return;
+  if (listItemNode.type !== BasicElement.ListItem) {
+    return false;
   }
 
   const [listNode, listPath] = Editor.parent(editor, listItemPath);
@@ -45,11 +45,22 @@ export default function handleListEnterKey(
   //        - |
   if (
     isBlockAboveEmpty(editor) &&
-    listParentNode.type === BaseElement.ListItem
+    listParentNode.type === BasicElement.ListItem
   ) {
     unindentList(editor, listNode, listPath, listItemPath);
     event.preventDefault();
-    return;
+    return true;
+  }
+
+  // If caret is in a nested empty list block and the parent node is not root
+  // or another list item (i.e., the list is nested in another element type),
+  // do nothing.
+  //
+  // This sets up a basic boundary for nested widgets. For now, we handle this manually
+  // in element-specific code. In the future, it would be nice to make this more generic,
+  // so the list item is automatically converted to the right structure.
+  if (isBlockAboveEmpty(editor) && !Editor.isEditor(listParentNode)) {
+    return false;
   }
 
   // If caret is in empty list block, exit the list
@@ -83,17 +94,17 @@ export default function handleListEnterKey(
   //       |
   if (
     Range.isCollapsed(selection) &&
-    nodeIsType(editor, BaseElement.ListItem) &&
+    nodeIsType(editor, BasicElement.ListItem) &&
     isBlockAboveEmpty(editor)
   ) {
     unwrapList(editor);
     event.preventDefault();
-    return;
+    return true;
   }
 
   // No-op if the paragraph is not wrapped in a list item
-  if (listItemNode.type !== BaseElement.ListItem) {
-    return;
+  if (listItemNode.type !== BasicElement.ListItem) {
+    return false;
   }
 
   // Delete selection if selection exists
@@ -113,10 +124,10 @@ export default function handleListEnterKey(
     Transforms.insertNodes(
       editor,
       {
-        type: BaseElement.ListItem,
+        type: BasicElement.ListItem,
         children: [
           {
-            type: BaseElement.Paragraph,
+            type: BasicElement.Paragraph,
             children: [{ text: '' }],
           },
         ],
@@ -124,7 +135,7 @@ export default function handleListEnterKey(
       { at: listItemPath }
     );
     event.preventDefault();
-    return;
+    return true;
   }
 
   const nextParagraphPath = Path.next(paragraphPath);
@@ -144,10 +155,10 @@ export default function handleListEnterKey(
     Transforms.insertNodes(
       editor,
       {
-        type: BaseElement.ListItem,
+        type: BasicElement.ListItem,
         children: [
           {
-            type: BaseElement.Paragraph,
+            type: BasicElement.Paragraph,
             children: [{ text: '' }],
           },
         ],
@@ -168,7 +179,7 @@ export default function handleListEnterKey(
     Transforms.wrapNodes(
       editor,
       {
-        type: BaseElement.ListItem,
+        type: BasicElement.ListItem,
         children: [],
       },
       {
@@ -201,4 +212,5 @@ export default function handleListEnterKey(
   }
 
   event.preventDefault();
+  return true;
 }

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState, RefObject } from 'react';
 import { Range, Editor, Node } from 'slate';
 // import { isKeyHotkey } from 'is-hotkey';
 import styles from './Assistant.module.scss';
-import { BaseElement } from '../Element';
+import { BasicElement } from '../elements/Element';
 import { isRangeAtRoot } from './queries';
 
 // TODO: Fix -1px offset due to mismatching of leaf rendering height to the placeholder
@@ -69,7 +69,7 @@ export default function Assistant(props: Props): JSX.Element {
       !Node.string(caretNode).length &&
       isRangeAtRoot(selection) &&
       nearestBlock != null &&
-      nearestBlock[0].type === BaseElement.Paragraph
+      nearestBlock[0].type === BasicElement.Paragraph
     ) {
       // Get bounds of current cursor
       const selectionDOMRange = ReactEditor.toDOMRange(editor, selection);

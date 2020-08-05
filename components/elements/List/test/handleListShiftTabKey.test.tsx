@@ -2,11 +2,11 @@
 
 import { Editor } from 'slate';
 import jsx from '../../../test/jsx';
-import onKeyDownList from '../List';
 import removeMeta from '../../../test/removeMeta';
 import Keys from '../../../editor/keys';
+import onElementKeyDown from '../../onElementKeyDown';
 
-describe('Tab-key', () => {
+describe('Shift+Tab', () => {
   const tabCases: [
     string,
     {
@@ -15,7 +15,7 @@ describe('Tab-key', () => {
     }
   ][] = [
     [
-      'Tab at root level does nothing',
+      'Shift+Tab does nothing at root level',
       {
         input: (
           <editor>
@@ -34,69 +34,9 @@ describe('Tab-key', () => {
       },
     ],
     [
-      'Tab on first list child does nothing',
+      'Shift+Tab unindents a basic nested list',
       {
         input: (
-          <editor>
-            <ul>
-              <li>
-                <p>
-                  <cursor />
-                </p>
-              </li>
-            </ul>
-          </editor>
-        ),
-        output: (
-          <editor>
-            <ul>
-              <li>
-                <p>
-                  <cursor />
-                </p>
-              </li>
-            </ul>
-          </editor>
-        ),
-      },
-    ],
-    [
-      'Tab on non-list node does nothing',
-      {
-        input: (
-          <editor>
-            <p>
-              <cursor />
-            </p>
-          </editor>
-        ),
-        output: (
-          <editor>
-            <p>
-              <cursor />
-            </p>
-          </editor>
-        ),
-      },
-    ],
-    [
-      'Tab on list item with previous sibling without sublist creates new sublist',
-      {
-        input: (
-          <editor>
-            <ul>
-              <li>
-                <p>Line 1</p>
-              </li>
-              <li>
-                <p>
-                  Line 2<cursor />
-                </p>
-              </li>
-            </ul>
-          </editor>
-        ),
-        output: (
           <editor>
             <ul>
               <li>
@@ -112,12 +52,97 @@ describe('Tab-key', () => {
             </ul>
           </editor>
         ),
+        output: (
+          <editor>
+            <ul>
+              <li>
+                <p>Line 1</p>
+              </li>
+              <li>
+                <p>
+                  Line 2<cursor />
+                </p>
+              </li>
+            </ul>
+          </editor>
+        ),
       },
     ],
     [
-      'Tab on list item with previous sibling with sublist appends to sublist',
+      'Shift+Tab moves siblings after a given node into a new sublist inside the moved node',
       {
         input: (
+          <editor>
+            <ul>
+              <li>
+                <p>Line 1</p>
+                <ul>
+                  <li>
+                    <p>
+                      Line 2<cursor />
+                    </p>
+                  </li>
+                  <li>
+                    <p>Line 3</p>
+                  </li>
+                  <li>
+                    <p>Line 4</p>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </editor>
+        ),
+        output: (
+          <editor>
+            <ul>
+              <li>
+                <p>Line 1</p>
+              </li>
+              <li>
+                <p>
+                  Line 2<cursor />
+                </p>
+                <ul>
+                  <li>
+                    <p>Line 3</p>
+                  </li>
+                  <li>
+                    <p>Line 4</p>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </editor>
+        ),
+      },
+    ],
+    [
+      'Shift+Tab splits a list if the unindented node is in the middle',
+      {
+        input: (
+          <editor>
+            <ul>
+              <li>
+                <p>Line 1</p>
+                <ul>
+                  <li>
+                    <p>Line 2</p>
+                  </li>
+                  <li>
+                    <p>
+                      Line 3<cursor />
+                    </p>
+                  </li>
+                  <li>
+                    <p>Line 4</p>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </editor>
+        ),
+        output: (
           <editor>
             <ul>
               <li>
@@ -132,23 +157,9 @@ describe('Tab-key', () => {
                 <p>
                   Line 3<cursor />
                 </p>
-              </li>
-            </ul>
-          </editor>
-        ),
-        output: (
-          <editor>
-            <ul>
-              <li>
-                <p>Line 1</p>
                 <ul>
                   <li>
-                    <p>Line 2</p>
-                  </li>
-                  <li>
-                    <p>
-                      Line 3<cursor />
-                    </p>
+                    <p>Line 4</p>
                   </li>
                 </ul>
               </li>
@@ -158,7 +169,7 @@ describe('Tab-key', () => {
       },
     ],
     [
-      'Tab indents nested list items',
+      'Shift+Tab un-indents nested items',
       {
         input: (
           <editor>
@@ -167,15 +178,12 @@ describe('Tab-key', () => {
                 <p>Line 1</p>
                 <ul>
                   <li>
-                    <p>Line 2</p>
-                  </li>
-                  <li>
                     <p>
-                      Line 3<cursor />
+                      Line 2<cursor />
                     </p>
                     <ul>
                       <li>
-                        <p>Line 4</p>
+                        <p>Line 3</p>
                       </li>
                     </ul>
                   </li>
@@ -189,21 +197,14 @@ describe('Tab-key', () => {
             <ul>
               <li>
                 <p>Line 1</p>
+              </li>
+              <li>
+                <p>
+                  Line 2<cursor />
+                </p>
                 <ul>
                   <li>
-                    <p>Line 2</p>
-                    <ul>
-                      <li>
-                        <p>
-                          Line 3<cursor />
-                        </p>
-                        <ul>
-                          <li>
-                            <p>Line 4</p>
-                          </li>
-                        </ul>
-                      </li>
-                    </ul>
+                    <p>Line 3</p>
                   </li>
                 </ul>
               </li>
@@ -215,7 +216,10 @@ describe('Tab-key', () => {
   ];
 
   test.each(tabCases)('%s', (_, { input, output }) => {
-    onKeyDownList(input, new KeyboardEvent('keydown', { key: Keys.Tab }));
+    onElementKeyDown(
+      input,
+      new KeyboardEvent('keydown', { key: Keys.Tab, shiftKey: true })
+    );
     const formattedInput = removeMeta(input);
     const formattedOutput = removeMeta(output);
     expect(formattedInput.children).toEqual(formattedOutput.children);

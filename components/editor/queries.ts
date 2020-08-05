@@ -7,16 +7,16 @@ import {
   NodeEntry,
   Path,
   Range,
+  Location,
   Text,
 } from 'slate';
-import { BaseElement, ListElements } from '../Element';
 
 /**
  * Returns nodes of the requested type at the current selection.
  */
 export function getNodesWithType(
   editor: Editor,
-  type: BaseElement
+  type: string
 ): NodeEntry<Node>[] {
   const { selection } = editor;
   if (selection == null) {
@@ -38,7 +38,7 @@ export function getNodesWithType(
 /**
  * Returns true if node at location is the given type.
  */
-export function nodeIsType(editor: Editor, type: BaseElement): boolean {
+export function nodeIsType(editor: Editor, type: string): boolean {
   const [match] = getNodesWithType(editor, type);
   return match != null;
 }
@@ -78,7 +78,7 @@ export function isBlockAboveEmpty(editor: Editor): boolean {
  */
 export function getAboveWithType(
   editor: Editor,
-  type: BaseElement
+  type: string
 ): NodeEntry<Node> | undefined {
   if (editor.selection == null) {
     return undefined;
@@ -179,14 +179,37 @@ export function isFirstChild(path: Path): boolean {
 }
 
 /**
- * Returns true if the given node is a list element.
+ * Returns true in first tuple item if the slate tree from selection
+ * matches the given sequence.
  */
-export function isList(node: Node): boolean {
-  if (node.type == null) {
-    return false;
+export function doesSlateTreeMatchSequence(
+  editor: Editor,
+  sequence: string[]
+): [boolean, NodeEntry[]] {
+  const { selection } = editor;
+  if (selection == null) {
+    return [false, []];
   }
 
-  return ListElements.includes(node.type as BaseElement);
+  const entries: NodeEntry[] = [];
+  let matches = true;
+  let path: Location = selection;
+
+  if (isRangeAtRoot(path)) {
+    return [false, entries];
+  }
+
+  sequence.forEach((type) => {
+    const entry = Editor.parent(editor, path);
+    const [node, nodePath] = entry;
+    if (node.type !== type) {
+      matches = false;
+    }
+    entries.push(entry);
+    path = nodePath;
+  });
+
+  return [matches, entries];
 }
 
 /**

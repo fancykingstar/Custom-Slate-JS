@@ -1,17 +1,14 @@
 import { Editor, Transforms } from 'slate';
 import { BasicElement } from '../Element';
-import isList from './isList';
+import { ChoicesElement } from './ChoicesElement';
 
-/**
- * Converts the current list item into a paragraph block.
- */
-export default function unwrapList(editor: Editor): void {
+export default function unwrapChoices(editor: Editor): void {
   Transforms.setNodes(editor, { type: BasicElement.Paragraph });
   Transforms.unwrapNodes(editor, {
-    match: (n) => n.type === BasicElement.ListItem,
+    match: (n) => n.type === ChoicesElement.Item,
   });
   Transforms.unwrapNodes(editor, {
-    match: (n) => isList(n),
+    match: (n) => n.type === ChoicesElement.Wrapper,
     split: true,
   });
 }

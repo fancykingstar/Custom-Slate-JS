@@ -1,25 +1,17 @@
 import { Editor, Node, Path, Transforms, Ancestor } from 'slate';
 import { isKeyHotkey } from 'is-hotkey';
-import { BaseElement } from '../../Element';
-import {
-  isRangeAtRoot,
-  nodeIsType,
-  isFirstChild,
-  isList,
-} from '../../editor/queries';
+import { BasicElement } from '../Element';
+import { isRangeAtRoot, nodeIsType, isFirstChild } from '../../editor/queries';
 import Keys from '../../editor/keys';
+import isList from './isList';
 
 export function indentList(
   editor: Editor,
   listNode: Ancestor,
   listItemPath: Path
-): void {
+): boolean {
   // If previous sibling does not exist, prevent nesting
   const previousSiblingItem = Editor.node(editor, Path.previous(listItemPath));
-  if (previousSiblingItem == null) {
-    return;
-  }
-
   const [previousSiblingNode, previousSiblingPath] = previousSiblingItem;
 
   // Does the previous sibling have a sublist inside of it?
@@ -70,6 +62,8 @@ export function indentList(
     at: listItemPath,
     to: newPath,
   });
+
+  return true;
 }
 
 export function unindentList(
@@ -77,11 +71,11 @@ export function unindentList(
   listNode: Ancestor,
   listPath: Path,
   listItemPath: Path
-): void {
+): boolean {
   const [listParentNode, listParentPath] = Editor.parent(editor, listPath);
   // Unindenting is only possible if the list is nested
-  if (listParentNode.type !== BaseElement.ListItem) {
-    return;
+  if (listParentNode.type !== BasicElement.ListItem) {
+    return false;
   }
 
   // Move the node into the parent
@@ -139,12 +133,14 @@ export function unindentList(
       at: listPath,
     });
   }
+
+  return true;
 }
 
 /**
  * Handles indentation of list items.
  */
-export default function handleListIndentation(
+export default function handleListTabKey(
   editor: Editor,
   event: KeyboardEvent
 ): boolean {
@@ -161,7 +157,7 @@ export default function handleListIndentation(
 
   // Do nothing if not a list item or indentation is at root level
   // NOTE: List items should never be at root level
-  if (!nodeIsType(editor, BaseElement.ListItem) || isRangeAtRoot(selection)) {
+  if (!nodeIsType(editor, BasicElement.ListItem) || isRangeAtRoot(selection)) {
     return false;
   }
 
@@ -169,25 +165,23 @@ export default function handleListIndentation(
   event.preventDefault();
 
   const [paragraphNode, paragraphPath] = Editor.parent(editor, selection);
-  if (paragraphNode.type !== BaseElement.Paragraph) {
+  if (paragraphNode.type !== BasicElement.Paragraph) {
     return false;
   }
 
   const [listItemNode, listItemPath] = Editor.parent(editor, paragraphPath);
-  if (listItemNode.type !== BaseElement.ListItem) {
+  if (listItemNode.type !== BasicElement.ListItem) {
     return false;
   }
 
   const [listNode, listPath] = Editor.parent(editor, listItemPath);
 
   if (isShiftTab) {
-    unindentList(editor, listNode, listPath, listItemPath);
-    return true;
+    return unindentList(editor, listNode, listPath, listItemPath);
   }
 
   if (isTab && !isFirstChild(listItemPath)) {
-    indentList(editor, listNode, listItemPath);
-    return true;
+    return indentList(editor, listNode, listItemPath);
   }
 
   return false;

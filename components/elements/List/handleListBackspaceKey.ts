@@ -1,33 +1,33 @@
 import { Editor, Range } from 'slate';
-import { BaseElement } from '../../Element';
+import { BasicElement } from '../Element';
 import { nodeIsType, isSelectionAtBlockStart } from '../../editor/queries';
 import unwrapList from './unwrapList';
-import { unindentList } from './handleListIndentation';
+import { unindentList } from './handleListTabKey';
 
 export default function handleListBackspaceKey(
   editor: Editor,
   event: KeyboardEvent
-): void {
+): boolean {
   const { selection } = editor;
   if (selection == null) {
-    return;
+    return false;
   }
 
   if (
     !Range.isCollapsed(selection) ||
-    !nodeIsType(editor, BaseElement.ListItem)
+    !nodeIsType(editor, BasicElement.ListItem)
   ) {
-    return;
+    return false;
   }
 
   const [paragraphNode, paragraphPath] = Editor.parent(editor, selection);
-  if (paragraphNode.type !== BaseElement.Paragraph) {
-    return;
+  if (paragraphNode.type !== BasicElement.Paragraph) {
+    return false;
   }
 
   const [listItemNode, listItemPath] = Editor.parent(editor, paragraphPath);
-  if (listItemNode.type !== BaseElement.ListItem) {
-    return;
+  if (listItemNode.type !== BasicElement.ListItem) {
+    return false;
   }
 
   const [listNode, listPath] = Editor.parent(editor, listItemPath);
@@ -44,11 +44,22 @@ export default function handleListBackspaceKey(
   //        - |
   if (
     isSelectionAtBlockStart(editor) &&
-    listParentNode.type === BaseElement.ListItem
+    listParentNode.type === BasicElement.ListItem
   ) {
     unindentList(editor, listNode, listPath, listItemPath);
     event.preventDefault();
-    return;
+    return true;
+  }
+
+  // If caret is in a nested empty list block and the parent node is not root
+  // or another list item (i.e., the list is nested in another element type),
+  // do nothing.
+  //
+  // This sets up a basic boundary for nested widgets. For now, we handle this manually
+  // in element-specific code. In the future, it would be nice to make this more generic,
+  // so the list item is automatically converted to the right structure.
+  if (isSelectionAtBlockStart(editor) && !Editor.isEditor(listParentNode)) {
+    return false;
   }
 
   // If caret is at start of list block (regardless of line content), exit the list
@@ -83,5 +94,8 @@ export default function handleListBackspaceKey(
   if (isSelectionAtBlockStart(editor)) {
     unwrapList(editor);
     event.preventDefault();
+    return true;
   }
+
+  return false;
 }

@@ -1,9 +1,20 @@
 import { DefaultElement, RenderElementProps } from 'slate-react';
-import * as Choices from './tools/Choices';
+import {
+  ChoicesElement,
+  ChoicesWrapperElement,
+  ChoicesItemElement,
+  ChoicesItemTitleElement,
+} from './Choices/ChoicesElement';
 import styles from './Element.module.scss';
 
-export enum BaseElement {
+/**
+ * Elements that users should not be able to manually add.
+ */
+export enum ReservedElement {
   Title = 'h1',
+}
+
+export enum BasicElement {
   Paragraph = 'p',
   OrderedList = 'ol',
   UnorderedList = 'ul',
@@ -11,52 +22,50 @@ export enum BaseElement {
 }
 
 export type ListElementTypes =
-  | BaseElement.OrderedList
-  | BaseElement.UnorderedList;
+  | BasicElement.OrderedList
+  | BasicElement.UnorderedList;
 
 export const ListElements = [
-  BaseElement.OrderedList,
-  BaseElement.UnorderedList,
+  BasicElement.OrderedList,
+  BasicElement.UnorderedList,
 ];
 
 export default function Element(props: RenderElementProps): JSX.Element {
   const { attributes, children, element } = props;
 
   switch (element.type) {
-    case BaseElement.Title:
+    case ReservedElement.Title:
       return (
         <h1 {...attributes} className={styles.title}>
           {children}
         </h1>
       );
-    case BaseElement.Paragraph:
+    case BasicElement.Paragraph:
       return (
         <p {...attributes} className={styles.p}>
           {children}
         </p>
       );
-    case BaseElement.UnorderedList:
+    case BasicElement.UnorderedList:
       return (
         <ul {...attributes} className={styles.ul}>
           {children}
         </ul>
       );
-    case BaseElement.OrderedList:
+    case BasicElement.OrderedList:
       return (
         <ol {...attributes} className={styles.ol}>
           {children}
         </ol>
       );
-    case BaseElement.ListItem:
+    case BasicElement.ListItem:
       return <li {...attributes}>{children}</li>;
-    case Choices.Type.Tool:
-      return <Choices.ToolElement {...props} />;
-    case Choices.Type.Choice:
-      return <Choices.ChoiceElement {...props} />;
-    case Choices.Type.Name:
-      return <Choices.NameElement {...props} />;
-    case Choices.Type.Explanation:
-      return <Choices.ExplanationElement {...props} />;
+    case ChoicesElement.Wrapper:
+      return <ChoicesWrapperElement {...props} />;
+    case ChoicesElement.Item:
+      return <ChoicesItemElement {...props} />;
+    case ChoicesElement.ItemTitle:
+      return <ChoicesItemTitleElement {...props} />;
     default:
       return <DefaultElement {...props} />;
   }

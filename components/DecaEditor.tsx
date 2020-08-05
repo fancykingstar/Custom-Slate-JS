@@ -7,15 +7,15 @@ import { createEditor, Editor, Node, Range, Transforms } from 'slate';
 import { isKeyHotkey } from 'is-hotkey';
 import SlashMenu, { MENU_ITEMS, MenuItem } from './SlashMenu';
 import ClientOnlyPortal from './ClientOnlyPortal';
-import Element, { BaseElement } from './Element';
-import { insertChoicesTool } from './tools/Choices';
+import Element, { BasicElement, ReservedElement } from './elements/Element';
 import withLayout from './editor/withLayout';
 import withMarkdown from './editor/withMarkdown';
 import Assistant, { AssistantContent } from './editor/Assistant';
 import Placeholder from './editor/Placeholder';
-import onKeyDownList from './elements/List/List';
 import styles from './DecaEditor.module.scss';
 import Keys from './editor/keys';
+import onElementKeyDown from './elements/onElementKeyDown';
+import insertChoicesTool from './elements/Choices/insertChoicesTool';
 
 export interface SlashPoint {
   x: number;
@@ -30,16 +30,12 @@ export default function DecaEditor(): JSX.Element {
   );
   const [value, setValue] = useState<Node[]>([
     {
-      type: BaseElement.Title,
+      type: ReservedElement.Title,
       children: [{ text: '' }],
     },
     {
-      type: BaseElement.Paragraph,
-      children: [
-        {
-          text: '',
-        },
-      ],
+      type: BasicElement.Paragraph,
+      children: [{ text: '' }],
     },
   ]);
   const renderElement = useCallback((props) => <Element {...props} />, []);
@@ -111,8 +107,7 @@ export default function DecaEditor(): JSX.Element {
   const onKeyDown = useCallback(
     (event) => {
       const { selection } = editor;
-
-      onKeyDownList(editor, event);
+      onElementKeyDown(editor, event);
 
       // Prevent creation of a new starter node from title when pressing enter
       if (

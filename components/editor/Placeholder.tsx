@@ -2,7 +2,7 @@ import { ReactEditor, useSlate } from 'slate-react';
 import { useEffect, useState } from 'react';
 import { Range, Editor, Node } from 'slate';
 import styles from './Placeholder.module.scss';
-import { BaseElement } from '../Element';
+import { BasicElement } from '../elements/Element';
 
 // TODO: Fix -1px offset due to mismatching of leaf rendering height to the placeholder
 const PLACEHOLDER_OFFSET = 1.0; // px
@@ -26,7 +26,7 @@ export default function Placeholder(): JSX.Element {
       nodes.length <= 2 &&
       firstBodyNode != null &&
       !Node.string(firstBodyNode).length &&
-      firstBodyNode.type === BaseElement.Paragraph;
+      firstBodyNode.type === BasicElement.Paragraph;
 
     // TODO: Fix tabbing out of editor leaving assistant placeholder visible instead of body
 

@@ -1,5 +1,5 @@
 import { Editor, Transforms } from 'slate';
-import { BaseElement, ListElementTypes } from '../Element';
+import { BasicElement, ListElementTypes } from '../elements/Element';
 import { nodeIsType, getNodesWithType } from './queries';
 import unwrapList from '../elements/List/unwrapList';
 
@@ -21,7 +21,7 @@ export default function toggleList(
 
   // Ensure block is a paragraph
   Transforms.setNodes(editor, {
-    type: BaseElement.Paragraph,
+    type: BasicElement.Paragraph,
   });
 
   if (!isListAlready) {
@@ -31,14 +31,16 @@ export default function toggleList(
       children: [],
     });
 
-    const paragraphNodes = [...getNodesWithType(editor, BaseElement.Paragraph)];
+    const paragraphNodes = [
+      ...getNodesWithType(editor, BasicElement.Paragraph),
+    ];
 
     paragraphNodes.forEach((node) => {
       const [, path] = node;
       Transforms.wrapNodes(
         editor,
         {
-          type: BaseElement.ListItem,
+          type: BasicElement.ListItem,
           children: [],
         },
         {

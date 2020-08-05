@@ -3,26 +3,24 @@ import { isKeyHotkey } from 'is-hotkey';
 import Keys from '../../editor/keys';
 import handleListBackspaceKey from './handleListBackspaceKey';
 import handleListEnterKey from './handleListEnterKey';
-import handleListIndentation from './handleListIndentation';
+import handleListTabKey from './handleListTabKey';
 
 // TODO: Better structure onKeyDown "plugins" so it's not as hacky
 export default function onKeyDownList(
   editor: Editor,
   event: KeyboardEvent
-): void {
+): boolean {
   if (isKeyHotkey(Keys.Tab, event) || isKeyHotkey(Keys.ShiftTab, event)) {
-    const indentChanged = handleListIndentation(editor, event);
-    if (indentChanged) {
-      return;
-    }
+    return handleListTabKey(editor, event);
   }
 
   if (isKeyHotkey(Keys.Enter, event)) {
-    handleListEnterKey(editor, event);
-    return;
+    return handleListEnterKey(editor, event);
   }
 
   if (isKeyHotkey(Keys.Backspace, event)) {
-    handleListBackspaceKey(editor, event);
+    return handleListBackspaceKey(editor, event);
   }
+
+  return false;
 }

@@ -1,6 +1,6 @@
 import { ReactEditor } from 'slate-react';
 import { Range, Editor, Transforms } from 'slate';
-import { BaseElement } from '../Element';
+import { BasicElement } from '../elements/Element';
 import unwrapList from '../elements/List/unwrapList';
 import toggleList from './transforms';
 
@@ -9,25 +9,25 @@ const MARKDOWN_TRIGGER = ' ';
 const preFormat = (editor: Editor) => unwrapList(editor);
 
 const MarkdownTypes: {
-  type: BaseElement;
+  type: BasicElement;
   triggers: string[];
   preFormat?: (editor: Editor) => void;
   format?: (editor: Editor) => void;
 }[] = [
   {
-    type: BaseElement.ListItem,
+    type: BasicElement.ListItem,
     triggers: ['*', '-', '+'],
     preFormat,
     format: (editor) => {
-      toggleList(editor, BaseElement.UnorderedList);
+      toggleList(editor, BasicElement.UnorderedList);
     },
   },
   {
-    type: BaseElement.ListItem,
+    type: BasicElement.ListItem,
     triggers: ['1.', '1)'],
     preFormat,
     format: (editor) => {
-      toggleList(editor, BaseElement.OrderedList);
+      toggleList(editor, BasicElement.OrderedList);
     },
   },
 ];

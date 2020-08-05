@@ -1,6 +1,6 @@
 import { Node, NodeEntry, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
-import { BaseElement } from '../Element';
+import { BasicElement, ReservedElement } from '../elements/Element';
 import { isEmptyElement } from './queries';
 
 const withLayout = (editor: ReactEditor): ReactEditor => {
@@ -16,7 +16,7 @@ const withLayout = (editor: ReactEditor): ReactEditor => {
     // Enforce: If doc is empty, add a blank title element
     if (editor.children.length < 1) {
       const title = {
-        type: BaseElement.Title,
+        type: ReservedElement.Title,
         children: [{ text: '' }],
       };
       Transforms.insertNodes(editor, title, { at: path.concat(0) });
@@ -28,7 +28,7 @@ const withLayout = (editor: ReactEditor): ReactEditor => {
       !isEmptyElement(editor.children[editor.children.length - 1])
     ) {
       const paragraph = {
-        type: BaseElement.Paragraph,
+        type: BasicElement.Paragraph,
         children: [{ text: '' }],
       };
       Transforms.insertNodes(editor, paragraph, {
@@ -41,10 +41,10 @@ const withLayout = (editor: ReactEditor): ReactEditor => {
       const [childStart] = childPath;
 
       // Enforce: If 1st element is not title, turn into title
-      if (childStart === 0 && child.type !== BaseElement.Title) {
+      if (childStart === 0 && child.type !== ReservedElement.Title) {
         Transforms.setNodes(
           editor,
-          { type: BaseElement.Title },
+          { type: ReservedElement.Title },
           { at: childPath }
         );
 
@@ -61,10 +61,10 @@ const withLayout = (editor: ReactEditor): ReactEditor => {
       }
 
       // Enforce: No other element can be a title
-      if (childStart !== 0 && child.type === BaseElement.Title) {
+      if (childStart !== 0 && child.type === ReservedElement.Title) {
         Transforms.setNodes(
           editor,
-          { type: BaseElement.Paragraph },
+          { type: BasicElement.Paragraph },
           { at: childPath }
         );
       }
