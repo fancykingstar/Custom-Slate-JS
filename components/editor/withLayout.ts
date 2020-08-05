@@ -23,7 +23,10 @@ const withLayout = (editor: ReactEditor): ReactEditor => {
     }
 
     // Enforce: If last element isn't empty, add a blank paragraph element
-    if (!isEmptyElement(editor.children[editor.children.length - 1])) {
+    if (
+      editor.children.length < 2 ||
+      !isEmptyElement(editor.children[editor.children.length - 1])
+    ) {
       const paragraph = {
         type: BaseElement.Paragraph,
         children: [{ text: '' }],
