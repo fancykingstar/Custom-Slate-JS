@@ -1,29 +1,28 @@
 import { Editor } from 'slate';
 import { isKeyHotkey } from 'is-hotkey';
 import Keys from 'components/editor/keys';
-import { nodeIsType, isRangeAtRoot } from 'components/editor/queries';
-import { BasicElement } from 'components/elements/Element';
-import { CriteriaElement } from 'components/elements/Criteria/CriteriaElement';
+import { isRangeAtRoot } from 'components/editor/queries';
+import { InversionElement } from 'components/elements/Inversion/InversionElement';
 import indentListItem from 'components/editor/transforms/indentListItem';
 import unindentListItem from 'components/editor/transforms/unindentListItem';
 
 /**
- * Handles indentation of Choice tool items. Returns false if no changes were made.
+ * Handles indentation of Inversion tool items. Returns false if no changes were made.
  */
-export default function handleCriteriaTabKey(
+export default function handleInversionTabKey(
   editor: Editor,
   event: KeyboardEvent
 ): boolean {
   const wrapperEntry = Editor.above(editor, {
-    match: (n) => n.type === CriteriaElement.Wrapper,
+    match: (n) => n.type === InversionElement.Wrapper,
   });
   if (wrapperEntry == null) {
     return false;
   }
 
-  // Do nothing if we're not in the Criteria tool
+  // Do nothing if we're not in the Inversion tool
   const [wrapperNode] = wrapperEntry;
-  if (wrapperNode.type !== CriteriaElement.Wrapper) {
+  if (wrapperNode.type !== InversionElement.Wrapper) {
     return false;
   }
 
@@ -38,15 +37,7 @@ export default function handleCriteriaTabKey(
     return false;
   }
 
-  // Do nothing if not a choice tool item title or list item
-  if (
-    !nodeIsType(editor, CriteriaElement.ItemTitle) &&
-    !nodeIsType(editor, BasicElement.ListItem)
-  ) {
-    return false;
-  }
-
-  // Ignore elements that are not nested (for choice tool, everything is in the choice tool wrapper)
+  // Ignore elements that are not nested (for Inversion tool, everything is in the Inversion tool wrapper)
   if (isRangeAtRoot(selection)) {
     return false;
   }
@@ -61,9 +52,9 @@ export default function handleCriteriaTabKey(
   if (isTab) {
     return indentListItem(
       editor,
-      BasicElement.UnorderedList,
-      BasicElement.ListItem,
-      BasicElement.Paragraph
+      InversionElement.ItemSublist,
+      InversionElement.ItemSublistItem,
+      InversionElement.ItemSublistItemParagraph
     );
   }
 

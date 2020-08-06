@@ -1,8 +1,9 @@
 import { Editor, Range } from 'slate';
 import { BasicElement } from 'components/elements/Element';
 import { nodeIsType, isSelectionAtBlockStart } from 'components/editor/queries';
-import unwrapList from 'components/elements/List/unwrapList';
-import { unindentList } from 'components/elements/List/handleListTabKey';
+import runEditorBehaviors from 'components/editor/runEditorBehaviors';
+import exitListAtStartOfListItem from 'components/editor/behaviors/exitListAtStartOfListItem';
+import unindentNestedListItemOnStart from 'components/editor/behaviors/unindentNestedListItemOnStart';
 
 export default function handleListBackspaceKey(
   editor: Editor,
@@ -30,26 +31,19 @@ export default function handleListBackspaceKey(
     return false;
   }
 
-  const [listNode, listPath] = Editor.parent(editor, listItemPath);
-  const [listParentNode] = Editor.parent(editor, listPath);
-
-  // If caret is in a nested empty list block, unindent
-  //
-  //   Before operation:
-  //        - Line 1
-  //          - |
-  //
-  //   After operation:
-  //        - Line 1
-  //        - |
   if (
-    isSelectionAtBlockStart(editor) &&
-    listParentNode.type === BasicElement.ListItem
+    runEditorBehaviors(
+      editor,
+      [BasicElement.UnorderedList, BasicElement.OrderedList],
+      [unindentNestedListItemOnStart]
+    )
   ) {
-    unindentList(editor, listNode, listPath, listItemPath);
     event.preventDefault();
     return true;
   }
+
+  const [, listPath] = Editor.parent(editor, listItemPath);
+  const [listParentNode] = Editor.parent(editor, listPath);
 
   // If caret is in a nested empty list block and the parent node is not root
   // or another list item (i.e., the list is nested in another element type),
@@ -62,37 +56,13 @@ export default function handleListBackspaceKey(
     return false;
   }
 
-  // If caret is at start of list block (regardless of line content), exit the list
-  //
-  //   Before operation:
-  //       - |Line 1        # Text is optional
-  //
-  //   After operation:
-  //       |Line 1          # Text is optional
-
-  // If caret is in empty line in middle of multi-line list, split the list
-  //
-  //   Before operation:
-  //       - Line 1
-  //       - |Line 2        # Text is optional
-  //       - Line 3
-  //
-  //   After operation:
-  //       - Line 1
-  //       |Line 2          # Text is optional
-  //       - Line 3
-
-  // If caret is in empty line in final item in multi-line list, exit the list
-  //
-  //     Before operation:
-  //       - Line 1
-  //       - |
-  //
-  //     After operation:
-  //       - Line 1
-  //       |
-  if (isSelectionAtBlockStart(editor)) {
-    unwrapList(editor);
+  if (
+    runEditorBehaviors(
+      editor,
+      [BasicElement.UnorderedList, BasicElement.OrderedList],
+      [exitListAtStartOfListItem]
+    )
+  ) {
     event.preventDefault();
     return true;
   }

@@ -19,6 +19,7 @@ import onElementKeyDown from 'components/elements/onElementKeyDown';
 import insertChoicesTool from 'components/elements/Choices/insertChoicesTool';
 import insertCriteriaTool from 'components/elements/Criteria/insertCriteriaTool';
 import insertGoalsTool from 'components/elements/Goals/insertGoalsTool';
+import insertInversionTool from 'components/elements/Inversion/insertInversionTool';
 import { isTopLevelPath } from 'components/editor/queries';
 import SlashMenu, { MENU_ITEMS, MenuItem, SlashTitle } from './SlashMenu';
 import styles from './DecaEditor.module.scss';
@@ -100,6 +101,9 @@ export default function DecaEditor(): JSX.Element {
         incrementToolCount();
       } else if (item.title === SlashTitle.Goals) {
         insertGoalsTool(editor);
+        incrementToolCount();
+      } else if (item.title === SlashTitle.Inversion) {
+        insertInversionTool(editor);
         incrementToolCount();
       } else {
         Transforms.insertText(

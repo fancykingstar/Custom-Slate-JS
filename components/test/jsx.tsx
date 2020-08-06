@@ -3,6 +3,7 @@ import { BasicElement } from 'components/elements/Element';
 import { ChoicesElement } from 'components/elements/Choices/ChoicesElement';
 import { CriteriaElement } from 'components/elements/Criteria/CriteriaElement';
 import { GoalsElement } from 'components/elements/Goals/GoalsElement';
+import { InversionElement } from 'components/elements/Inversion/InversionElement';
 
 export default createHyperscript({
   elements: {
@@ -21,5 +22,13 @@ export default createHyperscript({
     criteriaWrapper: { type: CriteriaElement.Wrapper },
     criteriaItem: { type: CriteriaElement.Item },
     criteriaItemTitle: { type: CriteriaElement.ItemTitle },
+    inversionWrapper: { type: InversionElement.Wrapper },
+    inversionItem: { type: InversionElement.Item },
+    inversionItemTitle: { type: InversionElement.ItemTitle },
+    inversionSublist: { type: InversionElement.ItemSublist },
+    inversionSublistItem: { type: InversionElement.ItemSublistItem },
+    inversionSublistItemParagraph: {
+      type: InversionElement.ItemSublistItemParagraph,
+    },
   },
 });

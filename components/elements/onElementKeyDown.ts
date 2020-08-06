@@ -3,6 +3,7 @@ import onKeyDownList from 'components/elements/List/List';
 import onKeyDownChoices from 'components/elements/Choices/Choices';
 import onKeyDownCriteria from 'components/elements/Criteria/Criteria';
 import onKeyDownGoals from 'components/elements/Goals/Goals';
+import onKeyDownInversion from 'components/elements/Inversion/onKeyDownInversion';
 
 export default function onElementKeyDown(
   editor: Editor,
@@ -17,5 +18,8 @@ export default function onElementKeyDown(
   if (onKeyDownCriteria(editor, event)) {
     return;
   }
-  onKeyDownGoals(editor, event);
+  if (onKeyDownGoals(editor, event)) {
+    return;
+  }
+  onKeyDownInversion(editor, event);
 }

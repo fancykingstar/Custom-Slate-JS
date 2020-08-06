@@ -62,7 +62,6 @@ export const MENU_ITEMS: MenuItem[] = [
     title: SlashTitle.Inversion,
     description: 'Flip your point of view',
     icon: '⏳',
-    comingSoon: true,
   },
   {
     category: Category.Thinking,

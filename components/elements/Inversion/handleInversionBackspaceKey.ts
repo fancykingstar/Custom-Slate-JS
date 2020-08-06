@@ -1,15 +1,14 @@
 import { Editor, Range } from 'slate';
-import { ChoicesElement } from 'components/elements/Choices/ChoicesElement';
+import { InversionElement } from 'components/elements/Inversion/InversionElement';
 import runEditorBehaviors from 'components/editor/runEditorBehaviors';
-import unindentNestedListItemOnStart from 'components/editor/behaviors/unindentNestedListItemOnStart';
 import mergeFromRootToPreviousLastListItem from 'components/editor/behaviors/mergeFromRootToPreviousLastListItem';
 import mergeStartOfListItemWithSublistToPrevItem from 'components/editor/behaviors/mergeStartOfListItemWithSublistToPrevItem';
 import nothingOnFirstListItemWithSublist from 'components/editor/behaviors/nothingOnFirstListItemWithSublist';
 import exitListOnFirstOnlyEmptyRootListItem from 'components/editor/behaviors/exitListOnFirstOnlyEmptyRootListItem';
-import exitListOnFinalEmptyRootListItem from 'components/editor/behaviors/exitListOnFinalEmptyRootListItem';
 import exitListOnEmptyFirstListItemWithSiblings from 'components/editor/behaviors/exitListOnEmptyFirstListItemWithSiblings';
+import mergeFromStartOfSublistToPrevItem from 'components/editor/behaviors/mergeFromStartOfSublistToPrevItem';
 
-export default function handleChoicesBackspaceKey(
+export default function handleInversionBackspaceKey(
   editor: Editor,
   event: KeyboardEvent
 ): boolean {
@@ -25,32 +24,13 @@ export default function handleChoicesBackspaceKey(
   if (
     runEditorBehaviors(
       editor,
-      [ChoicesElement.Wrapper],
-      [mergeFromRootToPreviousLastListItem]
-    )
-  ) {
-    event.preventDefault();
-    return true;
-  }
-
-  // Do nothing if we're not in the Criteria tool
-  const wrapperEntry = Editor.above(editor, {
-    match: (n) => n.type === ChoicesElement.Wrapper,
-  });
-  if (wrapperEntry == null) {
-    return false;
-  }
-
-  if (
-    runEditorBehaviors(
-      editor,
-      [ChoicesElement.Wrapper],
+      [InversionElement.Wrapper],
       [
-        unindentNestedListItemOnStart,
+        mergeFromStartOfSublistToPrevItem,
+        mergeFromRootToPreviousLastListItem,
         mergeStartOfListItemWithSublistToPrevItem,
         nothingOnFirstListItemWithSublist,
         exitListOnFirstOnlyEmptyRootListItem,
-        exitListOnFinalEmptyRootListItem,
         exitListOnEmptyFirstListItemWithSiblings,
       ]
     )

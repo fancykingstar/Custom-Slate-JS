@@ -17,6 +17,15 @@ import {
   GoalsItemElement,
   GoalsItemTitleElement,
 } from 'components/elements/Goals/GoalsElement';
+import {
+  InversionElement,
+  InversionWrapperElement,
+  InversionItemElement,
+  InversionItemTitleElement,
+  InversionSublistElement,
+  InversionSublistItemElement,
+  InversionSublistItemParagraphElement,
+} from 'components/elements/Inversion/InversionElement';
 import styles from './Element.module.scss';
 
 /**
@@ -90,6 +99,18 @@ export default function Element(props: RenderElementProps): JSX.Element {
       return <GoalsItemElement {...props} />;
     case GoalsElement.ItemTitle:
       return <GoalsItemTitleElement {...props} />;
+    case InversionElement.Wrapper:
+      return <InversionWrapperElement {...props} />;
+    case InversionElement.Item:
+      return <InversionItemElement {...props} />;
+    case InversionElement.ItemTitle:
+      return <InversionItemTitleElement {...props} />;
+    case InversionElement.ItemSublist:
+      return <InversionSublistElement {...props} />;
+    case InversionElement.ItemSublistItem:
+      return <InversionSublistItemElement {...props} />;
+    case InversionElement.ItemSublistItemParagraph:
+      return <InversionSublistItemParagraphElement {...props} />;
     default:
       return <DefaultElement {...props} />;
   }
