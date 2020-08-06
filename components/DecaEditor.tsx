@@ -19,6 +19,7 @@ import onElementKeyDown from 'components/elements/onElementKeyDown';
 import insertChoicesTool from 'components/elements/Choices/insertChoicesTool';
 import insertCriteriaTool from 'components/elements/Criteria/insertCriteriaTool';
 import insertGoalsTool from 'components/elements/Goals/insertGoalsTool';
+import { isTopLevelPath } from 'components/editor/queries';
 import SlashMenu, { MENU_ITEMS, MenuItem, SlashTitle } from './SlashMenu';
 import styles from './DecaEditor.module.scss';
 
@@ -209,7 +210,9 @@ export default function DecaEditor(): JSX.Element {
           const [selectionStart] = Range.edges(selection);
           const [node] = Editor.node(editor, selectionStart);
           const slashAvailable =
-            node.text === '/' && selectionStart.offset === 1;
+            node.text === '/' &&
+            selectionStart.offset === 1 &&
+            isTopLevelPath(caretPoint.path);
 
           // Store selection range to calculate position of menu
           const lineStart = Editor.before(editor, selectionStart, {

@@ -226,3 +226,10 @@ export function isEmptyElement(node: Node): boolean {
     children.length === 1 && Text.isText(children[0]) && children[0].text === ''
   );
 }
+
+/**
+ * Returns true if the given path points to a top-level node.
+ */
+export function isTopLevelPath(path: Path): boolean {
+  return path.length === 2;
+}
