@@ -1,0 +1,48 @@
+.wrapper {
+  margin: 3.2rem 0;
+  position: relative;
+}
+
+.wrapper::before {
+  border: solid 0.1rem var(--color-bg-gray-tertiary);
+  border-radius: 1rem;
+  content: '';
+  cursor: text;
+  display: block;
+  height: calc(100% + 3.2rem);
+  left: -1.6rem;
+  opacity: 0;
+  position: absolute;
+  top: -1.6rem;
+  transition: opacity 200ms ease;
+  width: calc(100% + 3.2rem);
+}
+
+.wrapper.active::before,
+.wrapper:hover::before {
+  opacity: 1;
+}
+
+.toolName {
+  align-items: center;
+  color: var(--color-bg-gray-primary);
+  display: flex;
+  font-size: 1.1rem;
+  font-weight: 500;
+  justify-content: flex-end;
+  left: -12rem;
+  line-height: 1.3rem;
+  position: absolute;
+  text-align: right;
+  user-select: none;
+  width: 8rem;
+}
+
+.toolName::before {
+  background: url(/img/icons/16x16/tool-inversion.svg) no-repeat;
+  content: '';
+  display: block;
+  height: 1.6rem;
+  margin-right: 0.8rem;
+  width: 1.6rem;
+}

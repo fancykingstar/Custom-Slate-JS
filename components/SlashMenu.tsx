@@ -55,7 +55,6 @@ export const MENU_ITEMS: MenuItem[] = [
     title: SlashTitle.Categorizer,
     description: 'Know how to treat this decision',
     icon: '🍎',
-    comingSoon: true,
   },
   {
     category: Category.Thinking,

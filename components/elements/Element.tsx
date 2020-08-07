@@ -1,5 +1,9 @@
 import { DefaultElement, RenderElementProps } from 'slate-react';
 import {
+  CategorizerElement,
+  CategorizerWrapperElement,
+} from 'components/elements/Categorizer/CategorizerElement';
+import {
   ChoicesElement,
   ChoicesWrapperElement,
   ChoicesItemElement,
@@ -81,6 +85,8 @@ export default function Element(props: RenderElementProps): JSX.Element {
       );
     case BasicElement.ListItem:
       return <li {...attributes}>{children}</li>;
+    case CategorizerElement.Wrapper:
+      return <CategorizerWrapperElement {...props} />;
     case ChoicesElement.Wrapper:
       return <ChoicesWrapperElement {...props} />;
     case ChoicesElement.Item:

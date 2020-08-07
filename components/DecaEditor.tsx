@@ -11,11 +11,13 @@ import Element, {
   ReservedElement,
 } from 'components/elements/Element';
 import withLayout from 'components/editor/withLayout';
+import withVoids from 'components/editor/withVoids';
 import withMarkdown from 'components/editor/withMarkdown';
 import Assistant, { AssistantContent } from 'components/editor/Assistant';
 import Placeholder from 'components/editor/Placeholder';
 import Keys from 'components/editor/keys';
 import onElementKeyDown from 'components/elements/onElementKeyDown';
+import insertCategorizerTool from 'components/elements/Categorizer/insertCategorizerTool';
 import insertChoicesTool from 'components/elements/Choices/insertChoicesTool';
 import insertCriteriaTool from 'components/elements/Criteria/insertCriteriaTool';
 import insertGoalsTool from 'components/elements/Goals/insertGoalsTool';
@@ -32,7 +34,10 @@ export interface SlashPoint {
 export default function DecaEditor(): JSX.Element {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const editor = useMemo(
-    () => withMarkdown(withLayout(withHistory(withReact(createEditor())))),
+    () =>
+      withVoids(
+        withMarkdown(withLayout(withHistory(withReact(createEditor()))))
+      ),
     []
   );
   const [value, setValue] = useState<Node[]>([
@@ -93,7 +98,10 @@ export default function DecaEditor(): JSX.Element {
 
       Transforms.select(editor, slashRange);
 
-      if (item.title === SlashTitle.Choices) {
+      if (item.title === SlashTitle.Categorizer) {
+        insertCategorizerTool(editor);
+        incrementToolCount();
+      } else if (item.title === SlashTitle.Choices) {
         insertChoicesTool(editor);
         incrementToolCount();
       } else if (item.title === SlashTitle.Criteria) {
