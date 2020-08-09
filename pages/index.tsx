@@ -1,9 +1,29 @@
+import { useState } from 'react';
 import Head from 'next/head';
 import DecaEditor from 'components/DecaEditor';
 import styles from 'styles/Home.module.scss';
 import Header from 'components/Header';
+import {
+  CategorizerContext,
+  CategorizerDataCompleteness,
+  CategorizerEasyToCompare,
+  CategorizerEasyToReverse,
+} from 'components/context';
 
 export default function Home(): JSX.Element {
+  const [
+    easyToReverse,
+    setEasyToReverse,
+  ] = useState<CategorizerEasyToReverse | null>(null);
+  const [
+    easyToCompare,
+    setEasyToCompare,
+  ] = useState<CategorizerEasyToCompare | null>(null);
+  const [
+    dataCompleteness,
+    setDataCompleteness,
+  ] = useState<CategorizerDataCompleteness | null>(null);
+
   return (
     <>
       <Head>
@@ -20,10 +40,21 @@ export default function Home(): JSX.Element {
         />
       </Head>
 
-      <Header />
-      <main className={styles.main}>
-        <DecaEditor />
-      </main>
+      <CategorizerContext.Provider
+        value={{
+          easyToReverse,
+          easyToCompare,
+          dataCompleteness,
+          setEasyToReverse,
+          setEasyToCompare,
+          setDataCompleteness,
+        }}
+      >
+        <Header />
+        <main className={styles.main}>
+          <DecaEditor />
+        </main>
+      </CategorizerContext.Provider>
     </>
   );
 }
