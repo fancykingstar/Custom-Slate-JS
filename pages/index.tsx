@@ -5,24 +5,19 @@ import styles from 'styles/Home.module.scss';
 import Header from 'components/Header';
 import {
   CategorizerContext,
-  CategorizerDataCompleteness,
-  CategorizerEasyToCompare,
-  CategorizerEasyToReverse,
+  CategorizerReversibility,
+  CategorizerUnderstanding,
 } from 'components/context';
 
 export default function Home(): JSX.Element {
   const [
-    easyToReverse,
-    setEasyToReverse,
-  ] = useState<CategorizerEasyToReverse | null>(null);
+    reversibility,
+    setReversibility,
+  ] = useState<CategorizerReversibility | null>(null);
   const [
-    easyToCompare,
-    setEasyToCompare,
-  ] = useState<CategorizerEasyToCompare | null>(null);
-  const [
-    dataCompleteness,
-    setDataCompleteness,
-  ] = useState<CategorizerDataCompleteness | null>(null);
+    understanding,
+    setUnderstanding,
+  ] = useState<CategorizerUnderstanding | null>(null);
 
   return (
     <>
@@ -42,12 +37,10 @@ export default function Home(): JSX.Element {
 
       <CategorizerContext.Provider
         value={{
-          easyToReverse,
-          easyToCompare,
-          dataCompleteness,
-          setEasyToReverse,
-          setEasyToCompare,
-          setDataCompleteness,
+          reversibility,
+          understanding,
+          setReversibility,
+          setUnderstanding,
         }}
       >
         <Header />

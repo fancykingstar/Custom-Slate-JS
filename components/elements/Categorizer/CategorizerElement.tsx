@@ -2,9 +2,8 @@ import { useContext } from 'react';
 import { RenderElementProps, useSelected } from 'slate-react';
 import {
   CategorizerContext,
-  CategorizerDataCompleteness,
-  CategorizerEasyToCompare,
-  CategorizerEasyToReverse,
+  CategorizerReversibility,
+  CategorizerUnderstanding,
 } from 'components/context';
 import styles from './CategorizerElement.module.scss';
 
@@ -33,10 +32,10 @@ export function CategorizerWrapperElement(
           <label>
             <input
               type="radio"
-              name="reversible"
-              value="easy"
+              name="reversibility"
+              value="CategorizerReversibility.Reversible"
               onChange={() =>
-                context.setEasyToReverse(CategorizerEasyToReverse.Easy)
+                context.setReversibility(CategorizerReversibility.Reversible)
               }
             />{' '}
             Easy
@@ -44,10 +43,10 @@ export function CategorizerWrapperElement(
           <label>
             <input
               type="radio"
-              name="reversible"
-              value="hard"
+              name="reversibility"
+              value="CategorizerReversibility.NonReversible"
               onChange={() =>
-                context.setEasyToReverse(CategorizerEasyToReverse.Hard)
+                context.setReversibility(CategorizerReversibility.NonReversible)
               }
             />{' '}
             Hard
@@ -55,56 +54,29 @@ export function CategorizerWrapperElement(
         </div>
       </div>
       <div className={styles.text}>
-        Is it easy compare the choices?
+        How well do you understand this decision?
         <div className={styles.buttons}>
           <label>
             <input
               type="radio"
-              name="comparable"
-              value="easy"
+              name="understanding"
+              value="CategorizerUnderstanding.Deep"
               onChange={() =>
-                context.setEasyToCompare(CategorizerEasyToCompare.Easy)
+                context.setUnderstanding(CategorizerUnderstanding.Deep)
               }
             />{' '}
-            Easy
+            Deeply
           </label>
           <label>
             <input
               type="radio"
-              name="comparable"
-              value="hard"
+              name="understanding"
+              value="CategorizerUnderstanding.Weak"
               onChange={() =>
-                context.setEasyToCompare(CategorizerEasyToCompare.Hard)
+                context.setUnderstanding(CategorizerUnderstanding.Weak)
               }
             />{' '}
-            Hard
-          </label>
-        </div>
-      </div>
-      <div className={styles.text}>
-        How much of the relevant data do you have?
-        <div className={styles.buttons}>
-          <label>
-            <input
-              type="radio"
-              name="data"
-              value="most"
-              onChange={() =>
-                context.setDataCompleteness(CategorizerDataCompleteness.Most)
-              }
-            />{' '}
-            Most
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="data"
-              value="some"
-              onChange={() =>
-                context.setDataCompleteness(CategorizerDataCompleteness.Some)
-              }
-            />{' '}
-            Some
+            Weakly
           </label>
         </div>
       </div>

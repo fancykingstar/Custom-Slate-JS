@@ -1,31 +1,22 @@
 import { createContext } from 'react';
 
-export enum CategorizerEasyToReverse {
-  Easy = 'easy',
-  Hard = 'hard',
+export enum CategorizerReversibility {
+  Reversible = 'reversible',
+  NonReversible = 'non-reversibile',
 }
 
-export enum CategorizerEasyToCompare {
-  Easy = 'easy',
-  Hard = 'hard',
-}
-
-export enum CategorizerDataCompleteness {
-  Most = 'most',
-  Some = 'some',
+export enum CategorizerUnderstanding {
+  Deep = 'deep',
+  Weak = 'weak',
 }
 
 export const CategorizerContext = createContext({
-  easyToReverse: <CategorizerEasyToReverse | null>null,
-  easyToCompare: <CategorizerEasyToCompare | null>null,
-  dataCompleteness: <CategorizerDataCompleteness | null>null,
-  setEasyToReverse: (easyToReverse: CategorizerEasyToReverse) => {
+  reversibility: <CategorizerReversibility | null>null,
+  understanding: <CategorizerUnderstanding | null>null,
+  setReversibility: (reversibility: CategorizerReversibility) => {
     // Do nothing.
   },
-  setEasyToCompare: (easyToCompare: CategorizerEasyToCompare) => {
-    // Do nothing.
-  },
-  setDataCompleteness: (dataCompleteness: CategorizerDataCompleteness) => {
+  setUnderstanding: (understanding: CategorizerUnderstanding) => {
     // Do nothing.
   },
 });
