@@ -61,11 +61,12 @@ export function SimulationItemElement(props: RenderElementProps): JSX.Element {
   const selected = useSelected();
   const focused = useFocused();
   const { attributes, children, element } = props;
-  const nodePath = ReactEditor.findPath(editor, element);
   const { selection } = editor;
 
   const setProbability = useCallback(
     (newProbability: SimulationProbability) => {
+      const nodePath = ReactEditor.findPath(editor, element);
+
       Transforms.setNodes(
         editor,
         {
@@ -79,7 +80,7 @@ export function SimulationItemElement(props: RenderElementProps): JSX.Element {
       // Refocus on the editor after losing focus to the button
       ReactEditor.focus(editor);
     },
-    [editor, nodePath]
+    [editor, element]
   );
 
   const classNames = [
@@ -93,6 +94,7 @@ export function SimulationItemElement(props: RenderElementProps): JSX.Element {
 
   let placeholderText = 'What happens if this happens?';
 
+  const nodePath = ReactEditor.findPath(editor, element);
   const nodeIndex = nodePath[nodePath.length - 1];
   if (nodeIndex > 0) {
     const indent = element.indent as number;
@@ -182,6 +184,8 @@ function ProbabilityDot(props: ProbabilityDotProps): JSX.Element {
     } else if (probability === SimulationProbability.High) {
       newProbability = SimulationProbability.None;
     }
+
+    console.log(probability, newProbability);
 
     if (newProbability != null) {
       setProbability(newProbability);
