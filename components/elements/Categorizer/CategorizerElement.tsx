@@ -11,6 +11,33 @@ export enum CategorizerElement {
   Wrapper = 'categorizer-wrapper',
 }
 
+export function Wisdom(): JSX.Element | null {
+  const { reversibility, understanding } = useContext(CategorizerContext);
+
+  if (reversibility == null || understanding == null) {
+    return null;
+  }
+
+  let wisdom = null;
+  if (reversibility === CategorizerReversibility.Reversible) {
+    if (understanding === CategorizerUnderstanding.Deep) {
+      wisdom = 'Timebox this decision. You likely already know the answer.';
+    } else if (understanding === CategorizerUnderstanding.Weak) {
+      wisdom =
+        'Spend a bit more time to understand things. Then make the decision.';
+    }
+  } else if (reversibility === CategorizerReversibility.NonReversible) {
+    if (understanding === CategorizerUnderstanding.Deep) {
+      wisdom =
+        'This is a hard decision. But you’re close to making the decision.';
+    } else if (understanding === CategorizerUnderstanding.Weak) {
+      wisdom = 'Spend a lot more time to deeply understand this decision.';
+    }
+  }
+
+  return <div>{wisdom}</div>;
+}
+
 export function CategorizerWrapperElement(
   props: RenderElementProps
 ): JSX.Element {
@@ -26,10 +53,13 @@ export function CategorizerWrapperElement(
       contentEditable={false}
     >
       <h2 className={styles.toolName}>Categorizer</h2>
-      <div className={styles.text}>
+      <div className={styles.section}>
+        <Wisdom />
+      </div>
+      <div className={styles.section}>
         Is it easy to reverse the consequences of this decision?
         <div className={styles.buttons}>
-          <label>
+          <label className={styles.button}>
             <input
               type="radio"
               name="reversibility"
@@ -40,7 +70,7 @@ export function CategorizerWrapperElement(
             />{' '}
             Easy
           </label>
-          <label>
+          <label className={styles.button}>
             <input
               type="radio"
               name="reversibility"
@@ -53,10 +83,10 @@ export function CategorizerWrapperElement(
           </label>
         </div>
       </div>
-      <div className={styles.text}>
+      <div className={styles.section}>
         How well do you understand this decision?
         <div className={styles.buttons}>
-          <label>
+          <label className={styles.button}>
             <input
               type="radio"
               name="understanding"
@@ -67,7 +97,7 @@ export function CategorizerWrapperElement(
             />{' '}
             Deeply
           </label>
-          <label>
+          <label className={styles.button}>
             <input
               type="radio"
               name="understanding"

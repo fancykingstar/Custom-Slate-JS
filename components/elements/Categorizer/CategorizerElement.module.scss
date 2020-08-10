@@ -48,11 +48,19 @@
 }
 
 .buttons {
+  display: flex;
+  flex-direction: column;
   position: relative;
 }
 
-.text {
+.button {
+  font-size: 0.9em;
+  margin: 0.2rem;
+}
+
+.section {
   font-size: 1.6rem;
   font-weight: 500;
   line-height: 2.4rem;
+  margin: 0.8rem;
 }
