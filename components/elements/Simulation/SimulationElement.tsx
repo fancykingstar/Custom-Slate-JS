@@ -185,8 +185,6 @@ function ProbabilityDot(props: ProbabilityDotProps): JSX.Element {
       newProbability = SimulationProbability.None;
     }
 
-    console.log(probability, newProbability);
-
     if (newProbability != null) {
       setProbability(newProbability);
     }
