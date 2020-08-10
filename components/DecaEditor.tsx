@@ -22,7 +22,9 @@ import insertChoicesTool from 'components/elements/Choices/insertChoicesTool';
 import insertCriteriaTool from 'components/elements/Criteria/insertCriteriaTool';
 import insertGoalsTool from 'components/elements/Goals/insertGoalsTool';
 import insertInversionTool from 'components/elements/Inversion/insertInversionTool';
+import insertSimulationTool from 'components/elements/Simulation/insertSimulationTool';
 import { isTopLevelPath } from 'components/editor/queries';
+import withSimulationElement from 'components/elements/Simulation/withSimulationElement';
 import SlashMenu, { MENU_ITEMS, MenuItem, SlashTitle } from './SlashMenu';
 import styles from './DecaEditor.module.scss';
 
@@ -35,8 +37,10 @@ export default function DecaEditor(): JSX.Element {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const editor = useMemo(
     () =>
-      withVoids(
-        withMarkdown(withLayout(withHistory(withReact(createEditor()))))
+      withSimulationElement(
+        withVoids(
+          withMarkdown(withLayout(withHistory(withReact(createEditor()))))
+        )
       ),
     []
   );
@@ -100,26 +104,24 @@ export default function DecaEditor(): JSX.Element {
 
       if (item.title === SlashTitle.Categorizer) {
         insertCategorizerTool(editor);
-        incrementToolCount();
       } else if (item.title === SlashTitle.Choices) {
         insertChoicesTool(editor);
-        incrementToolCount();
       } else if (item.title === SlashTitle.Criteria) {
         insertCriteriaTool(editor);
-        incrementToolCount();
       } else if (item.title === SlashTitle.Goals) {
         insertGoalsTool(editor);
-        incrementToolCount();
       } else if (item.title === SlashTitle.Inversion) {
         insertInversionTool(editor);
-        incrementToolCount();
+      } else if (item.title === SlashTitle.Simulation) {
+        insertSimulationTool(editor);
       } else {
         Transforms.insertText(
           editor,
           `<FIXME: ${item.title} tool gets inserted here>`
         );
-        incrementToolCount();
       }
+
+      incrementToolCount();
 
       // Return focus to the editor (ex: when clicking on a slash menu item causes blur)
       ReactEditor.focus(editor);

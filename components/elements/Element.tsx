@@ -30,6 +30,12 @@ import {
   InversionSublistItemElement,
   InversionSublistItemParagraphElement,
 } from 'components/elements/Inversion/InversionElement';
+import {
+  SimulationElement,
+  SimulationToolElement,
+  SimulationChoiceElement,
+  SimulationItemElement,
+} from 'components/elements/Simulation/SimulationElement';
 import styles from './Element.module.scss';
 
 /**
@@ -117,6 +123,12 @@ export default function Element(props: RenderElementProps): JSX.Element {
       return <InversionSublistItemElement {...props} />;
     case InversionElement.ItemSublistItemParagraph:
       return <InversionSublistItemParagraphElement {...props} />;
+    case SimulationElement.Tool:
+      return <SimulationToolElement {...props} />;
+    case SimulationElement.Choice:
+      return <SimulationChoiceElement {...props} />;
+    case SimulationElement.Item:
+      return <SimulationItemElement {...props} />;
     default:
       return <DefaultElement {...props} />;
   }

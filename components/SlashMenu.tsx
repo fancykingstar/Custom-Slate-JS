@@ -20,7 +20,7 @@ export enum SlashTitle {
   Goals = 'Goals',
   Inversion = 'Inversion',
   ProsCons = 'Pros / Cons',
-  SecondOrder = '2nd Order Thinking',
+  Simulation = 'Simulation Thinking',
 }
 
 export interface MenuItem {
@@ -48,7 +48,7 @@ export const MENU_ITEMS: MenuItem[] = [
     category: Category.Planning,
     title: SlashTitle.Criteria,
     description: 'Ways to measure the options',
-    icon: '📏',
+    icon: '⚖️',
   },
   {
     category: Category.Planning,
@@ -64,10 +64,9 @@ export const MENU_ITEMS: MenuItem[] = [
   },
   {
     category: Category.Thinking,
-    title: SlashTitle.SecondOrder,
-    description: 'Look beyond immediate effects',
-    icon: '2️⃣',
-    comingSoon: true,
+    title: SlashTitle.Simulation,
+    description: 'Predict the future you want',
+    icon: '🧠',
   },
   {
     category: Category.Comparing,
