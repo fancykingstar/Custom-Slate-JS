@@ -36,14 +36,20 @@ export interface SlashPoint {
 export default function DecaEditor(): JSX.Element {
   // Prevent the user from accidentally closing or refreshing the prototype.
   useEffect(() => {
-    window.addEventListener('beforeunload', (event) => {
+    function beforeUnload(event: BeforeUnloadEvent) {
       // Cancel the event as stated by the standard.
       event.preventDefault();
       // Chrome requires returnValue to be set.
       // eslint-disable-next-line no-param-reassign
       event.returnValue = '';
-    });
-  });
+    }
+
+    window.addEventListener('beforeunload', beforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', beforeUnload);
+    };
+  }, []);
 
   const wrapperRef = useRef<HTMLDivElement>(null);
   const editor = useMemo(
