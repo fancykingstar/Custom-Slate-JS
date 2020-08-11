@@ -13,7 +13,10 @@ import Element, {
 import withLayout from 'components/editor/withLayout';
 import withVoids from 'components/editor/withVoids';
 import withMarkdown from 'components/editor/withMarkdown';
-import Assistant, { AssistantContent } from 'components/editor/Assistant';
+import Assistant, {
+  AssistantContent,
+  AssistantLine,
+} from 'components/editor/Assistant';
 import Placeholder from 'components/editor/Placeholder';
 import Keys from 'components/editor/keys';
 import onElementKeyDown from 'components/elements/onElementKeyDown';
@@ -73,22 +76,31 @@ export default function DecaEditor(): JSX.Element {
   ]);
   const renderElement = useCallback((props) => <Element {...props} />, []);
 
-  const [assistantContent, setAssistantContent] = useState<JSX.Element[]>([
-    AssistantContent.Default,
+  const [assistantLines, setAssistantLines] = useState<AssistantLine[]>([
+    {
+      content: AssistantContent.Default,
+      action: null,
+    },
   ]);
 
-  const pushAssistantContent = (newContent: JSX.Element) => {
-    setAssistantContent((content) => {
-      return [...content, newContent];
+  const pushAssistantLine = (line: AssistantLine) => {
+    setAssistantLines((lines) => {
+      return [...lines, line];
     });
   };
 
-  const shiftAssistantContent = () => {
-    setAssistantContent((content) => {
-      if (content.length === 1) {
-        return [AssistantContent.Default];
+  const shiftAssistantLine = () => {
+    setAssistantLines((lines) => {
+      if (lines.length === 1) {
+        return [
+          {
+            content: AssistantContent.Default,
+            action: null,
+          },
+        ];
       }
-      return content.slice(1);
+
+      return lines.slice(1);
     });
   };
 
@@ -98,9 +110,15 @@ export default function DecaEditor(): JSX.Element {
       const next = prev + 1;
 
       if (next === 1) {
-        pushAssistantContent(AssistantContent.Eliminate);
+        pushAssistantLine({
+          content: AssistantContent.Eliminate,
+          action: null,
+        });
       } else if (next === 2) {
-        pushAssistantContent(AssistantContent.Nudge);
+        pushAssistantLine({
+          content: AssistantContent.Nudge,
+          action: null,
+        });
       }
 
       return next;
@@ -123,6 +141,12 @@ export default function DecaEditor(): JSX.Element {
         insertCategorizerTool(editor);
       } else if (item.title === SlashTitle.Choices) {
         insertChoicesTool(editor);
+        pushAssistantLine({
+          content: AssistantContent.Goals,
+          action: (e: Editor) => {
+            insertGoalsTool(e);
+          },
+        });
       } else if (item.title === SlashTitle.Criteria) {
         insertCriteriaTool(editor);
       } else if (item.title === SlashTitle.Goals) {
@@ -167,6 +191,30 @@ export default function DecaEditor(): JSX.Element {
         }
       }
 
+      // Execute assistant action only when at the beginning of the line.
+      if (
+        isKeyHotkey('mod+enter', event) &&
+        selection != null &&
+        Range.isCollapsed(selection)
+      ) {
+        const [selectionStart] = Range.edges(selection);
+        const [node] = Editor.node(editor, selectionStart);
+        const [caretLine] = selection.anchor.path;
+
+        if (
+          caretLine > 0 &&
+          node.text === '' &&
+          isTopLevelPath(selectionStart.path)
+        ) {
+          const { action } = assistantLines[0];
+          if (action != null) {
+            action(editor);
+            event.preventDefault();
+            return;
+          }
+        }
+      }
+
       if (slashRange == null) {
         return;
       }
@@ -201,7 +249,7 @@ export default function DecaEditor(): JSX.Element {
         default:
       }
     },
-    [slashIndex, slashRange]
+    [assistantLines, slashIndex, slashRange]
   );
 
   const onChange = useCallback(
@@ -315,9 +363,9 @@ export default function DecaEditor(): JSX.Element {
         <Placeholder />
         <Assistant
           wrapperRef={wrapperRef}
-          content={assistantContent}
-          pushContent={pushAssistantContent}
-          shiftContent={shiftAssistantContent}
+          lines={assistantLines}
+          pushLine={pushAssistantLine}
+          shiftLine={shiftAssistantLine}
         />
         <Editable
           id="editor"

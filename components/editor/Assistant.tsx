@@ -10,9 +10,9 @@ const PLACEHOLDER_OFFSET = 1.0; // px
 
 interface Props {
   wrapperRef: RefObject<HTMLDivElement>;
-  content: Array<JSX.Element>;
-  pushContent: (newContent: JSX.Element) => void;
-  shiftContent: () => void;
+  lines: AssistantLine[];
+  pushLine: (line: AssistantLine) => void;
+  shiftLine: () => void;
 }
 
 export const AssistantContent = {
@@ -21,9 +21,15 @@ export const AssistantContent = {
       Start typing or press <kbd>/</kbd> to think
     </>
   ),
+  Goals: <>Have any goals in mind? |Add Goals tool Ctrl Enter|</>,
   Eliminate: <>Can you cross out some choices now?</>,
   Nudge: <>Could it be you’ve already made up your mind?</>,
 };
+
+export interface AssistantLine {
+  content: JSX.Element;
+  action: ((editor: Editor) => void) | null;
+}
 
 export default function Assistant(props: Props): JSX.Element {
   // Add `useSlate` to listen to every `onChange` event (unlike `useEditor`)
@@ -32,7 +38,7 @@ export default function Assistant(props: Props): JSX.Element {
   const [visible, setVisible] = useState(false);
   const [posY, setPosY] = useState(0);
 
-  const { wrapperRef, content, pushContent, shiftContent } = props;
+  const { wrapperRef, lines, pushLine, shiftLine } = props;
 
   // Handle assistant placeholder visibility
   useEffect(() => {
@@ -43,7 +49,7 @@ export default function Assistant(props: Props): JSX.Element {
       // Hide the assistant if it's visible
       if (visible) {
         setVisible(false);
-        shiftContent();
+        shiftLine();
       }
       return;
     }
@@ -54,7 +60,7 @@ export default function Assistant(props: Props): JSX.Element {
     // Never show assistant on 1st line
     if (caretLine === 0) {
       setVisible(false);
-      shiftContent();
+      shiftLine();
       return;
     }
 
@@ -88,7 +94,7 @@ export default function Assistant(props: Props): JSX.Element {
     }
 
     setVisible(false);
-    shiftContent();
+    shiftLine();
   }, [editor.selection, wrapperRef]);
 
   const timeoutId = useRef<number | null>(null);
@@ -97,7 +103,10 @@ export default function Assistant(props: Props): JSX.Element {
   useEffect(() => {
     if (visible && timeoutId.current == null) {
       timeoutId.current = window.setTimeout(() => {
-        pushContent(AssistantContent.Nudge);
+        pushLine({
+          content: AssistantContent.Nudge,
+          action: null,
+        });
       }, 5000);
     }
   }, [visible]);
@@ -109,7 +118,7 @@ export default function Assistant(props: Props): JSX.Element {
         transform: `translate3d(0, ${posY / 10}rem, 0)`,
       }}
     >
-      {content[0]}
+      {lines[0].content}
     </div>
   );
 }
