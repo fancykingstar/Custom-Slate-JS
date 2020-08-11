@@ -22,7 +22,6 @@ import Keys from 'components/editor/keys';
 import onElementKeyDown from 'components/elements/onElementKeyDown';
 import insertCategorizerTool from 'components/elements/Categorizer/insertCategorizerTool';
 import insertChoicesTool from 'components/elements/Choices/insertChoicesTool';
-import insertCriteriaTool from 'components/elements/Criteria/insertCriteriaTool';
 import insertGoalsTool from 'components/elements/Goals/insertGoalsTool';
 import insertInversionTool from 'components/elements/Inversion/insertInversionTool';
 import insertSimulationTool from 'components/elements/Simulation/insertSimulationTool';
@@ -147,8 +146,6 @@ export default function DecaEditor(): JSX.Element {
             insertGoalsTool(e);
           },
         });
-      } else if (item.title === SlashTitle.Criteria) {
-        insertCriteriaTool(editor);
       } else if (item.title === SlashTitle.Goals) {
         insertGoalsTool(editor);
       } else if (item.title === SlashTitle.Inversion) {

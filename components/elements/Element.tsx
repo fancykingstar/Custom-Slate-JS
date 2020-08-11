@@ -10,12 +10,6 @@ import {
   ChoicesItemTitleElement,
 } from 'components/elements/Choices/ChoicesElement';
 import {
-  CriteriaElement,
-  CriteriaWrapperElement,
-  CriteriaItemElement,
-  CriteriaItemTitleElement,
-} from 'components/elements/Criteria/CriteriaElement';
-import {
   GoalsElement,
   GoalsWrapperElement,
   GoalsItemElement,
@@ -99,12 +93,6 @@ export default function Element(props: RenderElementProps): JSX.Element {
       return <ChoicesItemElement {...props} />;
     case ChoicesElement.ItemTitle:
       return <ChoicesItemTitleElement {...props} />;
-    case CriteriaElement.Wrapper:
-      return <CriteriaWrapperElement {...props} />;
-    case CriteriaElement.Item:
-      return <CriteriaItemElement {...props} />;
-    case CriteriaElement.ItemTitle:
-      return <CriteriaItemTitleElement {...props} />;
     case GoalsElement.Wrapper:
       return <GoalsWrapperElement {...props} />;
     case GoalsElement.Item:
