@@ -204,6 +204,96 @@ export default function DecaEditor(): JSX.Element {
     [slashIndex, slashRange]
   );
 
+  const onChange = useCallback(
+    (newValue) => {
+      const { selection } = editor;
+      setValue(newValue);
+
+      // Close slash menu on editor blur
+      if (selection == null || !Range.isCollapsed(selection)) {
+        setSlashRange(null);
+        return;
+      }
+
+      const caretPoint = selection.anchor;
+      const [caretLine] = caretPoint.path;
+
+      // Determine if slash should be available
+      const [selectionStart] = Range.edges(selection);
+      const [node] = Editor.node(editor, selectionStart);
+      const slashAvailable =
+        node.text === '/' &&
+        selectionStart.offset === 1 &&
+        isTopLevelPath(caretPoint.path);
+
+      // Store selection range to calculate position of menu
+      const lineStart = Editor.before(editor, selectionStart, {
+        unit: 'line',
+      });
+      const lineRange =
+        lineStart && Editor.range(editor, lineStart, selectionStart);
+
+      // Open the slash menu if slash is the first and only char in a body line
+      if (
+        slashRange == null &&
+        lineRange != null &&
+        slashAvailable &&
+        caretLine > 0
+      ) {
+        setSlashRange(lineRange);
+        setSlashIndex(0);
+        return;
+      }
+
+      // Otherwise, close the slash menu if it's open
+      if (slashRange != null) {
+        setSlashRange(null);
+      }
+    },
+    [editor, slashRange, setSlashRange, setSlashIndex]
+  );
+
+  const onSelect = useCallback(() => {
+    // Handle autoscrolling
+    // - Via https://github.com/ianstormtaylor/slate/issues/3750#issuecomment-657783206
+    // - Modified to change the element that's scrolled into view to ensure it isn't off-screen
+    if (!(window.chrome || typeof InstallTrigger !== 'undefined')) {
+      return;
+    }
+
+    // Do nothing if there is no selection (or if it's a multi-line selection, which
+    // automatically scrolls already)
+    if (editor.selection == null || !Range.isCollapsed(editor.selection)) {
+      return;
+    }
+
+    try {
+      const domPoint = ReactEditor.toDOMPoint(editor, editor.selection.focus);
+      const [node] = domPoint;
+      if (node == null) {
+        return;
+      }
+
+      const element = node.parentElement;
+      if (element == null) {
+        return;
+      }
+
+      // Closest node that's a direct child of the editor (hacky and non-performant?)
+      const rootElement = element.closest('#editor > *');
+      if (rootElement == null) {
+        return;
+      }
+
+      rootElement.scrollIntoView({
+        block: 'nearest',
+        inline: 'start',
+      });
+    } catch (e) {
+      // No-op
+    }
+  }, [editor]);
+
   useEffect(() => {
     if (slashRange == null) {
       return;
@@ -221,55 +311,7 @@ export default function DecaEditor(): JSX.Element {
 
   return (
     <div className={styles.wrapper} ref={wrapperRef}>
-      <Slate
-        editor={editor}
-        value={value}
-        onChange={(newValue) => {
-          const { selection } = editor;
-          setValue(newValue);
-
-          // Close slash menu on editor blur
-          if (selection == null || !Range.isCollapsed(selection)) {
-            setSlashRange(null);
-            return;
-          }
-
-          const caretPoint = selection.anchor;
-          const [caretLine] = caretPoint.path;
-
-          // Determine if slash should be available
-          const [selectionStart] = Range.edges(selection);
-          const [node] = Editor.node(editor, selectionStart);
-          const slashAvailable =
-            node.text === '/' &&
-            selectionStart.offset === 1 &&
-            isTopLevelPath(caretPoint.path);
-
-          // Store selection range to calculate position of menu
-          const lineStart = Editor.before(editor, selectionStart, {
-            unit: 'line',
-          });
-          const lineRange =
-            lineStart && Editor.range(editor, lineStart, selectionStart);
-
-          // Open the slash menu if slash is the first and only char in a body line
-          if (
-            slashRange == null &&
-            lineRange != null &&
-            slashAvailable &&
-            caretLine > 0
-          ) {
-            setSlashRange(lineRange);
-            setSlashIndex(0);
-            return;
-          }
-
-          // Otherwise, close the slash menu if it's open
-          if (slashRange != null) {
-            setSlashRange(null);
-          }
-        }}
-      >
+      <Slate editor={editor} value={value} onChange={onChange}>
         <Placeholder />
         <Assistant
           wrapperRef={wrapperRef}
@@ -278,9 +320,11 @@ export default function DecaEditor(): JSX.Element {
           shiftContent={shiftAssistantContent}
         />
         <Editable
+          id="editor"
           autoFocus
           className={styles.editor}
           onKeyDown={onKeyDown}
+          onSelect={onSelect}
           renderElement={renderElement}
         />
         {slashRange != null && slashPos != null ? (

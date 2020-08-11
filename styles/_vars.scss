@@ -22,6 +22,15 @@
     Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 
   --header-height: 5.6rem;
+  --editor-width: 64rem;
   --editor-top-padding: 9.6rem;
   --editor-side-padding: 4.8rem;
+  --editor-bottom-padding: calc(
+    50vh - var(--editor-top-padding) - var(--header-height)
+  );
+
+  --scroll-bottom-padding: 6.4rem;
+
+  // TODO: Consolidate z-indices
+  --z-index-header: 20;
 }

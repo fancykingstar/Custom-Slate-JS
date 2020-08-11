@@ -15,5 +15,6 @@
   max-width: calc(64rem + (var(--editor-side-padding) * 2));
   min-height: calc(100vh - var(--header-height) - 3.2rem);
   // Give extra spacing to editor to click onto a line more easily
-  padding: var(--editor-top-padding) var(--editor-side-padding) 0;
+  padding: var(--editor-top-padding) var(--editor-side-padding)
+    var(--editor-bottom-padding);
 }

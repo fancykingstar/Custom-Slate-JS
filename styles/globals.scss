@@ -12,6 +12,9 @@ html {
   background: var(--color-bg-white);
   color: var(--color-fg-black);
   font-size: 62.5%;
+
+  // Ensures there's space in the editor when repeatedly creating new lines
+  scroll-padding-bottom: var(--scroll-bottom-padding);
 }
 
 body {
