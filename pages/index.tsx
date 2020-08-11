@@ -3,21 +3,13 @@ import Head from 'next/head';
 import DecaEditor from 'components/DecaEditor';
 import styles from 'styles/Home.module.scss';
 import Header from 'components/Header';
-import {
-  CategorizerContext,
-  CategorizerReversibility,
-  CategorizerUnderstanding,
-} from 'components/context';
+import { CategorizerContext, DecisionCategory } from 'components/context';
 
 export default function Home(): JSX.Element {
   const [
-    reversibility,
-    setReversibility,
-  ] = useState<CategorizerReversibility | null>(null);
-  const [
-    understanding,
-    setUnderstanding,
-  ] = useState<CategorizerUnderstanding | null>(null);
+    decisionCategory,
+    setDecisionCategory,
+  ] = useState<DecisionCategory | null>(null);
 
   return (
     <>
@@ -29,18 +21,12 @@ export default function Home(): JSX.Element {
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap"
           rel="stylesheet"
         />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&display=swap"
-          rel="stylesheet"
-        />
       </Head>
 
       <CategorizerContext.Provider
         value={{
-          reversibility,
-          understanding,
-          setReversibility,
-          setUnderstanding,
+          decisionCategory,
+          setDecisionCategory,
         }}
       >
         <Header />

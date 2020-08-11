@@ -11,9 +11,25 @@
 .content {
   align-items: center;
   display: flex;
+  justify-content: space-between;
   max-width: 114rem;
   padding: 0 0.8rem;
   width: 100%;
+}
+
+.left {
+  align-items: center;
+  display: flex;
+}
+
+.right {
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.right > * {
+  margin-left: 1.6rem;
 }
 
 .logo {
@@ -44,12 +60,59 @@
   width: 1.6rem;
 }
 
-.symbolBox {
-  border: solid 0.1rem var(--color-bg-gray-tertiary);
-  border-radius: 0.4rem;
-  margin: 0.4rem;
+.categoryPill {
+  align-items: center;
+  display: flex;
+  font-size: 1.3rem;
+  font-weight: 500;
+  height: 3.2rem;
+  padding: 0.8rem 1.4rem;
+  position: relative;
 }
 
-.symbol {
-  margin: 0.4rem;
+.categoryPill::before {
+  border-style: solid;
+  border-width: 1.6rem;
+  border-image: url(/img/dot-border-pill.svg) repeat;
+  border-image-slice: 16;
+  content: '';
+  display: block;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.categoryPill span {
+  align-items: center;
+  display: flex;
+  position: relative;
+}
+
+.categoryPill span::before {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 2rem;
+  content: '';
+  display: block;
+  height: 2rem;
+  margin-right: 0.8rem;
+  width: 2rem;
+}
+
+.categoryPill.fast span::before {
+  background-image: url(/img/icons/24x24/tool-categorizer-rabbit.svg);
+}
+
+.categoryPill.early span::before {
+  background-image: url(/img/icons/24x24/tool-categorizer-sunrise.svg);
+}
+
+.categoryPill.close span::before {
+  background-image: url(/img/icons/24x24/tool-categorizer-flag.svg);
+}
+
+.categoryPill.deliberate span::before {
+  background-image: url(/img/icons/24x24/tool-categorizer-tachometer.svg);
 }

@@ -1,22 +1,16 @@
 import { createContext } from 'react';
 
-export enum CategorizerReversibility {
-  Reversible = 'reversible',
-  NonReversible = 'non-reversibile',
-}
-
-export enum CategorizerUnderstanding {
-  Deep = 'deep',
-  Weak = 'weak',
+export enum DecisionCategory {
+  Fast = 'fast',
+  Early = 'early',
+  Close = 'close',
+  Deliberate = 'deliberate',
 }
 
 export const CategorizerContext = createContext({
-  reversibility: <CategorizerReversibility | null>null,
-  understanding: <CategorizerUnderstanding | null>null,
-  setReversibility: (reversibility: CategorizerReversibility) => {
-    // Do nothing.
-  },
-  setUnderstanding: (understanding: CategorizerUnderstanding) => {
+  decisionCategory: <DecisionCategory | null>null,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  setDecisionCategory: (category: DecisionCategory | null) => {
     // Do nothing.
   },
 });

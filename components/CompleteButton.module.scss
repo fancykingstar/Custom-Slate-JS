@@ -1,0 +1,36 @@
+.completeButton {
+  align-items: center;
+  background: var(--color-fg-black);
+  border-radius: 0.6rem;
+  border: none;
+  box-shadow: 0 0.1rem 1rem var(--color-shadow-large),
+    0 0.1rem 0.1rem var(--color-shadow-small);
+  color: var(--color-bg-white);
+  cursor: pointer;
+  display: flex;
+  font-size: 1.3rem;
+  font-weight: 500;
+  justify-content: center;
+  line-height: 1.6rem;
+  padding: 0.8rem 1.2rem;
+}
+
+.completeButton.complete {
+  background: var(--color-green);
+}
+
+.completeButton::before {
+  background-image: url(/img/icons/16x16/completed-false.svg);
+  background-size: 1.6rem;
+  background-position: center;
+  background-repeat: none;
+  content: '';
+  display: block;
+  height: 1.6rem;
+  margin-right: 0.6rem;
+  width: 1.6rem;
+}
+
+.completeButton.complete::before {
+  background-image: url(/img/icons/16x16/completed-true.svg);
+}

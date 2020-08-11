@@ -39,7 +39,7 @@
 }
 
 .toolName::before {
-  background: url(/img/icons/16x16/tool-choices.svg) no-repeat;
+  background: url(/img/icons/16x16/tool-criteria.svg) no-repeat;
   content: '';
   display: block;
   height: 1.6rem;
@@ -55,7 +55,6 @@
 }
 
 .item {
-  --color-criterion: var(--color-blue);
   counter-increment: number;
   margin: 0;
   padding: 0.6rem 0 0.6rem 4rem;
@@ -64,12 +63,28 @@
 
 .item::before {
   align-items: center;
-  background: var(--color-criterion);
-  border-radius: 50%;
-  color: var(--color-bg-white);
-  content: counter(number, upper-alpha);
+  box-shadow: 0 0 0 0.133rem var(--color-bg-gray-secondary);
+  border-radius: 0.2rem;
+  content: '';
   display: flex;
-  font-size: 1.3rem;
+  height: 1.6rem;
+  justify-content: center;
+  left: 0.4rem;
+  pointer-events: none;
+  position: absolute;
+  text-align: center;
+  top: 1rem;
+  transform: rotate(45deg);
+  width: 1.6rem;
+}
+
+.item::after {
+  align-items: center;
+  border-radius: 50%;
+  color: var(--color-fg-gray-primary);
+  content: counter(number, lower-alpha);
+  display: flex;
+  font-size: 1.2rem;
   font-weight: 700;
   height: 2.4rem;
   justify-content: center;
@@ -81,30 +96,6 @@
   text-align: center;
   top: 0.6rem;
   width: 2.4rem;
-}
-
-.item:nth-child(1)::before {
-  --color-criterion: var(--color-blue);
-}
-
-.item:nth-child(2)::before {
-  --color-criterion: var(--color-pink);
-}
-
-.item:nth-child(3)::before {
-  --color-criterion: var(--color-orange);
-}
-
-.item:nth-child(4)::before {
-  --color-criterion: var(--color-green);
-}
-
-.item:nth-child(5)::before {
-  --color-criterion: var(--color-red);
-}
-
-.item:nth-child(6)::before {
-  --color-criterion: var(--color-purple);
 }
 
 .itemTitle {

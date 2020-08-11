@@ -1,65 +1,60 @@
 import { useContext } from 'react';
 import Link from 'next/link';
-import {
-  CategorizerContext,
-  CategorizerReversibility,
-  CategorizerUnderstanding,
-} from 'components/context';
+import { CategorizerContext, DecisionCategory } from 'components/context';
+import CompleteButton from 'components/CompleteButton';
 import styles from './Header.module.scss';
-
-export function Reversibility(): JSX.Element | null {
-  const { reversibility } = useContext(CategorizerContext);
-
-  let symbol = null;
-  if (reversibility === CategorizerReversibility.Reversible) {
-    symbol = '↩️';
-  } else if (reversibility === CategorizerReversibility.NonReversible) {
-    symbol = '➡️';
-  }
-
-  if (symbol == null) {
-    return null;
-  }
-
-  return (
-    <div className={styles.symbolBox}>
-      <div className={styles.symbol}>{symbol}</div>
-    </div>
-  );
-}
-
-export function Understanding(): JSX.Element | null {
-  const { understanding } = useContext(CategorizerContext);
-
-  let symbol = null;
-  if (understanding === CategorizerUnderstanding.Deep) {
-    symbol = '🌲';
-  } else if (understanding === CategorizerUnderstanding.Weak) {
-    symbol = '🌱';
-  }
-
-  if (symbol == null) {
-    return null;
-  }
-
-  return (
-    <div className={styles.symbolBox}>
-      <div className={styles.symbol}>{symbol}</div>
-    </div>
-  );
-}
 
 export default function Header(): JSX.Element {
   return (
     <header className={styles.header}>
       <div className={styles.content}>
-        <Link href="/">
-          <a className={styles.logo}>Deca</a>
-        </Link>
-        <span className={styles.beta}>β</span>
+        <div className={styles.left}>
+          <Link href="/">
+            <a className={styles.logo}>Deca</a>
+          </Link>
+          <span className={styles.beta}>β</span>
+        </div>
+        <div className={styles.right}>
+          <Category />
+          <CompleteButton />
+        </div>
       </div>
-      <Reversibility />
-      <Understanding />
     </header>
+  );
+}
+
+function Category(): JSX.Element | null {
+  const { decisionCategory } = useContext(CategorizerContext);
+
+  if (decisionCategory == null) {
+    return null;
+  }
+
+  let title = null;
+
+  switch (decisionCategory) {
+    case DecisionCategory.Fast:
+      title = 'Fast decision';
+      break;
+    case DecisionCategory.Early:
+      title = 'Early decision';
+      break;
+    case DecisionCategory.Close:
+      title = 'Close decision';
+      break;
+    case DecisionCategory.Deliberate:
+      title = 'Deliberate decision';
+      break;
+    default:
+  }
+
+  if (title == null) {
+    return null;
+  }
+
+  return (
+    <div className={`${styles.categoryPill} ${styles[decisionCategory]}`}>
+      <span>{title}</span>
+    </div>
   );
 }
