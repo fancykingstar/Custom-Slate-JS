@@ -20,6 +20,7 @@ import insertChoicesTool from 'components/elements/Choices/insertChoicesTool';
 import insertGoalsTool from 'components/elements/Goals/insertGoalsTool';
 import insertInversionTool from 'components/elements/Inversion/insertInversionTool';
 import insertSimulationTool from 'components/elements/Simulation/insertSimulationTool';
+import insertProConTool from 'components/elements/ProCon/insertProConTool';
 import { isTopLevelPath } from 'components/editor/queries';
 import withSimulationElement from 'components/elements/Simulation/withSimulationElement';
 import AssistantContext, {
@@ -99,6 +100,8 @@ export default function DecaEditor(): JSX.Element {
         insertInversionTool(editor);
       } else if (item.title === SlashTitle.Simulation) {
         insertSimulationTool(editor);
+      } else if (item.title === SlashTitle.ProsCons) {
+        insertProConTool(editor);
       } else {
         Transforms.insertText(
           editor,

@@ -34,21 +34,27 @@ export default function insertSimulationTool(editor: Editor): void {
   );
 
   if (choices.length) {
-    choices.forEach((choice) => {
-      const [choiceNode] = choice;
-      const content = Node.string(choiceNode);
+    choices
+      // Ignore empty choices
+      .filter((choice) => {
+        const [choiceNode] = choice;
+        return Node.string(choiceNode).length;
+      })
+      .forEach((choice) => {
+        const [choiceNode] = choice;
+        const content = Node.string(choiceNode);
 
-      nodes.push({
-        type: SimulationElement.Choice,
-        children: [{ text: `Choice: ${content}` }],
+        nodes.push({
+          type: SimulationElement.Choice,
+          children: [{ text: `Choice: ${content}` }],
+        });
+        nodes.push({
+          type: SimulationElement.Item,
+          children: [{ text: '' }],
+          indent: 0,
+          probability: SimulationProbability.None,
+        });
       });
-      nodes.push({
-        type: SimulationElement.Item,
-        children: [{ text: '' }],
-        indent: 0,
-        probability: SimulationProbability.None,
-      });
-    });
 
     newSelection = newSelection.concat([1, 0]);
   } else {

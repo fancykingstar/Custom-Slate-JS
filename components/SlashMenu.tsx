@@ -63,16 +63,15 @@ export const MENU_ITEMS: MenuItem[] = [
   },
   {
     category: Category.Comparing,
-    title: SlashTitle.Comparison,
-    description: 'Compare choices by criteria',
-    icon: '🛒',
-    comingSoon: true,
-  },
-  {
-    category: Category.Comparing,
     title: SlashTitle.ProsCons,
     description: 'Simply compare each choice',
     icon: '🧾',
+  },
+  {
+    category: Category.Comparing,
+    title: SlashTitle.Comparison,
+    description: 'Compare choices by criteria',
+    icon: '🛒',
     comingSoon: true,
   },
 ];
