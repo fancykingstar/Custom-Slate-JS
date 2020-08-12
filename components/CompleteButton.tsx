@@ -18,7 +18,7 @@ export default function CompleteButton(): JSX.Element {
         setCompleted(!completed);
       }}
     >
-      {completed ? 'Completed' : 'Mark complete'}
+      <span>{completed ? 'Completed' : 'Mark complete'}</span>
     </button>
   );
 }

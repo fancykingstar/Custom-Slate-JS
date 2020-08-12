@@ -52,14 +52,16 @@
 
 .beta {
   align-items: center;
-  border: solid 0.1rem var(--color-black);
+  background: var(--color-black);
   border-radius: 50%;
-  color: var(--color-black);
+  color: var(--color-white);
   display: flex;
   font-size: 1.2rem;
+  font-weight: 500;
   height: 1.6rem;
   justify-content: center;
   margin: 0.2rem 0 0 1.2rem;
+  pointer-events: none;
   width: 1.6rem;
 }
 
