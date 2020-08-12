@@ -1,115 +1,51 @@
 import { useRef, useEffect } from 'react';
+import { MenuItem } from 'components/editor/SlashMenu/useSlashMenu';
 import styles from './SlashMenu.module.scss';
 
 interface Props {
   activeIndex: number;
+  items: MenuItem[];
   onAddTool: (item: MenuItem) => void;
 }
 
-enum Category {
-  Planning = 'Planning',
-  Thinking = 'Thinking',
-  Comparing = 'Comparing',
-}
-
-export enum SlashTitle {
-  Categorizer = 'Categorizer',
-  Choices = 'Choices',
-  Comparison = 'Comparison of Choices',
-  Goals = 'Goals',
-  Inversion = 'Inversion',
-  ProsCons = 'Pros / Cons',
-  Simulation = 'Simulation Thinking',
-}
-
-export interface MenuItem {
-  category: Category;
-  title: string;
-  description: string;
-  icon: string;
-  comingSoon?: boolean;
-}
-
-export const MENU_ITEMS: MenuItem[] = [
-  {
-    category: Category.Planning,
-    title: SlashTitle.Choices,
-    description: 'What are my options?',
-    icon: '🌈',
-  },
-  {
-    category: Category.Planning,
-    title: SlashTitle.Goals,
-    description: "What's the point?",
-    icon: '⭐️',
-  },
-  {
-    category: Category.Planning,
-    title: SlashTitle.Categorizer,
-    description: 'Know how to treat this decision',
-    icon: '🍎',
-  },
-  {
-    category: Category.Thinking,
-    title: SlashTitle.Inversion,
-    description: 'Flip your point of view',
-    icon: '⏳',
-  },
-  {
-    category: Category.Thinking,
-    title: SlashTitle.Simulation,
-    description: 'Predict the future you want',
-    icon: '🧠',
-  },
-  {
-    category: Category.Comparing,
-    title: SlashTitle.ProsCons,
-    description: 'Simply compare each choice',
-    icon: '🧾',
-  },
-  {
-    category: Category.Comparing,
-    title: SlashTitle.Comparison,
-    description: 'Compare choices by criteria',
-    icon: '🛒',
-    comingSoon: true,
-  },
-];
-
 export default function SlashMenu(props: Props): JSX.Element {
-  const { activeIndex, onAddTool } = props;
+  const { activeIndex, items, onAddTool } = props;
+
+  const availableMenuItems = items.filter(
+    (menuItem) => menuItem.comingSoon == null
+  );
 
   return (
     <div className={styles.wrapper}>
-      <ul className={styles.menu}>
-        {MENU_ITEMS.map((item, index) => {
-          const output = [];
+      {availableMenuItems.length ? (
+        <ul className={styles.menu}>
+          {items.map((item, index) => {
+            const output = [];
 
-          // If it's a new group, add a header
-          const prevItem = MENU_ITEMS[index - 1];
-          if (prevItem == null || item.category !== prevItem.category) {
+            // If it's a new group, add a header
+            const prevItem = items[index - 1];
+            if (prevItem == null || item.category !== prevItem.category) {
+              output.push(
+                <li key={item.category}>
+                  <h2>{item.category}</h2>
+                </li>
+              );
+            }
+
             output.push(
-              <li key={item.category}>
-                <h2>{item.category}</h2>
-              </li>
+              <SlashMenuItem
+                key={item.title}
+                isActive={item.title === availableMenuItems[activeIndex].title}
+                item={item}
+                onAddTool={onAddTool}
+              />
             );
-          }
-
-          const availableMenuItems = MENU_ITEMS.filter(
-            (menuItem) => menuItem.comingSoon == null
-          );
-
-          output.push(
-            <SlashMenuItem
-              key={item.title}
-              isActive={item.title === availableMenuItems[activeIndex].title}
-              item={item}
-              onAddTool={onAddTool}
-            />
-          );
-          return output;
-        })}
-      </ul>
+            return output;
+          })}
+        </ul>
+      ) : (
+        <p className={styles.empty}>Nothing found</p>
+      )}
     </div>
   );
 }
