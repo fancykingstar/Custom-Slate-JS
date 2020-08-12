@@ -33,14 +33,14 @@ function Category(): JSX.Element | null {
   let title = null;
 
   switch (decisionCategory) {
-    case DecisionCategory.Fast:
-      title = 'Fast decision';
+    case DecisionCategory.Snap:
+      title = 'Snap decision';
       break;
-    case DecisionCategory.Early:
-      title = 'Early decision';
+    case DecisionCategory.Timebox:
+      title = 'Timebox decision';
       break;
-    case DecisionCategory.Close:
-      title = 'Close decision';
+    case DecisionCategory.Leap:
+      title = 'Leap decision';
       break;
     case DecisionCategory.Deliberate:
       title = 'Deliberate decision';

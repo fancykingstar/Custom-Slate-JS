@@ -1,9 +1,9 @@
 import { createContext } from 'react';
 
 export enum DecisionCategory {
-  Fast = 'fast',
-  Early = 'early',
-  Close = 'close',
+  Snap = 'snap',
+  Timebox = 'timebox',
+  Leap = 'leap',
   Deliberate = 'deliberate',
 }
 

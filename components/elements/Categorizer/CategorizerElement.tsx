@@ -39,13 +39,13 @@ export function CategorizerWrapperElement(
     let category = null;
     if (reversibility === CategorizerReversibility.Reversible) {
       if (understanding === CategorizerUnderstanding.Deep) {
-        category = DecisionCategory.Fast;
+        category = DecisionCategory.Snap;
       } else if (understanding === CategorizerUnderstanding.Weak) {
-        category = DecisionCategory.Early;
+        category = DecisionCategory.Timebox;
       }
     } else if (reversibility === CategorizerReversibility.NonReversible) {
       if (understanding === CategorizerUnderstanding.Deep) {
-        category = DecisionCategory.Close;
+        category = DecisionCategory.Leap;
       } else if (understanding === CategorizerUnderstanding.Weak) {
         category = DecisionCategory.Deliberate;
       }
@@ -169,23 +169,25 @@ function Suggestion(props: SuggestionProps): JSX.Element | null {
   let body = null;
 
   switch (decisionCategory) {
-    case DecisionCategory.Fast:
-      title = 'Fast decision';
-      body = 'Timebox this decision. You likely already know the answer.';
-      break;
-    case DecisionCategory.Early:
-      title = 'Early decision';
+    case DecisionCategory.Snap:
+      title = 'Snap decision';
       body =
-        'Spend a bit more time to understand things. Then make the decision.';
+        'Make a quick decision based on what you already know. You probably know the answer.';
       break;
-    case DecisionCategory.Close:
-      title = 'Close decision';
+    case DecisionCategory.Timebox:
+      title = 'Timebox decision';
       body =
-        'This is a hard decision. But you’re close to making the decision.';
+        'Spend a bit more time to understand this decision, but timebox it. Then make the decision.';
+      break;
+    case DecisionCategory.Leap:
+      title = 'Leap decision';
+      body =
+        "You've done the work for this hard decision. Now lay out your thinking, then trust yourself to make the leap.";
       break;
     case DecisionCategory.Deliberate:
       title = 'Deliberate decision';
-      body = 'Spend a lot more time to deeply understand this decision.';
+      body =
+        'This is a hard decision. Spend a lot more time to deeply understand this decision.';
       break;
     default:
   }
