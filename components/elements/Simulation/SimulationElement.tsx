@@ -9,6 +9,7 @@ import {
 import { Range, Element, Editor, Transforms, Path, Node } from 'slate';
 import ToolWrapper from 'components/editor/ToolWrapper';
 import { IconToolSimulation } from 'components/icons/IconTool';
+import InlinePlaceholder from 'components/editor/InlinePlaceholder';
 import styles from './SimulationElement.module.scss';
 
 export enum SimulationElement {
@@ -45,11 +46,12 @@ export function SimulationChoiceElement(
   return (
     <h3 {...attributes} className={styles.choice}>
       {children}
-      <Placeholder
+      <InlinePlaceholder
         element={element}
-        text="What's a choice you want to simulate?"
-        emptyText="Untitled simulation topic…"
-      />
+        blurChildren="Untitled simulation topic…"
+      >
+        What’s a choice you want to simulate?
+      </InlinePlaceholder>
     </h3>
   );
 }
@@ -148,7 +150,9 @@ export function SimulationItemElement(props: RenderElementProps): JSX.Element {
       <li className={styles.itemContent}>
         {children}
         <ProbabilityDot element={element} setProbability={setProbability} />
-        <Placeholder element={element} text={placeholderText} />
+        <InlinePlaceholder element={element}>
+          {placeholderText}
+        </InlinePlaceholder>
       </li>
       {isNodeFocused ? (
         <Menu element={element} setProbability={setProbability} />
@@ -198,56 +202,6 @@ function ProbabilityDot(props: ProbabilityDotProps): JSX.Element {
     >
       {probability}
     </button>
-  );
-}
-
-interface PlaceholderProps {
-  element: Element;
-  text: string;
-  // eslint-disable-next-line react/require-default-props
-  emptyText?: string;
-}
-
-function Placeholder(props: PlaceholderProps): JSX.Element | null {
-  // BUG: Clicking on this node from a text selection that includes this node will
-  // cause `useEditor()` to not re-render. We use `useEditor` instead of `useSlate`,
-  // however, to favor performance over correctness in this edge-case.
-  const editor = useEditor();
-  const selected = useSelected();
-  const focused = useFocused();
-  const { selection } = editor;
-  const { element, text, emptyText } = props;
-
-  const isEmpty = Editor.isEmpty(editor, element);
-
-  if (!selected || !focused || !isEmpty) {
-    if (isEmpty && emptyText != null) {
-      return (
-        <span className={styles.placeholder} contentEditable={false}>
-          {emptyText}
-        </span>
-      );
-    }
-
-    return null;
-  }
-
-  if (selection == null || !Range.isCollapsed(selection)) {
-    return null;
-  }
-
-  const nodePath = ReactEditor.findPath(editor, element);
-  const [, selectionPath] = Editor.node(editor, selection);
-  const [, selectionParentPath] = Editor.parent(editor, selectionPath);
-
-  if (!Path.equals(selectionParentPath, nodePath)) {
-    return null;
-  }
-
-  return (
-    <span className={styles.placeholder} contentEditable={false}>
-      {text}
-    </span>
   );
 }
 

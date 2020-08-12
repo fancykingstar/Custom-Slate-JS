@@ -1,7 +1,8 @@
-import { RenderElementProps, useSelected } from 'slate-react';
-import { Node } from 'slate';
+import { RenderElementProps, useEditor, ReactEditor } from 'slate-react';
+import { Path } from 'slate';
 import ToolWrapper from 'components/editor/ToolWrapper';
 import { IconToolGoals } from 'components/icons/IconTool';
+import InlinePlaceholder from 'components/editor/InlinePlaceholder';
 import styles from './GoalsElement.module.scss';
 
 export enum GoalsElement {
@@ -31,18 +32,28 @@ export function GoalsItemElement(props: RenderElementProps): JSX.Element {
 }
 
 export function GoalsItemTitleElement(props: RenderElementProps): JSX.Element {
-  const selected = useSelected();
+  const editor = useEditor();
   const { attributes, children, element } = props;
-  const showPlaceholder = selected && !Node.string(element).length;
+
+  let nodeIndex = 0;
+
+  const nodePath = ReactEditor.findPath(editor, element);
+  if (nodePath.length > 0) {
+    const parentPath = Path.parent(nodePath);
+    nodeIndex = parentPath[parentPath.length - 1];
+  }
+
+  const placeholderText =
+    nodeIndex === 0
+      ? 'What’s one of your goals?'
+      : 'What’s another goal for this decision?';
 
   return (
     <h3 {...attributes} className={styles.itemTitle}>
-      {showPlaceholder ? (
-        <div className={styles.placeholder} contentEditable={false}>
-          What's one of your goals?
-        </div>
-      ) : null}
       {children}
+      <InlinePlaceholder element={element} blurChildren="Untitled goal…">
+        {placeholderText}
+      </InlinePlaceholder>
     </h3>
   );
 }

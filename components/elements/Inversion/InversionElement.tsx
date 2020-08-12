@@ -1,7 +1,8 @@
-import { RenderElementProps, useSelected } from 'slate-react';
-import { Node } from 'slate';
+import { RenderElementProps, useEditor, ReactEditor } from 'slate-react';
+import { Path } from 'slate';
 import ToolWrapper from 'components/editor/ToolWrapper';
 import { IconToolInversion } from 'components/icons/IconTool';
+import InlinePlaceholder from 'components/editor/InlinePlaceholder';
 import styles from './InversionElement.module.scss';
 
 export enum InversionElement {
@@ -42,20 +43,28 @@ export function InversionItemElement(props: RenderElementProps): JSX.Element {
 export function InversionItemTitleElement(
   props: RenderElementProps
 ): JSX.Element {
-  const selected = useSelected();
+  const editor = useEditor();
   const { attributes, children, element } = props;
-  const showPlaceholder = selected && !Node.string(element).length;
 
-  // TODO: Make placeholder more dynamic based on nesting and index in list
+  let nodeIndex = 0;
+
+  const nodePath = ReactEditor.findPath(editor, element);
+  if (nodePath.length > 0) {
+    const parentPath = Path.parent(nodePath);
+    nodeIndex = parentPath[parentPath.length - 1];
+  }
+
+  const placeholderText =
+    nodeIndex === 0
+      ? 'What’s one of the worst choices you could make?'
+      : 'What’s another bad choice for this decision?';
 
   return (
     <h3 {...attributes} className={styles.itemTitle}>
-      {showPlaceholder ? (
-        <div className={styles.placeholder} contentEditable={false}>
-          What’s one of the worst choices you could make?
-        </div>
-      ) : null}
       {children}
+      <InlinePlaceholder element={element} blurChildren="Untitled bad choice…">
+        {placeholderText}
+      </InlinePlaceholder>
     </h3>
   );
 }
@@ -87,20 +96,26 @@ export function InversionSublistItemElement(
 export function InversionSublistItemParagraphElement(
   props: RenderElementProps
 ): JSX.Element {
-  const selected = useSelected();
+  const editor = useEditor();
   const { attributes, children, element } = props;
-  const showPlaceholder = selected && !Node.string(element).length;
 
-  // TODO: Make placeholder more dynamic based on nesting and index in list
+  let nodeIndex = 0;
+
+  const nodePath = ReactEditor.findPath(editor, element);
+  if (nodePath.length > 0) {
+    const parentPath = Path.parent(nodePath);
+    nodeIndex = parentPath[parentPath.length - 1];
+  }
+
+  const placeholderText =
+    nodeIndex === 0
+      ? 'Why is this a bad choice?'
+      : 'What’s another reason this is a bad choice?';
 
   return (
     <p {...attributes} className={styles.sublistItemParagraph}>
-      {showPlaceholder ? (
-        <span className={styles.placeholder} contentEditable={false}>
-          Why is this a bad choice?
-        </span>
-      ) : null}
       {children}
+      <InlinePlaceholder element={element}>{placeholderText}</InlinePlaceholder>
     </p>
   );
 }

@@ -1,13 +1,12 @@
 .placeholder {
   color: var(--color-bg-gray-primary);
+  display: block;
   font-weight: 400;
-  left: 0;
   pointer-events: none;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   user-select: none;
   white-space: nowrap;
-
-  // TODO: Research best way to put placeholder below text caret (not negative z-index?)
+  z-index: 0;
 }

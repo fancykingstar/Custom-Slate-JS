@@ -18,3 +18,11 @@
   padding: var(--editor-top-padding) var(--editor-side-padding)
     var(--editor-bottom-padding);
 }
+
+// Ensures that the input caret is above inline placeholders.
+// Could cause unexpected overlapping elements in the future.
+.editor span[data-slate-node='text'] {
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+}

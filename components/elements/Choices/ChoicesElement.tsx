@@ -1,7 +1,8 @@
-import { RenderElementProps, useSelected } from 'slate-react';
-import { Node } from 'slate';
+import { RenderElementProps, useEditor, ReactEditor } from 'slate-react';
 import ToolWrapper from 'components/editor/ToolWrapper';
 import { IconToolChoices } from 'components/icons/IconTool';
+import InlinePlaceholder from 'components/editor/InlinePlaceholder';
+import { Path } from 'slate';
 import styles from './ChoicesElement.module.scss';
 
 export enum ChoicesElement {
@@ -35,18 +36,28 @@ export function ChoicesItemElement(props: RenderElementProps): JSX.Element {
 export function ChoicesItemTitleElement(
   props: RenderElementProps
 ): JSX.Element {
-  const selected = useSelected();
+  const editor = useEditor();
   const { attributes, children, element } = props;
-  const showPlaceholder = selected && !Node.string(element).length;
+
+  let nodeIndex = 0;
+
+  const nodePath = ReactEditor.findPath(editor, element);
+  if (nodePath.length > 0) {
+    const parentPath = Path.parent(nodePath);
+    nodeIndex = parentPath[parentPath.length - 1];
+  }
+
+  const placeholderText =
+    nodeIndex === 0
+      ? 'What’s one of your options?'
+      : 'What’s another option you could take?';
 
   return (
     <h3 {...attributes} className={styles.itemTitle}>
-      {showPlaceholder ? (
-        <div className={styles.placeholder} contentEditable={false}>
-          What's one of your options?
-        </div>
-      ) : null}
       {children}
+      <InlinePlaceholder element={element} blurChildren="Untitled choice…">
+        {placeholderText}
+      </InlinePlaceholder>
     </h3>
   );
 }

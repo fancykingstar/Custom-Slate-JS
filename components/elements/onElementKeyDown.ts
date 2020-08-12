@@ -1,7 +1,7 @@
 import { Editor } from 'slate';
-import onKeyDownList from 'components/elements/List/List';
-import onKeyDownChoices from 'components/elements/Choices/Choices';
-import onKeyDownGoals from 'components/elements/Goals/Goals';
+import onKeyDownList from 'components/elements/List/onKeyDownList';
+import onKeyDownChoices from 'components/elements/Choices/onKeyDownChoices';
+import onKeyDownGoals from 'components/elements/Goals/onKeyDownGoals';
 import onKeyDownInversion from 'components/elements/Inversion/onKeyDownInversion';
 import onKeyDownSimulation from 'components/elements/Simulation/onKeyDownSimulation';
 
