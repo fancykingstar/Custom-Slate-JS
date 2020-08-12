@@ -1,6 +1,7 @@
 import { useEffect, useRef, useContext, useMemo } from 'react';
 import { useEditor } from 'slate-react';
 import { Node } from 'slate';
+import { add, isAfter } from 'date-fns';
 import { CategorizerElement } from 'components/elements/Categorizer/CategorizerElement';
 import { ChoicesElement } from 'components/elements/Choices/ChoicesElement';
 import { GoalsElement } from 'components/elements/Goals/GoalsElement';
@@ -20,10 +21,13 @@ const Tools: string[] = [
   SimulationElement.Tool,
 ];
 
-interface Flags {
+interface State {
   showTimeoutNudge: boolean;
   shouldSetTimeoutNudge: boolean;
   showedEliminatePrompt: boolean;
+  slash: {
+    whenShownMillis: number | null;
+  };
 }
 
 // Hacky global variable to store shared flags without causing re-renders
@@ -31,10 +35,13 @@ interface Flags {
 //
 // NOTE: A full-page refresh is required to reset these (fast refresh will not
 // do it for you).
-let assistantFlags: Flags = {
+let assistantState: State = {
   showTimeoutNudge: false,
   shouldSetTimeoutNudge: true,
   showedEliminatePrompt: false,
+  slash: {
+    whenShownMillis: null,
+  },
 };
 
 /**
@@ -42,12 +49,36 @@ let assistantFlags: Flags = {
  */
 function getAssistantPrompt(
   nodes: Node[]
-): [React.ReactNode, AssistantAction[], Partial<Flags>] {
+): [React.ReactNode, AssistantAction[], Partial<State>] {
   const tools = nodes.filter((node) => Tools.includes(node.type as string));
   const toolCount = tools.length;
+  const now: Date = new Date();
+
+  if (
+    assistantState.slash.whenShownMillis == null ||
+    isAfter(
+      now,
+      add(new Date(assistantState.slash.whenShownMillis), {
+        minutes: 5,
+      })
+    )
+  ) {
+    return [
+      <>
+        Start typing or press <kbd className={styles.kbd}>/</kbd> to think
+      </>,
+      [],
+      {
+        slash: {
+          ...assistantState.slash,
+          whenShownMillis: Date.now(),
+        },
+      },
+    ];
+  }
 
   // Case: Timeout finished and takes priority
-  if (assistantFlags.showTimeoutNudge) {
+  if (assistantState.showTimeoutNudge) {
     return [
       'Could it be you’ve already made up your mind?',
       [],
@@ -64,7 +95,7 @@ function getAssistantPrompt(
   if (
     usedChoiceTool &&
     toolCount === 1 &&
-    !assistantFlags.showedEliminatePrompt
+    !assistantState.showedEliminatePrompt
   ) {
     return [
       'Can you cross out some choices now?',
@@ -107,7 +138,7 @@ export default function AssistantPrompt(): JSX.Element {
   const { children } = editor;
 
   // Only update the content when the doc changes
-  const [content, newActions, flagsUpdates] = useMemo(() => {
+  const [content, newActions, stateUpdates] = useMemo(() => {
     return getAssistantPrompt(children);
   }, [children]);
 
@@ -117,25 +148,25 @@ export default function AssistantPrompt(): JSX.Element {
     setActions(newActions);
 
     // Update flags
-    assistantFlags = {
-      ...assistantFlags,
-      ...flagsUpdates,
+    assistantState = {
+      ...assistantState,
+      ...stateUpdates,
     };
 
     // Set timer for nudge if we haven't already
-    if (assistantFlags.shouldSetTimeoutNudge) {
+    if (assistantState.shouldSetTimeoutNudge) {
       timeoutId.current = window.setTimeout(() => {
         // Make the nudge visible
-        assistantFlags.showTimeoutNudge = true;
+        assistantState.showTimeoutNudge = true;
 
         if (timeoutId.current != null) {
           window.clearTimeout(timeoutId.current);
           timeoutId.current = null;
         }
       }, 5000);
-      assistantFlags.shouldSetTimeoutNudge = false;
+      assistantState.shouldSetTimeoutNudge = false;
     }
-  }, [content, newActions, flagsUpdates]);
+  }, [content, newActions, stateUpdates]);
 
   return <>{content}</>;
 }

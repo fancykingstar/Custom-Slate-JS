@@ -23,6 +23,7 @@
     ]
   },
   "dependencies": {
+    "date-fns": "^2.15.0",
     "is-hotkey": "^0.1.6",
     "next": "9.5.2",
     "react": "16.13.1",
