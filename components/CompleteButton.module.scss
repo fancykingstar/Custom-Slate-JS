@@ -1,11 +1,11 @@
 .completeButton {
   align-items: center;
-  background: var(--color-fg-black);
+  background: var(--color-black);
   border-radius: 0.6rem;
   border: none;
   box-shadow: 0 0.1rem 1rem var(--color-shadow-large),
     0 0.1rem 0.1rem var(--color-shadow-small);
-  color: var(--color-bg-white);
+  color: var(--color-white);
   cursor: pointer;
   display: flex;
   font-size: 1.3rem;

@@ -1,0 +1,47 @@
+.wrapper {
+  margin: 4rem 0;
+  position: relative;
+}
+
+.wrapper::before {
+  background: var(--color-white);
+  border-radius: 1.6rem;
+  box-shadow: 0 0.1rem 0.3rem var(--color-shadow-large),
+    0 0.3rem 1rem transparent, inset 0 0 0 0.1rem var(--color-bg-gray-tertiary);
+  content: '';
+  cursor: text;
+  display: block;
+  height: calc(100% + 3.2rem);
+  left: -1.6rem;
+  position: absolute;
+  top: -1.6rem;
+  transition: box-shadow 200ms ease;
+  width: calc(100% + 3.2rem);
+}
+
+.wrapper.active::before {
+  box-shadow: 0 0.1rem 0.3rem var(--color-shadow-large),
+    0 0.3rem 1rem var(--color-shadow-large),
+    inset 0 0 0 0.1rem var(--color-bg-gray-tertiary);
+}
+
+.toolName {
+  align-items: center;
+  color: var(--color-bg-gray-primary);
+  display: flex;
+  font-size: 1.1rem;
+  font-weight: 500;
+  justify-content: flex-end;
+  left: -4rem;
+  line-height: 1.3rem;
+  pointer-events: none;
+  position: absolute;
+  text-align: right;
+  top: 0;
+  transform: translateX(-100%);
+  user-select: none;
+}
+
+.toolName svg {
+  margin-right: 0.8rem;
+}

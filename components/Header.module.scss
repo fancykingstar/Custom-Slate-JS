@@ -1,6 +1,6 @@
 .header {
   align-items: center;
-  background: var(--color-bg-white);
+  background: var(--color-white);
   border-bottom: solid 0.1rem var(--color-bg-gray-tertiary);
   display: flex;
   height: var(--header-height);
@@ -37,7 +37,7 @@
 
 .logo {
   align-items: center;
-  color: var(--color-fg-black);
+  color: var(--color-black);
   display: flex;
   font-family: var(--font-serif);
   font-size: 2.4rem;
@@ -52,9 +52,9 @@
 
 .beta {
   align-items: center;
-  border: solid 0.1rem var(--color-fg-black);
+  border: solid 0.1rem var(--color-black);
   border-radius: 50%;
-  color: var(--color-fg-black);
+  color: var(--color-black);
   display: flex;
   font-size: 1.2rem;
   height: 1.6rem;
@@ -104,16 +104,16 @@
   width: 2rem;
 }
 
-.categoryPill.fast span::before {
+.categoryPill.snap span::before {
   background-image: url(/img/icons/24x24/tool-categorizer-rabbit.svg);
 }
 
-.categoryPill.early span::before {
-  background-image: url(/img/icons/24x24/tool-categorizer-sunrise.svg);
+.categoryPill.timebox span::before {
+  background-image: url(/img/icons/24x24/tool-categorizer-clock.svg);
 }
 
-.categoryPill.close span::before {
-  background-image: url(/img/icons/24x24/tool-categorizer-flag.svg);
+.categoryPill.leap span::before {
+  background-image: url(/img/icons/24x24/tool-categorizer-hoop.svg);
 }
 
 .categoryPill.deliberate span::before {

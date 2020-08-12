@@ -7,6 +7,8 @@ import {
   useFocused,
 } from 'slate-react';
 import { Range, Element, Editor, Transforms, Path, Node } from 'slate';
+import ToolWrapper from 'components/editor/ToolWrapper';
+import { IconToolSimulation } from 'components/icons/IconTool';
 import styles from './SimulationElement.module.scss';
 
 export enum SimulationElement {
@@ -23,19 +25,15 @@ export enum SimulationProbability {
 }
 
 export function SimulationToolElement(props: RenderElementProps): JSX.Element {
-  const selected = useSelected();
   const { attributes, children } = props;
-
   return (
-    <div
-      {...attributes}
-      className={`${styles.wrapper} ${selected ? styles.active : ''}`}
+    <ToolWrapper
+      attributes={attributes}
+      name="Simulation"
+      icon={<IconToolSimulation />}
     >
       {children}
-      <h2 className={styles.toolName} contentEditable={false}>
-        Simulation
-      </h2>
-    </div>
+    </ToolWrapper>
   );
 }
 

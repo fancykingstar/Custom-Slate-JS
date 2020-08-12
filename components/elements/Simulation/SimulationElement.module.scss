@@ -1,57 +1,3 @@
-.wrapper {
-  margin: 3.2rem 0;
-  position: relative;
-}
-
-.wrapper::before {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(1rem) saturate(150%) brightness(150%);
-  border-radius: 1rem;
-  box-shadow: 0 0.1rem 0.3rem var(--color-shadow-large),
-    inset 0 0 0 0.1rem var(--color-bg-gray-tertiary);
-  content: '';
-  cursor: text;
-  display: block;
-  height: calc(100% + 3.2rem);
-  left: -1.6rem;
-  opacity: 0;
-  pointer-events: none;
-  position: absolute;
-  top: -1.6rem;
-  transition: opacity 200ms ease;
-  width: calc(100% + 3.2rem);
-}
-
-.wrapper.active::before,
-.wrapper:hover::before {
-  opacity: 1;
-}
-
-.toolName {
-  align-items: center;
-  color: var(--color-bg-gray-primary);
-  display: flex;
-  font-size: 1.1rem;
-  font-weight: 500;
-  justify-content: flex-end;
-  left: -12rem;
-  line-height: 1.3rem;
-  position: absolute;
-  text-align: right;
-  top: 0;
-  user-select: none;
-  width: 8rem;
-}
-
-.toolName::before {
-  background: url(/img/icons/16x16/tool-simulation.svg) no-repeat;
-  content: '';
-  display: block;
-  height: 1.6rem;
-  margin-right: 0.8rem;
-  width: 1.6rem;
-}
-
 .choice {
   font-size: 1.6rem;
   font-weight: 500;
@@ -124,7 +70,7 @@
 }
 
 .probabilityDot::before {
-  background: var(--color-bg-white);
+  background: var(--color-white);
   border: dashed 0.1rem transparent;
   border-radius: 50%;
   content: '';
@@ -181,7 +127,7 @@
 }
 
 .probabilityDot.probability-none::before {
-  background: var(--color-bg-white);
+  background: var(--color-white);
   border-color: var(--color-fg-gray-primary);
   transform: scale(0.7);
 }
@@ -197,11 +143,11 @@
 
 .menu {
   align-items: center;
-  background: rgba(250, 250, 250, 0.78);
+  background: var(--color-white-overlay);
   backdrop-filter: blur(0.4rem);
   border-radius: 0.6rem;
-  box-shadow: 0 0.1rem 1rem rgba(20, 20, 20, 0.04),
-    0 0.1rem 0.3rem rgba(20, 20, 20, 0.08),
+  box-shadow: 0 0.1rem 1rem var(--color-shadow-large),
+    0 0.1rem 0.3rem var(--color-shadow-small),
     0 0 0 0.1rem var(--color-bg-gray-secondary);
   display: flex;
   height: 3.2rem;
@@ -306,7 +252,7 @@
 }
 
 input[type='radio']:checked + .probabilityMenuItem .noneCircle {
-  stroke: var(--color-bg-white);
+  stroke: var(--color-white);
 }
 
 .noneCircleBG {
@@ -340,11 +286,11 @@ input[type='radio']:checked + .probabilityMenuItem .highCircle {
 }
 
 .tooltip {
-  background: rgba(20, 20, 20, 0.78);
+  background: var(--color-black-overlay);
   backdrop-filter: blur(1rem);
   border-radius: 0.4rem;
   bottom: -100%;
-  color: var(--color-bg-white);
+  color: var(--color-white);
   display: none;
   font-size: 1.1rem;
   font-weight: 500;
@@ -356,7 +302,7 @@ input[type='radio']:checked + .probabilityMenuItem .highCircle {
 }
 
 .tooltip::before {
-  background: rgba(20, 20, 20, 0.78);
+  background: var(--color-black-overlay);
   border-top-left-radius: 0.6rem;
   border-top-right-radius: 0.6rem;
   content: '';

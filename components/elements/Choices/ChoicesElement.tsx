@@ -1,5 +1,7 @@
 import { RenderElementProps, useSelected } from 'slate-react';
 import { Node } from 'slate';
+import ToolWrapper from 'components/editor/ToolWrapper';
+import { IconToolChoices } from 'components/icons/IconTool';
 import styles from './ChoicesElement.module.scss';
 
 export enum ChoicesElement {
@@ -9,24 +11,20 @@ export enum ChoicesElement {
 }
 
 export function ChoicesWrapperElement(props: RenderElementProps): JSX.Element {
-  const selected = useSelected();
   const { attributes, children } = props;
-
   return (
-    <div className={`${styles.wrapper} ${selected ? styles.active : ''}`}>
-      <h2 className={styles.toolName} contentEditable={false}>
-        Choices
-      </h2>
-      <ul {...attributes} className={styles.list}>
-        {children}
-      </ul>
-    </div>
+    <ToolWrapper
+      attributes={attributes}
+      name="Choices"
+      icon={<IconToolChoices />}
+    >
+      <ul className={styles.list}>{children}</ul>
+    </ToolWrapper>
   );
 }
 
 export function ChoicesItemElement(props: RenderElementProps): JSX.Element {
   const { attributes, children } = props;
-
   return (
     <li {...attributes} className={styles.item}>
       {children}

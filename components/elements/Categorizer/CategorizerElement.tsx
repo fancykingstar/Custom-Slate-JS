@@ -1,6 +1,8 @@
 import { useContext, useState, useEffect } from 'react';
-import { RenderElementProps, useSelected } from 'slate-react';
+import { RenderElementProps } from 'slate-react';
 import { CategorizerContext, DecisionCategory } from 'components/context';
+import ToolWrapper from 'components/editor/ToolWrapper';
+import { IconToolCategorizer } from 'components/icons/IconTool';
 import styles from './CategorizerElement.module.scss';
 
 export enum CategorizerElement {
@@ -20,9 +22,7 @@ export enum CategorizerUnderstanding {
 export function CategorizerWrapperElement(
   props: RenderElementProps
 ): JSX.Element {
-  const selected = useSelected();
   const { attributes, children } = props;
-
   // TODO: Move categorizer state to slate doc structure to preserve data on undo
   const [
     reversibility,
@@ -65,65 +65,70 @@ export function CategorizerWrapperElement(
   }, []);
 
   return (
-    <div
-      {...attributes}
-      className={`${styles.wrapper} ${selected ? styles.active : ''}`}
-      contentEditable={false}
+    <ToolWrapper
+      attributes={attributes}
+      name="Categorizer"
+      icon={<IconToolCategorizer />}
     >
-      <h2 className={styles.toolName}>Categorizer</h2>
-      <div className={styles.grid}>
-        <div className={styles.section}>
-          <p className={styles.question}>
-            Is it easy to reverse the consequences of this decision?
-          </p>
-          <div className={styles.buttons}>
-            <label className={styles.button}>
-              <input
-                type="radio"
-                name="reversibility"
-                value={CategorizerReversibility.Reversible}
-                onChange={() =>
-                  setReversibility(CategorizerReversibility.Reversible)
-                }
-              />
-              <span>Easy</span>
-            </label>
-            <label className={styles.button}>
-              <input
-                type="radio"
-                name="reversibility"
-                value={CategorizerReversibility.NonReversible}
-                onChange={() =>
-                  setReversibility(CategorizerReversibility.NonReversible)
-                }
-              />
-              <span>Hard</span>
-            </label>
+      <div className={styles.grid} contentEditable={false}>
+        <div className={styles.sectionWrapper}>
+          <div className={styles.section}>
+            <p className={styles.question}>
+              Is it easy to reverse the consequences of this decision?
+            </p>
+            <div className={styles.buttons}>
+              <label className={styles.button}>
+                <input
+                  type="radio"
+                  name="reversibility"
+                  value={CategorizerReversibility.Reversible}
+                  onChange={() =>
+                    setReversibility(CategorizerReversibility.Reversible)
+                  }
+                />
+                <span>Easy</span>
+              </label>
+              <label className={styles.button}>
+                <input
+                  type="radio"
+                  name="reversibility"
+                  value={CategorizerReversibility.NonReversible}
+                  onChange={() =>
+                    setReversibility(CategorizerReversibility.NonReversible)
+                  }
+                />
+                <span>Hard</span>
+              </label>
+            </div>
           </div>
-        </div>
-        <div className={styles.section}>
-          <p className={styles.question}>
-            How well do you understand this decision?
-          </p>
-          <div className={styles.buttons}>
-            <label className={styles.button}>
-              <input
-                type="radio"
-                name="understanding"
-                value={CategorizerUnderstanding.Deep}
-                onChange={() => setUnderstanding(CategorizerUnderstanding.Deep)}
-              />
-              <span>Deeply</span>
-            </label>
-            <label className={styles.button}>
-              <input
-                type="radio"
-                name="understanding"
-                value={CategorizerUnderstanding.Weak}
-                onChange={() => setUnderstanding(CategorizerUnderstanding.Weak)}
-              />
-              <span>Weakly</span>
-            </label>
+          <div className={styles.section}>
+            <p className={styles.question}>
+              How well do you understand this decision?
+            </p>
+            <div className={styles.buttons}>
+              <label className={styles.button}>
+                <input
+                  type="radio"
+                  name="understanding"
+                  value={CategorizerUnderstanding.Deep}
+                  onChange={() =>
+                    setUnderstanding(CategorizerUnderstanding.Deep)
+                  }
+                />
+                <span>Deeply</span>
+              </label>
+              <label className={styles.button}>
+                <input
+                  type="radio"
+                  name="understanding"
+                  value={CategorizerUnderstanding.Weak}
+                  onChange={() =>
+                    setUnderstanding(CategorizerUnderstanding.Weak)
+                  }
+                />
+                <span>Weakly</span>
+              </label>
+            </div>
           </div>
         </div>
         <div className={styles.suggestion}>
@@ -135,7 +140,7 @@ export function CategorizerWrapperElement(
         </div>
       </div>
       {children}
-    </div>
+    </ToolWrapper>
   );
 }
 
@@ -182,7 +187,7 @@ function Suggestion(props: SuggestionProps): JSX.Element | null {
     case DecisionCategory.Leap:
       title = 'Leap decision';
       body =
-        "You've done the work for this hard decision. Now lay out your thinking, then trust yourself to make the leap.";
+        "You've done the work for this hard decision. Lay out your thinking and make the leap.";
       break;
     case DecisionCategory.Deliberate:
       title = 'Deliberate decision';

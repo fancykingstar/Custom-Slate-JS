@@ -1,6 +1,9 @@
 :root {
-  --color-bg-white: #fff;
-  --color-fg-black: #101119;
+  --color-white: #fff;
+  --color-black: #101119;
+
+  --color-white-overlay: rgba(255, 255, 255, 0.78);
+  --color-black-overlay: rgba(20, 20, 20, 0.78);
 
   --color-fg-gray-primary: #717284;
   --color-bg-gray-primary: #9c9dab;

@@ -1,5 +1,7 @@
 import { RenderElementProps, useSelected } from 'slate-react';
 import { Node } from 'slate';
+import ToolWrapper from 'components/editor/ToolWrapper';
+import { IconToolInversion } from 'components/icons/IconTool';
 import styles from './InversionElement.module.scss';
 
 export enum InversionElement {
@@ -14,18 +16,16 @@ export enum InversionElement {
 export function InversionWrapperElement(
   props: RenderElementProps
 ): JSX.Element {
-  const selected = useSelected();
   const { attributes, children } = props;
 
   return (
-    <div className={`${styles.wrapper} ${selected ? styles.active : ''}`}>
-      <h2 className={styles.toolName} contentEditable={false}>
-        Inversion
-      </h2>
-      <ul {...attributes} className={styles.list}>
-        {children}
-      </ul>
-    </div>
+    <ToolWrapper
+      attributes={attributes}
+      name="Inversion"
+      icon={<IconToolInversion />}
+    >
+      <ul className={styles.list}>{children}</ul>
+    </ToolWrapper>
   );
 }
 

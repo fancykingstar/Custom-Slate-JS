@@ -1,5 +1,7 @@
 import { RenderElementProps, useSelected } from 'slate-react';
 import { Node } from 'slate';
+import ToolWrapper from 'components/editor/ToolWrapper';
+import { IconToolGoals } from 'components/icons/IconTool';
 import styles from './GoalsElement.module.scss';
 
 export enum GoalsElement {
@@ -9,18 +11,12 @@ export enum GoalsElement {
 }
 
 export function GoalsWrapperElement(props: RenderElementProps): JSX.Element {
-  const selected = useSelected();
   const { attributes, children } = props;
 
   return (
-    <div className={`${styles.wrapper} ${selected ? styles.active : ''}`}>
-      <h2 className={styles.toolName} contentEditable={false}>
-        Goals
-      </h2>
-      <ul {...attributes} className={styles.list}>
-        {children}
-      </ul>
-    </div>
+    <ToolWrapper attributes={attributes} name="Goals" icon={<IconToolGoals />}>
+      <ul className={styles.list}>{children}</ul>
+    </ToolWrapper>
   );
 }
 
