@@ -30,6 +30,8 @@ import {
   SimulationChoiceElement,
   SimulationItemElement,
 } from 'components/elements/Simulation/SimulationElement';
+import ParagraphElement from 'components/elements/Paragraph/ParagraphElement';
+import TitleElement from 'components/elements/Title/TitleElement';
 import styles from './Element.module.scss';
 
 /**
@@ -60,17 +62,9 @@ export default function Element(props: RenderElementProps): JSX.Element {
 
   switch (element.type) {
     case ReservedElement.Title:
-      return (
-        <h1 {...attributes} className={styles.title}>
-          {children}
-        </h1>
-      );
+      return <TitleElement {...props} />;
     case BasicElement.Paragraph:
-      return (
-        <p {...attributes} className={styles.p}>
-          {children}
-        </p>
-      );
+      return <ParagraphElement {...props} />;
     case BasicElement.UnorderedList:
       return (
         <ul {...attributes} className={styles.ul}>

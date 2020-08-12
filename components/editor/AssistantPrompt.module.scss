@@ -1,0 +1,15 @@
+.kbd {
+  align-items: center;
+  border: solid 0.1rem var(--color-bg-gray-tertiary);
+  border-radius: 0.4rem;
+  display: inline-flex;
+  font-size: 1.2rem;
+  font-weight: 500;
+  height: 2rem;
+  justify-content: center;
+  line-height: 2rem;
+  margin: 0 0.2rem;
+  min-width: 2rem;
+  position: relative;
+  top: -0.1rem;
+}
