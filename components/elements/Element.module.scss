@@ -6,6 +6,13 @@
   padding-left: 2.4rem;
 }
 
+.ul li p,
+.ol li p {
+  display: inline-block;
+  margin: 0;
+  vertical-align: text-top;
+}
+
 // Alternate disc/circle/square styles up to 10 levels deep
 .ul,
 .ul ul ul ul,
