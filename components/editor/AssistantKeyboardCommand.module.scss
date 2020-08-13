@@ -1,19 +1,27 @@
-.kbd {
+.button {
   align-items: center;
-  border-radius: 0.4rem;
+  background: var(--color-white);
+  border: none;
+  border-radius: 0.6rem;
   box-shadow: 0 0.1rem 0.3rem var(--color-shadow-large),
     0 0.3rem 1rem transparent, inset 0 0 0 0.1rem var(--color-bg-gray-tertiary);
   color: var(--color-fg-gray-primary);
+  cursor: pointer;
   display: inline-flex;
-  font-family: var(--font-sans-serif);
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 500;
-  height: 2rem;
+  height: 2.4rem;
   justify-content: center;
   line-height: 2rem;
   margin: 0 0.2rem;
   min-width: 2rem;
-  padding: 0 0.4rem;
+  outline: none;
+  padding: 0.2rem 0.6rem;
   position: relative;
-  top: -0.1rem;
+  top: -0.2rem;
+}
+
+.button kbd {
+  font-family: var(--font-sans-serif);
+  margin-left: 0.4rem;
 }
