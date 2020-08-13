@@ -13,6 +13,7 @@ import AssistantContext, {
 import insertCategorizerTool from 'components/elements/Categorizer/insertCategorizerTool';
 import insertChoicesTool from 'components/elements/Choices/insertChoicesTool';
 import insertGoalsTool from 'components/elements/Goals/insertGoalsTool';
+import AssistantKeyboardCommand from 'components/editor/AssistantKeyboardCommand';
 import styles from './AssistantPrompt.module.scss';
 
 // Default max number of time a prompt should be shown.
@@ -169,8 +170,8 @@ function getCategorizerPrompt(
 
   return [
     <>
-      Do you know the type of this decision? [Add Categorizer tool{' '}
-      <kbd className={styles.kbd}>Ctrl Enter</kbd>]
+      Do you know the type of this decision?{' '}
+      <AssistantKeyboardCommand>Add Categorizer tool</AssistantKeyboardCommand>
     </>,
     [
       (e) => {
@@ -199,8 +200,8 @@ function getChoicesPrompt(
 
   return [
     <>
-      Do you know your choices? [Add Choices tool{' '}
-      <kbd className={styles.kbd}>Ctrl Enter</kbd>]
+      Do you know your choices?{' '}
+      <AssistantKeyboardCommand>Add Choices tool</AssistantKeyboardCommand>
     </>,
     [
       (e) => {
@@ -229,8 +230,8 @@ function getGoalsPrompt(
 
   return [
     <>
-      Have any goals in mind? [Add Goals tool{' '}
-      <kbd className={styles.kbd}>Ctrl Enter</kbd>]
+      Have any goals in mind?{' '}
+      <AssistantKeyboardCommand>Add Goals tool</AssistantKeyboardCommand>
     </>,
     [
       (e) => {
