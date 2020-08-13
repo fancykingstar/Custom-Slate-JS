@@ -10,8 +10,13 @@ import { SimulationElement } from 'components/elements/Simulation/SimulationElem
 import AssistantContext, {
   AssistantAction,
 } from 'components/editor/AssistantContext';
+import insertCategorizerTool from 'components/elements/Categorizer/insertCategorizerTool';
+import insertChoicesTool from 'components/elements/Choices/insertChoicesTool';
 import insertGoalsTool from 'components/elements/Goals/insertGoalsTool';
 import styles from './AssistantPrompt.module.scss';
+
+// Default max number of time a prompt should be shown.
+const MaxShownCount = 5;
 
 const Tools: string[] = [
   CategorizerElement.Wrapper,
@@ -22,10 +27,20 @@ const Tools: string[] = [
 ];
 
 interface State {
+  categorizer: {
+    shownCount: number;
+  };
+  choices: {
+    shownCount: number;
+  };
+  goals: {
+    shownCount: number;
+  };
   showTimeoutNudge: boolean;
   shouldSetTimeoutNudge: boolean;
   showedEliminatePrompt: boolean;
   slash: {
+    shownCount: number;
     whenShownMillis: number | null;
   };
 }
@@ -36,26 +51,67 @@ interface State {
 // NOTE: A full-page refresh is required to reset these (fast refresh will not
 // do it for you).
 let assistantState: State = {
+  categorizer: {
+    shownCount: 0,
+  },
+  choices: {
+    shownCount: 0,
+  },
+  goals: {
+    shownCount: 0,
+  },
   showTimeoutNudge: false,
   shouldSetTimeoutNudge: true,
   showedEliminatePrompt: false,
   slash: {
+    shownCount: 0,
     whenShownMillis: null,
   },
 };
 
 /**
- * Returns assistant content as a function of Slate nodes.
+ * Reminds the user to try the slash menu, at the first time the doc opens or if the slash menu
+ * prompt has not appeared in the last 5 mins.
  */
-function getAssistantPrompt(
-  nodes: Node[]
-): [React.ReactNode, AssistantAction[], Partial<State>] {
-  const tools = nodes.filter((node) => Tools.includes(node.type as string));
-  const toolCount = tools.length;
-  const now: Date = new Date();
+function getSlashPrompt():
+  | [React.ReactNode, AssistantAction[], Partial<State>]
+  | null {
+  const message = (
+    <>
+      Start typing or press <kbd className={styles.kbd}>/</kbd> to think
+    </>
+  );
 
+  if (assistantState.slash.whenShownMillis == null) {
+    return [
+      message,
+      [],
+      {
+        slash: {
+          ...assistantState.slash,
+          shownCount: 1,
+          whenShownMillis: Date.now(),
+        },
+      },
+    ];
+  }
+
+  if (assistantState.slash.shownCount < MaxShownCount) {
+    return [
+      message,
+      [],
+      {
+        slash: {
+          ...assistantState.slash,
+          shownCount: assistantState.slash.shownCount + 1,
+          whenShownMillis: Date.now(),
+        },
+      },
+    ];
+  }
+
+  const now: Date = new Date();
   if (
-    assistantState.slash.whenShownMillis == null ||
     isAfter(
       now,
       add(new Date(assistantState.slash.whenShownMillis), {
@@ -71,10 +127,152 @@ function getAssistantPrompt(
       {
         slash: {
           ...assistantState.slash,
+          shownCount: 1,
           whenShownMillis: Date.now(),
         },
       },
     ];
+  }
+
+  return null;
+}
+
+function getDefaultPrompt(): [
+  React.ReactNode,
+  AssistantAction[],
+  Partial<State>
+] {
+  return [
+    <>
+      Start typing or press <kbd className={styles.kbd}>/</kbd> to think
+    </>,
+    [],
+    {
+      slash: {
+        ...assistantState.slash,
+        whenShownMillis: Date.now(),
+      },
+    },
+  ];
+}
+
+function getCategorizerPrompt(
+  tools: Node[]
+): [React.ReactNode, AssistantAction[], Partial<State>] | null {
+  if (assistantState.categorizer.shownCount >= MaxShownCount) {
+    return null;
+  }
+
+  if (tools.find((node) => node.type === CategorizerElement.Wrapper) != null) {
+    return null;
+  }
+
+  return [
+    <>
+      Do you know the type of this decision? [Add Categorizer tool{' '}
+      <kbd className={styles.kbd}>Ctrl Enter</kbd>]
+    </>,
+    [
+      (e) => {
+        insertCategorizerTool(e);
+      },
+    ],
+    {
+      categorizer: {
+        ...assistantState.categorizer,
+        shownCount: assistantState.categorizer.shownCount + 1,
+      },
+    },
+  ];
+}
+
+function getChoicesPrompt(
+  tools: Node[]
+): [React.ReactNode, AssistantAction[], Partial<State>] | null {
+  if (assistantState.choices.shownCount >= MaxShownCount) {
+    return null;
+  }
+
+  if (tools.find((node) => node.type === ChoicesElement.Wrapper) != null) {
+    return null;
+  }
+
+  return [
+    <>
+      Do you know your choices? [Add Choices tool{' '}
+      <kbd className={styles.kbd}>Ctrl Enter</kbd>]
+    </>,
+    [
+      (e) => {
+        insertChoicesTool(e);
+      },
+    ],
+    {
+      choices: {
+        ...assistantState.choices,
+        shownCount: assistantState.choices.shownCount + 1,
+      },
+    },
+  ];
+}
+
+function getGoalsPrompt(
+  tools: Node[]
+): [React.ReactNode, AssistantAction[], Partial<State>] | null {
+  if (assistantState.goals.shownCount >= MaxShownCount) {
+    return null;
+  }
+
+  if (tools.find((node) => node.type === GoalsElement.Wrapper) != null) {
+    return null;
+  }
+
+  return [
+    <>
+      Have any goals in mind? [Add Goals tool{' '}
+      <kbd className={styles.kbd}>Ctrl Enter</kbd>]
+    </>,
+    [
+      (e) => {
+        insertGoalsTool(e);
+      },
+    ],
+    {
+      goals: {
+        ...assistantState.goals,
+        shownCount: assistantState.goals.shownCount + 1,
+      },
+    },
+  ];
+}
+
+/**
+ * Returns assistant content as a function of Slate nodes.
+ */
+function getAssistantPrompt(
+  nodes: Node[]
+): [React.ReactNode, AssistantAction[], Partial<State>] {
+  const tools = nodes.filter((node) => Tools.includes(node.type as string));
+  const toolCount = tools.length;
+
+  let ret = getSlashPrompt();
+  if (ret != null) {
+    return ret;
+  }
+
+  ret = getCategorizerPrompt(tools);
+  if (ret != null) {
+    return ret;
+  }
+
+  ret = getChoicesPrompt(tools);
+  if (ret != null) {
+    return ret;
+  }
+
+  ret = getGoalsPrompt(tools);
+  if (ret != null) {
+    return ret;
   }
 
   // Case: Timeout finished and takes priority
@@ -106,28 +304,7 @@ function getAssistantPrompt(
     ];
   }
 
-  if (toolCount === 1) {
-    return [
-      <>
-        Have any goals in mind? [Add Goals tool
-        <kbd className={styles.kbd}>Ctrl Enter</kbd>]
-      </>,
-      [
-        (e) => {
-          insertGoalsTool(e);
-        },
-      ],
-      {},
-    ];
-  }
-
-  return [
-    <>
-      Start typing or press <kbd className={styles.kbd}>/</kbd> to think
-    </>,
-    [],
-    {},
-  ];
+  return getDefaultPrompt();
 }
 
 export default function AssistantPrompt(): JSX.Element {
