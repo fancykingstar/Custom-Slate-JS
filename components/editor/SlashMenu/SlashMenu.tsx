@@ -1,8 +1,8 @@
 import { useRef, useEffect } from 'react';
 import {
-  MenuItem,
   SlashMenuContent,
-} from 'components/editor/SlashMenu/useSlashMenu';
+  MenuItem,
+} from 'components/editor/SlashMenu/getMenuContent';
 import styles from './SlashMenu.module.scss';
 
 interface Props {
