@@ -104,7 +104,7 @@ interface SuggestionMatch {
   matches: StemMatch[];
 }
 
-interface SlashMenuContent {
+export interface SlashMenuContent {
   suggestion: {
     text: string;
     item: MenuItem;
@@ -225,15 +225,19 @@ type onChangeFn = () => void;
 type onKeyDownFn = (event: KeyboardEvent) => void;
 type onAddTool = (item: MenuItem) => void;
 type Pos = [number, number] | null;
-type Items = MenuItem[];
+type Content = SlashMenuContent;
 type Index = number;
 
 export default function useSlashMenu(
   editor: ReactEditor
-): [onChangeFn, onKeyDownFn, onAddTool, Pos, Items, Index] {
+): [onChangeFn, onKeyDownFn, onAddTool, Pos, SlashMenuContent, Index] {
   const [range, setRange] = useState<Range | null>(null);
   const [pos, setPos] = useState<Pos>(null);
-  const [items, setItems] = useState(slashMenuItems);
+  const [content, setContent] = useState<SlashMenuContent>({
+    suggestion: null,
+    items: slashMenuItems,
+    isFiltered: false,
+  });
   const [index, setIndex] = useState(0);
 
   /**
@@ -345,9 +349,7 @@ export default function useSlashMenu(
       // Filter available items by the query
       const query = beforeMatch[1] ?? '';
 
-      getMenuContent(query);
-
-      setItems(slashMenuItems);
+      setContent(getMenuContent(query));
 
       // Update the range to cause a recalculation of the menu position
       setRange(beforeRange);
@@ -355,7 +357,7 @@ export default function useSlashMenu(
     }
 
     setRange(null);
-  }, [editor, setIndex, setRange, setItems]);
+  }, [editor, setIndex, setRange, setContent]);
 
   const onKeyDown = useCallback(
     (event: KeyboardEvent) => {
@@ -363,7 +365,7 @@ export default function useSlashMenu(
         return;
       }
 
-      const availableMenuItems = items.filter(
+      const availableMenuItems = content.items.filter(
         (item) => item.comingSoon == null
       );
 
@@ -389,8 +391,8 @@ export default function useSlashMenu(
         default:
       }
     },
-    [range, setRange, index, setIndex, items]
+    [range, setRange, index, setIndex, content]
   );
 
-  return [onChange, onKeyDown, onAddTool, pos, items, index];
+  return [onChange, onKeyDown, onAddTool, pos, content, index];
 }

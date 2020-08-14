@@ -55,7 +55,7 @@ export default function DecaEditor(): JSX.Element {
     onKeyDownSlashMenu,
     onAddTool,
     slashMenuPos,
-    slashMenuItems,
+    slashMenuContent,
     slashMenuIndex,
   ] = useSlashMenu(editor);
 
@@ -152,7 +152,7 @@ export default function DecaEditor(): JSX.Element {
             >
               <SlashMenu
                 activeIndex={slashMenuIndex}
-                items={slashMenuItems}
+                content={slashMenuContent}
                 onAddTool={onAddTool}
               />
             </div>

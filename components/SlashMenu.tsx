@@ -1,17 +1,20 @@
 import { useRef, useEffect } from 'react';
-import { MenuItem } from 'components/editor/SlashMenu/useSlashMenu';
+import {
+  MenuItem,
+  SlashMenuContent,
+} from 'components/editor/SlashMenu/useSlashMenu';
 import styles from './SlashMenu.module.scss';
 
 interface Props {
   activeIndex: number;
-  items: MenuItem[];
+  content: SlashMenuContent;
   onAddTool: (item: MenuItem) => void;
 }
 
 export default function SlashMenu(props: Props): JSX.Element {
-  const { activeIndex, items, onAddTool } = props;
+  const { activeIndex, content, onAddTool } = props;
 
-  const availableMenuItems = items.filter(
+  const availableMenuItems = content.items.filter(
     (menuItem) => menuItem.comingSoon == null
   );
 
@@ -19,11 +22,11 @@ export default function SlashMenu(props: Props): JSX.Element {
     <div className={styles.wrapper}>
       {availableMenuItems.length ? (
         <ul className={styles.menu}>
-          {items.map((item, index) => {
+          {content.items.map((item, index) => {
             const output = [];
 
             // If it's a new group, add a header
-            const prevItem = items[index - 1];
+            const prevItem = content.items[index - 1];
             if (prevItem == null || item.category !== prevItem.category) {
               output.push(
                 <li key={item.category}>
