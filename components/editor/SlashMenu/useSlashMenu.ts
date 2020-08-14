@@ -107,7 +107,7 @@ interface SuggestionMatch {
 export interface SlashMenuContent {
   suggestion: {
     text: string;
-    item: MenuItem;
+    item: MenuItem | null;
   } | null;
   items: MenuItem[];
   isFiltered: boolean;
@@ -118,6 +118,10 @@ const suggestions: Suggestion[] = [
     text: 'Check out the Choices tool! It can help you find new options.',
     keywords: ['choic', 'option'],
     tool: MenuItemTitle.Choices,
+  },
+  {
+    text: "Hey there, hope you're enjoying Deca 👋",
+    keywords: ['hei', 'hi', 'hello', 'heyo'],
   },
 ];
 
@@ -178,7 +182,7 @@ function getMenuContent(query: string): SlashMenuContent {
 
   const suggestion = suggestionMatchWithMostMatches?.suggestion ?? null;
 
-  const filteredItems = fuzzy
+  let filteredItems = fuzzy
     .filter(query, slashMenuItems, {
       extract: (item) =>
         [
@@ -191,13 +195,14 @@ function getMenuContent(query: string): SlashMenuContent {
     .map((item) => item.original)
     .flat();
 
-  // Remove suggestion from filtered items
-  if (suggestion != null) {
+  // If suggestion tool exists in filtered items, move to top
+  if (suggestion != null && filteredItems.length) {
     const { tool } = suggestion;
     if (tool != null) {
       const matchIndex = filteredItems.findIndex((item) => item.title === tool);
       if (matchIndex > -1) {
-        filteredItems.splice(matchIndex, 1);
+        const removedItem = filteredItems.splice(matchIndex, 1);
+        filteredItems.unshift(...removedItem);
       }
     }
   }
@@ -207,13 +212,17 @@ function getMenuContent(query: string): SlashMenuContent {
   );
 
   const isFiltered = filteredItems.length !== slashMenuItems.length;
+  // If list is filtered, remove any coming soon items
+  if (isFiltered) {
+    filteredItems = filteredItems.filter((item) => item.comingSoon == null);
+  }
 
   return {
     suggestion:
-      suggestion != null && suggestionMenuItem != null
+      suggestion != null
         ? {
             text: suggestion.text,
-            item: suggestionMenuItem,
+            item: suggestionMenuItem ?? null,
           }
         : null,
     items: filteredItems,
