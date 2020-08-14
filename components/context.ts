@@ -1,10 +1,21 @@
 import { createContext } from 'react';
 
 export enum DecisionCategory {
-  Snap = 'snap',
-  Timebox = 'timebox',
-  Leap = 'leap',
-  Deliberate = 'deliberate',
+  // Reversible, simple
+  Snap = 'Snap', // Deep understanding
+  Dash = 'Dash', // Weak understanding
+
+  // Reversible, complex
+  Capstone = 'Capstone', // Deep understanding
+  Puzzle = 'Puzzle', // Weak understanding
+
+  // Non-reversible, simple
+  Leap = 'Leap', // Deep understanding
+  Parachute = 'Parachute', // Weak understanding
+
+  // Non-reversible, complex
+  Summit = 'Summit', // Deep understanding
+  Mountain = 'Mountain', // Weak understanding
 }
 
 export const CategorizerContext = createContext({

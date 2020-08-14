@@ -23,6 +23,10 @@
   border-bottom: solid 0.1rem var(--color-bg-gray-tertiary);
 }
 
+.section:nth-of-type(2) {
+  border-bottom: solid 0.1rem var(--color-bg-gray-tertiary);
+}
+
 .question {
   color: var(--color-fg-gray-primary);
   font-size: 1.3rem;
@@ -182,6 +186,8 @@
   margin-top: 0.8rem;
   width: 3.2rem;
 }
+
+// TODO: update logos for new categories.
 
 .suggestionIcon-snap {
   background-image: url(/img/icons/24x24/tool-categorizer-rabbit.svg);
