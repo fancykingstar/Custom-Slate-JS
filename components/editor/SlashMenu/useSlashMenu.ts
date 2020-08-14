@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { Range, Editor, Path, Transforms } from 'slate';
+import { Range, Editor, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 import fuzzy from 'fuzzy';
 import stemmer from 'stemmer';
@@ -384,56 +384,40 @@ export default function useSlashMenu(
 
     const [startOfSelection] = Range.edges(selection);
     const [caretLine] = startOfSelection.path;
-
-    // Get the current word closest to the start of the selection
-    const wordStart = Editor.before(editor, startOfSelection, {
-      unit: 'line',
-    });
-
-    // Go back one offset (to try to capture the slash character)
-    let wordStartWithOffset = wordStart && Editor.before(editor, wordStart);
-
-    // If we moved to the previous line, swap to the previous start
-    if (
-      wordStartWithOffset &&
-      Path.isBefore(wordStartWithOffset.path, startOfSelection.path)
-    ) {
-      wordStartWithOffset = wordStart;
-    }
-
-    // Get the text and see if it matches the expected slash command format
-    const beforeRange =
-      wordStartWithOffset &&
-      Editor.range(editor, wordStartWithOffset, startOfSelection);
-
-    const beforeText = beforeRange && Editor.string(editor, beforeRange);
-
-    // Look for empty slash OR slash with immediate character after
-    const beforeMatch = beforeText && beforeText.match(/^\/(\w.*)?$/);
-
-    if (
-      // Prevent slash menu after start of line
-      wordStartWithOffset?.offset === 0 &&
-      // Limit slash menu to root level
-      startOfSelection.path.length === 2 &&
-      caretLine > 0 &&
-      beforeRange &&
-      beforeMatch
-    ) {
-      setIndex(0);
-
-      // Filter available items by the query
-      const query = beforeMatch[1] ?? '';
-
-      // TODO: Test how a small (<200ms) debounce feels compared to instant search
-      setContent(getMenuContent(query));
-
-      // Update the range to cause a recalculation of the menu position
-      setRange(beforeRange);
+    // Ignore first line and non-root nodes
+    if (caretLine === 0 || startOfSelection.path.length !== 2) {
+      setRange(null);
       return;
     }
 
-    setRange(null);
+    // Get the content of the current line
+    const lineText = Editor.string(editor, startOfSelection.path);
+
+    // Get the current word closest to the start of the selection
+    const lineStart = {
+      path: startOfSelection.path,
+      offset: 0,
+    };
+    const lineEnd = Editor.end(editor, selection);
+
+    // Get the range for the entire line
+    const lineRange = Editor.range(editor, lineStart, lineEnd);
+
+    // Look for empty slash OR slash with immediate character after
+    const lineMatch = lineText.match(/^\/(\w.*)?$/);
+
+    if (lineMatch == null) {
+      setRange(null);
+      return;
+    }
+
+    // TODO: Test how a small (<200ms) debounce feels compared to instant search
+    setContent(getMenuContent(lineMatch[1] ?? ''));
+
+    // Reset the menu cursor index
+    setIndex(0);
+    // Update the range to cause a recalculation of the menu position
+    setRange(lineRange);
   }, [editor, setIndex, setRange, setContent]);
 
   const onKeyDown = useCallback(
