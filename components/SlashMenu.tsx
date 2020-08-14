@@ -131,7 +131,7 @@ function SlashMenuItem(props: MenuItemProps): JSX.Element {
     }
     ref.current.scrollIntoView({
       behavior: 'smooth',
-      block: 'center',
+      block: 'nearest',
     });
   }, [isActive]);
 
