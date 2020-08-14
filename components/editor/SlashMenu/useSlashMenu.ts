@@ -138,13 +138,21 @@ const suggestions: Suggestion[] = [
     tool: MenuItemTitle.Categorizer,
   },
   {
-    text: "Is it possible you've already made up your mind? Take a leap!",
+    text: "Is it possible you've already made up your mind?",
     keywords: ['decide', 'decision', 'leap', 'choose', 'hard', ''],
   },
   {
     text:
       'Your decision is like an onion. Each thought and tool reveals something new.',
-    keywords: ['help', 'stuck'],
+    keywords: [
+      'help',
+      'stuck',
+      'trouble',
+      'unhelpful',
+      'unsure',
+      'hard',
+      'difficult',
+    ],
   },
 ];
 
@@ -433,9 +441,11 @@ export default function useSlashMenu(
           break;
         case 'Tab':
         case 'Enter':
-          onAddTool(availableMenuItems[index]);
+          if (availableMenuItems.length) {
+            onAddTool(availableMenuItems[index]);
+            event.preventDefault();
+          }
           setRange(null);
-          event.preventDefault();
           break;
         case 'Escape':
           setRange(null);
