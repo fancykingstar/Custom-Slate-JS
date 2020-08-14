@@ -22,7 +22,7 @@ import AssistantContext, {
 import handleAutoScroll from 'components/editor/handleAutoScroll';
 import useConfirmExit from 'components/editor/useConfirmExit';
 import useSlashMenu from 'components/editor/SlashMenu/useSlashMenu';
-import SlashMenu from 'components/SlashMenu';
+import SlashMenu from 'components/editor/SlashMenu/SlashMenu';
 import Leaf from 'components/editor/Leaf';
 import styles from './DecaEditor.module.scss';
 
