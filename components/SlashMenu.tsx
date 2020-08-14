@@ -105,7 +105,11 @@ function AssistantCard(props: AssistantCardProps): JSX.Element {
           ) : null}
         </>
       ) : (
-        <p className={styles.assistantEmpty}>Explore the tools below!</p>
+        <p className={styles.assistantEmpty}>
+          {content.items.length
+            ? 'Explore the tools below!'
+            : 'Nothing found. Try something else?'}
+        </p>
       )}
     </div>
   );

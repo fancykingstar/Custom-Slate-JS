@@ -115,27 +115,62 @@ export interface SlashMenuContent {
 
 const suggestions: Suggestion[] = [
   {
+    text: "Hey there, hope you're enjoying Deca 👋",
+    keywords: ['hey', 'hi', 'hello', 'heyo', "what's up?"],
+  },
+  {
     text: 'Check out the Choices tool! It can help you find new options.',
-    keywords: ['choic', 'option'],
+    keywords: ['choice', 'option'],
     tool: MenuItemTitle.Choices,
   },
   {
-    text: "Hey there, hope you're enjoying Deca 👋",
-    keywords: ['hei', 'hi', 'hello', 'heyo'],
+    text: 'A great place to start is the Categorizer tool.',
+    keywords: [
+      'start',
+      'begin',
+      'kick',
+      'where',
+      'set',
+      'setup',
+      'intro',
+      'introduction',
+    ],
+    tool: MenuItemTitle.Categorizer,
+  },
+  {
+    text: "Is it possible you've already made up your mind? Take a leap!",
+    keywords: ['decide', 'decision', 'leap', 'choose', 'hard', ''],
+  },
+  {
+    text:
+      'Your decision is like an onion. Each thought and tool reveals something new.',
+    keywords: ['help', 'stuck'],
   },
 ];
 
 function getMenuContent(query: string): SlashMenuContent {
-  const stems = query.split(' ').map((word) => stemmer(word));
+  // Extract all words from the query
+  const stems = query
+    .split(' ')
+    .map((word) => stemmer(word))
+    .filter((stem) => stem.length);
 
   // Go through all available suggestions to look for matches
   const suggestionMatches: SuggestionMatch[] = suggestions.reduce(
-    (matchList, suggestion) => {
-      const { keywords } = suggestion;
+    (matchList: SuggestionMatch[], suggestion) => {
+      let { keywords } = suggestion;
+
+      // Get stems of keywords as well
+      keywords = keywords.map((keyword) => stemmer(keyword));
 
       // Go through each stem to look for matching keywords
       const stemMatches: StemMatch[] = stems.reduce((stemMatchList, stem) => {
-        const matchingKeywords = keywords.filter((keyword) => keyword === stem);
+        const matchingKeywords = fuzzy
+          .filter(stem, keywords)
+          // Arbitrary match score
+          .filter((match) => match.score > 10)
+          .map((match) => match.original);
+
         if (matchingKeywords.length) {
           stemMatchList.push({
             stem,
@@ -155,7 +190,7 @@ function getMenuContent(query: string): SlashMenuContent {
 
       return matchList;
     },
-    [] as SuggestionMatch[]
+    []
   );
 
   // Find the suggestion with the most matching keywords
@@ -182,6 +217,7 @@ function getMenuContent(query: string): SlashMenuContent {
 
   const suggestion = suggestionMatchWithMostMatches?.suggestion ?? null;
 
+  // Use fuzzy search filtering of items
   let filteredItems = fuzzy
     .filter(query, slashMenuItems, {
       extract: (item) =>
@@ -196,20 +232,28 @@ function getMenuContent(query: string): SlashMenuContent {
     .flat();
 
   // If suggestion tool exists in filtered items, move to top
-  if (suggestion != null && filteredItems.length) {
-    const { tool } = suggestion;
-    if (tool != null) {
-      const matchIndex = filteredItems.findIndex((item) => item.title === tool);
-      if (matchIndex > -1) {
-        const removedItem = filteredItems.splice(matchIndex, 1);
-        filteredItems.unshift(...removedItem);
+  if (suggestion != null && suggestion.tool != null) {
+    const matchIndex = filteredItems.findIndex(
+      (item) => item.title === suggestion.tool
+    );
+
+    // Move tool to top if it exists
+    if (matchIndex > -1) {
+      const removedItem = filteredItems.splice(matchIndex, 1);
+      filteredItems.unshift(...removedItem);
+    } else {
+      // Add tool to top if it doesn't exist
+      const newItem = slashMenuItems.find(
+        (item) => item.title === suggestion.tool
+      );
+      if (newItem != null) {
+        filteredItems.unshift(newItem);
       }
     }
   }
 
-  const suggestionMenuItem = slashMenuItems.find(
-    (item) => item.title === suggestion?.tool
-  );
+  const suggestionMenuItem =
+    slashMenuItems.find((item) => item.title === suggestion?.tool) ?? null;
 
   const isFiltered = filteredItems.length !== slashMenuItems.length;
   // If list is filtered, remove any coming soon items
@@ -222,7 +266,7 @@ function getMenuContent(query: string): SlashMenuContent {
       suggestion != null
         ? {
             text: suggestion.text,
-            item: suggestionMenuItem ?? null,
+            item: suggestionMenuItem,
           }
         : null,
     items: filteredItems,
@@ -234,7 +278,6 @@ type onChangeFn = () => void;
 type onKeyDownFn = (event: KeyboardEvent) => void;
 type onAddTool = (item: MenuItem) => void;
 type Pos = [number, number] | null;
-type Content = SlashMenuContent;
 type Index = number;
 
 export default function useSlashMenu(
@@ -358,6 +401,7 @@ export default function useSlashMenu(
       // Filter available items by the query
       const query = beforeMatch[1] ?? '';
 
+      // TODO: Test how a small (<200ms) debounce feels compared to instant search
       setContent(getMenuContent(query));
 
       // Update the range to cause a recalculation of the menu position
