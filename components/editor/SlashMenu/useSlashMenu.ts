@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { Range, Editor, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 import fuzzy from 'fuzzy';
@@ -309,12 +309,20 @@ export default function useSlashMenu(
 ): [onChangeFn, onKeyDownFn, onAddTool, Pos, SlashMenuContent, Index] {
   const [range, setRange] = useState<Range | null>(null);
   const [pos, setPos] = useState<Pos>(null);
-  const [content, setContent] = useState<SlashMenuContent>({
-    suggestion: null,
-    items: slashMenuItems,
-    isFiltered: false,
-  });
+  const [query, setQuery] = useState<string | null>(null);
   const [index, setIndex] = useState(0);
+
+  const content: SlashMenuContent = useMemo(() => {
+    if (query == null) {
+      return {
+        suggestion: null,
+        items: slashMenuItems,
+        isFiltered: false,
+      };
+    }
+
+    return getMenuContent(query);
+  }, [query]);
 
   /**
    * Recalculate the position of the slash menu whenever the range changes
@@ -412,13 +420,13 @@ export default function useSlashMenu(
     }
 
     // TODO: Test how a small (<200ms) debounce feels compared to instant search
-    setContent(getMenuContent(lineMatch[1] ?? ''));
+    setQuery(lineMatch[1] ?? '');
 
     // Reset the menu cursor index
     setIndex(0);
     // Update the range to cause a recalculation of the menu position
     setRange(lineRange);
-  }, [editor, setIndex, setRange, setContent]);
+  }, [editor, setIndex, setRange, setQuery]);
 
   const onKeyDown = useCallback(
     (event: KeyboardEvent) => {
