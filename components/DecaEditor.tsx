@@ -63,6 +63,9 @@ export default function DecaEditor(): JSX.Element {
   useConfirmExit();
 
   const renderElement = useCallback((props) => <Element {...props} />, []);
+
+  // NOTE: This is not memoized due to a Slate bug
+  // See: https://github.com/ianstormtaylor/slate/issues/3447
   const renderLeaf = (props: RenderLeafProps) => <Leaf {...props} />;
 
   const decorate = useCallback(
@@ -72,6 +75,7 @@ export default function DecaEditor(): JSX.Element {
 
       const { selection } = editor;
 
+      // Determine whether to highlight slash command text
       if (
         selection != null &&
         Range.isCollapsed(selection) &&
