@@ -226,18 +226,33 @@ function getMenuContent(query: string): SlashMenuContent {
   const suggestion = suggestionMatchWithMostMatches?.suggestion ?? null;
 
   // Use fuzzy search filtering of items
-  let filteredItems = fuzzy
-    .filter(query, slashMenuItems, {
-      extract: (item) =>
-        [
-          item.title,
-          item.description,
-          item.category,
-          item.keywords.join(' '),
-        ].join(' '),
-    })
-    .map((item) => item.original)
-    .flat();
+  // Loop through shorter and shorter queries until we find at least one match
+  let filteredItems: MenuItem[] = [];
+  for (let i = query.length; i > 0; i -= 1) {
+    const trimmedQuery = query.slice(0, i);
+
+    filteredItems = fuzzy
+      .filter(trimmedQuery, slashMenuItems, {
+        extract: (item) =>
+          [
+            item.title,
+            item.description,
+            item.category,
+            item.keywords.join(' '),
+          ].join(' '),
+      })
+      .map((item) => item.original)
+      .flat();
+
+    if (filteredItems.length) {
+      break;
+    }
+  }
+
+  // If there are no matches, then just show all tools
+  if (!filteredItems.length) {
+    filteredItems = slashMenuItems;
+  }
 
   // If suggestion tool exists in filtered items, move to top
   if (suggestion != null && suggestion.tool != null) {
@@ -263,7 +278,8 @@ function getMenuContent(query: string): SlashMenuContent {
   const suggestionMenuItem =
     slashMenuItems.find((item) => item.title === suggestion?.tool) ?? null;
 
-  const isFiltered = filteredItems.length !== slashMenuItems.length;
+  const isFiltered = query.length > 0;
+
   // If list is filtered, remove any coming soon items
   if (isFiltered) {
     filteredItems = filteredItems.filter((item) => item.comingSoon == null);
