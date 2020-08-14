@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import Link from 'next/link';
-import { CategorizerContext, DecisionCategory } from 'components/context';
+import { CategorizerContext } from 'components/context';
 import CompleteButton from 'components/CompleteButton';
 import styles from './Header.module.scss';
 
@@ -30,31 +30,9 @@ function Category(): JSX.Element | null {
     return null;
   }
 
-  let title = null;
-
-  switch (decisionCategory) {
-    case DecisionCategory.Snap:
-      title = 'Snap decision';
-      break;
-    case DecisionCategory.Timebox:
-      title = 'Timebox decision';
-      break;
-    case DecisionCategory.Leap:
-      title = 'Leap decision';
-      break;
-    case DecisionCategory.Deliberate:
-      title = 'Deliberate decision';
-      break;
-    default:
-  }
-
-  if (title == null) {
-    return null;
-  }
-
   return (
     <div className={`${styles.categoryPill} ${styles[decisionCategory]}`}>
-      <span>{title}</span>
+      <span>{`${decisionCategory} decision`}</span>
     </div>
   );
 }
