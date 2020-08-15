@@ -13,7 +13,17 @@ interface Props {
 }
 
 export default function SlashMenu(props: Props): JSX.Element {
+  const listRef = useRef<HTMLDivElement | null>(null);
   const { activeIndex, content, pos, onAddTool } = props;
+
+  // Scroll to top on re-invokation
+  useEffect(() => {
+    if (listRef.current != null && listRef.current.scrollTop !== 0) {
+      listRef.current.scrollTo({
+        top: 0,
+      });
+    }
+  }, [pos]);
 
   const availableMenuItems = content.items.filter(
     (menuItem) => menuItem.comingSoon == null
@@ -42,7 +52,7 @@ export default function SlashMenu(props: Props): JSX.Element {
         }
       />
       {availableMenuItems.length ? (
-        <div className={styles.list}>
+        <div className={styles.list} ref={listRef}>
           <ul className={styles.menu}>
             {content.items.map((item, index) => {
               const output = [];
