@@ -180,22 +180,12 @@ export default function DecaEditor(): JSX.Element {
             renderElement={renderElement}
             renderLeaf={renderLeaf}
           />
-          {slashMenuPos != null ? (
-            <div
-              className={styles.slashWrapper}
-              style={{
-                transform: `translate3d(${slashMenuPos[0] / 10}rem, ${
-                  slashMenuPos[1] / 10
-                }rem, 0)`,
-              }}
-            >
-              <SlashMenu
-                activeIndex={slashMenuIndex}
-                content={slashMenuContent}
-                onAddTool={onAddTool}
-              />
-            </div>
-          ) : null}
+          <SlashMenu
+            activeIndex={slashMenuIndex}
+            content={slashMenuContent}
+            pos={slashMenuPos}
+            onAddTool={onAddTool}
+          />
         </Slate>
       </div>
     </AssistantContext.Provider>

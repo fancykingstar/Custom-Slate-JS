@@ -4,13 +4,6 @@
   width: 100%;
 }
 
-.slashWrapper {
-  left: 0;
-  position: absolute;
-  top: 0;
-  z-index: 10;
-}
-
 .editor {
   max-width: calc(64rem + (var(--editor-side-padding) * 2));
   min-height: calc(100vh - var(--header-height) - 3.2rem);

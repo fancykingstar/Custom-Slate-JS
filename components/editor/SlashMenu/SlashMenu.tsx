@@ -8,11 +8,12 @@ import styles from './SlashMenu.module.scss';
 interface Props {
   activeIndex: number;
   content: SlashMenuContent;
+  pos: [number, number] | null;
   onAddTool: (item: MenuItem) => void;
 }
 
 export default function SlashMenu(props: Props): JSX.Element {
-  const { activeIndex, content, onAddTool } = props;
+  const { activeIndex, content, pos, onAddTool } = props;
 
   const availableMenuItems = content.items.filter(
     (menuItem) => menuItem.comingSoon == null
@@ -22,7 +23,17 @@ export default function SlashMenu(props: Props): JSX.Element {
   const suggestionItem = suggestion?.item;
 
   return (
-    <div className={styles.wrapper}>
+    <div
+      className={`${styles.wrapper} ${pos != null ? styles.active : ''}`}
+      style={
+        pos != null
+          ? {
+              left: `${pos[0] / 10}rem`,
+              top: `${pos[1] / 10}rem`,
+            }
+          : {}
+      }
+    >
       <AssistantCard
         content={content}
         onAddTool={onAddTool}
@@ -107,7 +118,7 @@ function AssistantCard(props: AssistantCardProps): JSX.Element {
       ) : (
         <p className={styles.assistantEmpty}>
           {content.items.length
-            ? 'Explore the tools below!'
+            ? 'Ask any question or search for tools!'
             : 'Nothing found. Try something else?'}
         </p>
       )}
