@@ -181,6 +181,7 @@ const slashMenuSuggestions: Suggestion[] = [
   {
     text: "The goals tool can help you figure out what you're trying to do.",
     keywords: [
+      'know',
       'question',
       'query',
       'unsure',
@@ -282,7 +283,6 @@ const slashMenuSuggestions: Suggestion[] = [
       'wisdom',
       'domain',
       'knowledge',
-      'know',
       'need',
       'assumptions',
       'list',
@@ -294,7 +294,6 @@ const slashMenuSuggestions: Suggestion[] = [
       'sources',
       'information',
       'help',
-      "don't know",
     ],
   },
   {
@@ -370,8 +369,6 @@ const slashMenuSuggestions: Suggestion[] = [
     text:
       "It sounds like you think there are things you know you don't know. Are there people or sources of info that can help?",
     keywords: [
-      "don't",
-      'know',
       'unknown',
       'unfamiliar',
       'unnamed',
