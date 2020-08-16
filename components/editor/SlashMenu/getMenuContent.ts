@@ -594,15 +594,6 @@ export default function getMenuContent(query: string | null): SlashMenuContent {
     .map((item) => item.original)
     .flat();
 
-  const availableTools = filteredItems.filter(
-    (item) => item.comingSoon == null
-  );
-
-  // If there are no matches, then just show all tools
-  if (!availableTools.length) {
-    filteredItems = slashMenuItems;
-  }
-
   // If suggestion tool exists in filtered items, move to top
   if (suggestion != null && suggestion.tool != null) {
     const matchIndex = filteredItems.findIndex(
