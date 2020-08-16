@@ -114,8 +114,7 @@ const slashMenuSuggestions: Suggestion[] = [
     keywords: ['who', 'are', 'you', 'deca'],
   },
   {
-    text:
-      "As always, I'm doing pretty fine. Trying my very best to help you make excellent decisions!",
+    text: 'Trying my very best to help you make excellent decisions!',
     keywords: ['how', 'are', 'you', 'doing'],
   },
   {
@@ -149,7 +148,6 @@ const slashMenuSuggestions: Suggestion[] = [
   {
     text: 'A great place to start is the Categorizer tool.',
     keywords: [
-      'should',
       'can',
       'could',
       'start',
@@ -469,7 +467,7 @@ const slashMenuSuggestions: Suggestion[] = [
   {
     text:
       "Eliminate choices as early as you can. If you can't, a quick breather or a new tool can help!",
-    keywords: ['help', 'me', 'decide', 'pick', 'choose'],
+    keywords: ['which', 'help', 'me', 'decide', 'pick', 'choose'],
   },
   {
     text:
@@ -561,7 +559,10 @@ export default function getMenuContent(query: string | null): SlashMenuContent {
   const stems = query
     .split(' ')
     .map((word) => stemmer(word))
-    .filter((stem) => stem.length);
+    // Filter empty stems
+    .filter((stem) => stem.length)
+    // Remove punctuation
+    .map((stem) => stem.replace(/\W/g, ''));
 
   // Go through all available suggestions to look for matches
   const suggestionMatches = getSuggestionMatches(slashMenuSuggestions, stems);
@@ -590,32 +591,25 @@ export default function getMenuContent(query: string | null): SlashMenuContent {
 
   const suggestion = suggestionMatchWithMostMatches?.suggestion ?? null;
 
-  // Use fuzzy search filtering of items
-  // Loop through shorter and shorter queries until we find at least one match
-  let filteredItems: MenuItem[] = [];
-  for (let i = query.length; i > 0; i -= 1) {
-    const trimmedQuery = query.slice(0, i);
+  let filteredItems = fuzzy
+    .filter(query, slashMenuItems, {
+      extract: (item) =>
+        [
+          item.title,
+          item.description,
+          item.category,
+          item.keywords.join(' '),
+        ].join(' '),
+    })
+    .map((item) => item.original)
+    .flat();
 
-    filteredItems = fuzzy
-      .filter(trimmedQuery, slashMenuItems, {
-        extract: (item) =>
-          [
-            item.title,
-            item.description,
-            item.category,
-            item.keywords.join(' '),
-          ].join(' '),
-      })
-      .map((item) => item.original)
-      .flat();
-
-    if (filteredItems.length) {
-      break;
-    }
-  }
+  const availableTools = filteredItems.filter(
+    (item) => item.comingSoon == null
+  );
 
   // If there are no matches, then just show all tools
-  if (!filteredItems.length) {
+  if (!availableTools.length) {
     filteredItems = slashMenuItems;
   }
 
@@ -650,14 +644,24 @@ export default function getMenuContent(query: string | null): SlashMenuContent {
     filteredItems = filteredItems.filter((item) => item.comingSoon == null);
   }
 
+  let outputSuggestion =
+    suggestion != null
+      ? {
+          text: suggestion.text,
+          item: suggestionMenuItem,
+        }
+      : null;
+
+  // If we have no suggestion, say so
+  if (query.length && outputSuggestion == null) {
+    outputSuggestion = {
+      text: "I don't know how to respond.",
+      item: null,
+    };
+  }
+
   return {
-    suggestion:
-      suggestion != null
-        ? {
-            text: suggestion.text,
-            item: suggestionMenuItem,
-          }
-        : null,
+    suggestion: outputSuggestion,
     items: filteredItems,
     isFiltered,
   };
