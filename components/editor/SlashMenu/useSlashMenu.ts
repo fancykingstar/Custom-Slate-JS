@@ -10,7 +10,7 @@ import insertProConTool from 'components/elements/ProCon/insertProConTool';
 import getMenuContent, {
   MenuItem,
   SlashMenuContent,
-  MenuItemTitle,
+  ToolName,
 } from 'components/editor/SlashMenu/getMenuContent';
 
 type onChangeFn = () => void;
@@ -62,17 +62,17 @@ export default function useSlashMenu(
 
       Transforms.select(editor, range);
 
-      if (item.title === MenuItemTitle.Categorizer) {
+      if (item.title === ToolName.Categorizer) {
         insertCategorizerTool(editor);
-      } else if (item.title === MenuItemTitle.Choices) {
+      } else if (item.title === ToolName.Choices) {
         insertChoicesTool(editor);
-      } else if (item.title === MenuItemTitle.Goals) {
+      } else if (item.title === ToolName.Goals) {
         insertGoalsTool(editor);
-      } else if (item.title === MenuItemTitle.Inversion) {
+      } else if (item.title === ToolName.Inversion) {
         insertInversionTool(editor);
-      } else if (item.title === MenuItemTitle.Simulation) {
+      } else if (item.title === ToolName.Simulation) {
         insertSimulationTool(editor);
-      } else if (item.title === MenuItemTitle.ProsCons) {
+      } else if (item.title === ToolName.ProsCons) {
         insertProConTool(editor);
       } else {
         Transforms.insertText(
