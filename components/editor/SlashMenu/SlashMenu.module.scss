@@ -43,11 +43,11 @@
 }
 
 .assistant {
-  background: var(--color-white);
+  background: #edeffe;
   border-radius: 1rem;
   box-shadow: 0 0.1rem 1rem var(--color-shadow-large),
     0 0.1rem 0.3rem var(--color-shadow-small),
-    inset 0 0 0 0.1rem var(--color-bg-gray-secondary);
+    inset 0 0 0 0.2rem var(--color-blue);
   flex-shrink: 0;
   margin-bottom: 0.4rem;
   opacity: 0;
@@ -97,7 +97,7 @@
 .spinner > div {
   width: 0.6rem;
   height: 0.6rem;
-  background-color: var(--color-bg-gray-secondary);
+  background-color: var(--color-blue);
 
   border-radius: 50%;
   margin: 0 0.2rem;
@@ -140,7 +140,7 @@
 }
 
 .assistantEmpty {
-  color: var(--color-fg-gray-primary);
+  color: var(--color-blue);
   font-size: 1.3rem;
   font-weight: 500;
   line-height: 1.7rem;
@@ -165,13 +165,20 @@
 }
 
 .assistantItem {
-  border-top: solid 0.1rem var(--color-bg-gray-tertiary);
+  border-top: solid 0.2rem var(--color-blue);
   margin: 0 0.1rem;
-  padding: 0.2rem 0.2rem 0.3rem;
 }
 
 .assistantItem .item {
-  border-radius: 0.2rem 0.2rem 0.8rem 0.8rem;
+  border-radius: 0 0 0.8rem 0.8rem;
+  padding: 0.1rem 3.2rem 0.3rem 1.2rem;
+}
+
+.resultsTitle {
+  color: var(--color-fg-gray-primary);
+  font-size: 1.3rem;
+  font-weight: 500;
+  padding: 1rem 1rem 0.2rem;
 }
 
 .menu {
@@ -224,10 +231,6 @@
   position: relative;
   text-align: left;
   width: 100%;
-}
-
-.menu > .listItem:first-child .item {
-  border-radius: 0.8rem 0.8rem 0.6rem 0.6rem;
 }
 
 .menu > .listItem:last-child .item {

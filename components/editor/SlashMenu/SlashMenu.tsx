@@ -25,12 +25,16 @@ export default function SlashMenu(props: Props): JSX.Element {
     }
   }, [pos]);
 
+  const suggestion = content?.suggestion;
+  const suggestionItem = suggestion?.item;
   const availableMenuItems = content.items.filter(
     (menuItem) => menuItem.comingSoon == null
   );
 
-  const suggestion = content?.suggestion;
-  const suggestionItem = suggestion?.item;
+  const hasSearchResults =
+    availableMenuItems.filter(
+      (menuItem) => menuItem.title !== suggestionItem?.title
+    ).length > 0;
 
   return (
     <div
@@ -53,6 +57,9 @@ export default function SlashMenu(props: Props): JSX.Element {
       />
       {availableMenuItems.length ? (
         <div className={styles.list} ref={listRef}>
+          {content.isFiltered && hasSearchResults ? (
+            <div className={styles.resultsTitle}>Search results</div>
+          ) : null}
           <ul className={styles.menu}>
             {content.items.map((item, index) => {
               const output = [];
@@ -132,7 +139,7 @@ function AssistantCard(props: AssistantCardProps): JSX.Element {
     cardContent = (
       <p className={styles.assistantEmpty}>
         {content.items.length
-          ? 'Ask any question or search for tools!'
+          ? 'Ask any question or search tools!'
           : 'Nothing found. Try something else?'}
       </p>
     );
