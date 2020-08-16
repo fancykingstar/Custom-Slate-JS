@@ -28,7 +28,7 @@ export enum ToolName {
 
 export interface SlashMenuContent {
   suggestion: {
-    text: string;
+    text: string | null;
     item: MenuItem | null;
   } | null;
   items: MenuItem[];
@@ -625,7 +625,10 @@ export default function getMenuContent(query: string | null): SlashMenuContent {
     filteredItems = filteredItems.filter((item) => item.comingSoon == null);
   }
 
-  let outputSuggestion =
+  let outputSuggestion: {
+    text: string | null;
+    item: MenuItem | null;
+  } | null =
     suggestion != null
       ? {
           text: suggestion.text,
@@ -636,7 +639,7 @@ export default function getMenuContent(query: string | null): SlashMenuContent {
   // If we have no suggestion, say so
   if (query.length && outputSuggestion == null) {
     outputSuggestion = {
-      text: "I don't know how to respond.",
+      text: null,
       item: null,
     };
   }

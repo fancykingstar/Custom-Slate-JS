@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState, useLayoutEffect } from 'react';
 import {
   SlashMenuContent,
   MenuItem,
@@ -99,41 +99,83 @@ interface AssistantCardProps {
 }
 
 function AssistantCard(props: AssistantCardProps): JSX.Element {
-  const { content, onAddTool, isActive } = props;
+  const [suggestionLoading, setSuggestionLoading] = useState(false);
+  const debounceRef = useRef<number | null>(null);
 
+  const { content, onAddTool, isActive } = props;
   const suggestion = content?.suggestion;
   const item = suggestion?.item;
 
-  return (
-    <div className={styles.assistant}>
-      {suggestion != null ? (
-        <>
-          <p className={styles.assistantText}>{suggestion.text}</p>
-          {item != null ? (
-            <div className={styles.assistantItem}>
-              <button
-                type="button"
-                className={`${styles.item} ${isActive ? styles.active : ''}`}
-                onClick={() => onAddTool(item)}
-              >
-                <div className={styles.icon}>{item.icon}</div>
-                <div>
-                  <h3>{item.title}</h3>
-                  <p>{item.description}</p>
-                </div>
-              </button>
-            </div>
-          ) : null}
-        </>
-      ) : (
-        <p className={styles.assistantEmpty}>
-          {content.items.length
-            ? 'Ask any question or search for tools!'
-            : 'Nothing found. Try something else?'}
-        </p>
-      )}
-    </div>
-  );
+  // Fake debounce to increase perceived intelligence
+  // We use `useLayoutEffect()` to avoid a flash of non-loading content
+  useLayoutEffect(() => {
+    // Clear any existing timeout
+    if (debounceRef.current != null) {
+      window.clearTimeout(debounceRef.current);
+      debounceRef.current = null;
+    }
+
+    setSuggestionLoading(true);
+
+    debounceRef.current = window.setTimeout(() => {
+      setSuggestionLoading(false);
+
+      if (debounceRef.current != null) {
+        window.clearTimeout(debounceRef.current);
+        debounceRef.current = null;
+      }
+    }, 350);
+  }, [suggestion]);
+
+  let cardContent = null;
+  if (suggestion == null) {
+    cardContent = (
+      <p className={styles.assistantEmpty}>
+        {content.items.length
+          ? 'Ask any question or search for tools!'
+          : 'Nothing found. Try something else?'}
+      </p>
+    );
+  } else if (suggestionLoading) {
+    cardContent = (
+      <div className={styles.assistantLoading}>
+        <div className={styles.spinner}>
+          <div className={styles.bounce1} />
+          <div className={styles.bounce2} />
+          <div className={styles.bounce3} />
+        </div>
+      </div>
+    );
+  } else if (suggestion != null && suggestion.text == null) {
+    cardContent = (
+      <p className={styles.assistantText}>
+        Sorry, I don't know how to respond to that!
+      </p>
+    );
+  } else {
+    cardContent = (
+      <>
+        <p className={styles.assistantText}>{suggestion.text}</p>
+        {item != null ? (
+          <div className={styles.assistantItem}>
+            <button
+              type="button"
+              className={`${styles.item} ${isActive ? styles.active : ''}`}
+              onClick={() => onAddTool(item)}
+            >
+              <div className={styles.icon}>{item.icon}</div>
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </div>
+            </button>
+          </div>
+        ) : null}
+      </>
+    );
+  }
+
+  return <div className={styles.assistant}>{cardContent}</div>;
 }
 
 interface MenuItemProps {
