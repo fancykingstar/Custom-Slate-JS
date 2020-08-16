@@ -110,20 +110,13 @@ const slashMenuSuggestions: Suggestion[] = [
     keywords: ['hey', 'hi', 'hello', 'heyo'],
   },
   {
-    text: "I'm your personal Deca assistant!",
-    keywords: ['who', 'are', 'you', 'deca'],
-  },
-  {
-    text: 'Trying my very best to help you make excellent decisions!',
-    keywords: ['how', 'are', 'you', 'doing'],
-  },
-  {
     text: 'Deca is a new kind of doc that helps you make decisions!',
-    keywords: ['what', 'is', 'this', 'doc', 'deca'],
+    keywords: ['deca'],
   },
   {
     text: 'Check out the Choices tool! It can help you find new options.',
     keywords: [
+      'what',
       'choices',
       'figuring',
       'out',
