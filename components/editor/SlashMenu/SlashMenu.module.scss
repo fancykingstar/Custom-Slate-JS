@@ -158,6 +158,12 @@
   padding: 1.2rem;
 }
 
+.assistantText::before {
+  content: '⚡️';
+  font-size: 2rem;
+  margin: 0 1rem 0 0.2rem;
+}
+
 .assistantItem {
   border-top: solid 0.1rem var(--color-bg-gray-tertiary);
   margin: 0 0.1rem;
