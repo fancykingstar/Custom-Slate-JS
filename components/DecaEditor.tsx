@@ -2,8 +2,8 @@
 
 import { useMemo, useState, useCallback, useRef } from 'react';
 import { withHistory } from 'slate-history';
-import { Slate, Editable, withReact } from 'slate-react';
-import { createEditor, Editor, Node, Range, Transforms } from 'slate';
+import { Slate, Editable, withReact, RenderLeafProps } from 'slate-react';
+import { createEditor, Editor, Node, Range, Transforms, Path } from 'slate';
 import { isKeyHotkey } from 'is-hotkey';
 import Element, {
   BasicElement,
@@ -22,7 +22,8 @@ import AssistantContext, {
 import handleAutoScroll from 'components/editor/handleAutoScroll';
 import useConfirmExit from 'components/editor/useConfirmExit';
 import useSlashMenu from 'components/editor/SlashMenu/useSlashMenu';
-import SlashMenu from 'components/SlashMenu';
+import SlashMenu from 'components/editor/SlashMenu/SlashMenu';
+import Leaf from 'components/editor/Leaf';
 import styles from './DecaEditor.module.scss';
 
 export default function DecaEditor(): JSX.Element {
@@ -55,13 +56,49 @@ export default function DecaEditor(): JSX.Element {
     onKeyDownSlashMenu,
     onAddTool,
     slashMenuPos,
-    slashMenuItems,
+    slashMenuContent,
     slashMenuIndex,
   ] = useSlashMenu(editor);
 
   useConfirmExit();
 
   const renderElement = useCallback((props) => <Element {...props} />, []);
+
+  // NOTE: This is not memoized due to a Slate bug
+  // See: https://github.com/ianstormtaylor/slate/issues/3447
+  const renderLeaf = (props: RenderLeafProps) => <Leaf {...props} />;
+
+  const decorate = useCallback(
+    (entry) => {
+      const [node, path] = entry;
+      const ranges: Range[] = [];
+
+      const { selection } = editor;
+
+      // Determine whether to highlight slash command text
+      if (
+        selection != null &&
+        Range.isCollapsed(selection) &&
+        Path.equals(selection.focus.path, path) &&
+        slashMenuPos != null &&
+        node.text != null &&
+        path.length === 2
+      ) {
+        const match = node.text.match(/^\/(\w.*)?$/);
+        if (match != null) {
+          const range = {
+            anchor: Editor.start(editor, path),
+            focus: Editor.end(editor, path),
+            slashHighlight: true,
+          };
+          ranges.push(range);
+        }
+      }
+
+      return ranges;
+    },
+    [editor, slashMenuPos]
+  );
 
   const onKeyDown = useCallback(
     (event) => {
@@ -137,26 +174,18 @@ export default function DecaEditor(): JSX.Element {
             id="editor"
             autoFocus
             className={styles.editor}
+            decorate={decorate}
             onKeyDown={onKeyDown}
             onSelect={onSelect}
             renderElement={renderElement}
+            renderLeaf={renderLeaf}
           />
-          {slashMenuPos != null ? (
-            <div
-              className={styles.slashWrapper}
-              style={{
-                transform: `translate3d(${slashMenuPos[0] / 10}rem, ${
-                  slashMenuPos[1] / 10
-                }rem, 0)`,
-              }}
-            >
-              <SlashMenu
-                activeIndex={slashMenuIndex}
-                items={slashMenuItems}
-                onAddTool={onAddTool}
-              />
-            </div>
-          ) : null}
+          <SlashMenu
+            activeIndex={slashMenuIndex}
+            content={slashMenuContent}
+            pos={slashMenuPos}
+            onAddTool={onAddTool}
+          />
         </Slate>
       </div>
     </AssistantContext.Provider>
