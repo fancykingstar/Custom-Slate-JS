@@ -1,4 +1,4 @@
-import { useEffect, useRef, useContext, useMemo } from 'react';
+import { useEffect, useContext, useMemo } from 'react';
 import { useEditor } from 'slate-react';
 import { Node } from 'slate';
 import { add, isAfter } from 'date-fns';
@@ -13,7 +13,10 @@ import AssistantContext, {
 import insertCategorizerTool from 'components/elements/Categorizer/insertCategorizerTool';
 import insertChoicesTool from 'components/elements/Choices/insertChoicesTool';
 import insertGoalsTool from 'components/elements/Goals/insertGoalsTool';
+import insertInversionTool from 'components/elements/Inversion/insertInversionTool';
+import insertSimulationTool from 'components/elements/Simulation/insertSimulationTool';
 import AssistantKeyboardCommand from 'components/editor/AssistantKeyboardCommand';
+import { CategorizerContext, DecisionCategory } from 'components/context';
 import styles from './AssistantPrompt.module.scss';
 
 // Default max number of time a prompt should be shown.
@@ -29,19 +32,29 @@ const Tools: string[] = [
 
 interface State {
   categorizer: {
-    shownCount: number;
+    count: number;
   };
   choices: {
-    shownCount: number;
+    count: number;
   };
   goals: {
-    shownCount: number;
+    count: number;
   };
-  showTimeoutNudge: boolean;
-  shouldSetTimeoutNudge: boolean;
-  showedEliminatePrompt: boolean;
+  inversion: {
+    count: number;
+    countEliminate: number;
+  };
+  nudge: {
+    count: number;
+    show: boolean;
+    timeoutId: number | null;
+  };
+  simulation: {
+    count: number;
+    countEliminate: number;
+  };
   slash: {
-    shownCount: number;
+    count: number;
     whenShownMillis: number | null;
   };
 }
@@ -53,19 +66,29 @@ interface State {
 // do it for you).
 let assistantState: State = {
   categorizer: {
-    shownCount: 0,
+    count: 0,
   },
   choices: {
-    shownCount: 0,
+    count: 0,
   },
   goals: {
-    shownCount: 0,
+    count: 0,
   },
-  showTimeoutNudge: false,
-  shouldSetTimeoutNudge: true,
-  showedEliminatePrompt: false,
+  inversion: {
+    count: 0,
+    countEliminate: 0,
+  },
+  nudge: {
+    count: 0,
+    show: false,
+    timeoutId: null,
+  },
+  simulation: {
+    count: 0,
+    countEliminate: 0,
+  },
   slash: {
-    shownCount: 0,
+    count: 0,
     whenShownMillis: null,
   },
 };
@@ -90,21 +113,21 @@ function getSlashPrompt():
       {
         slash: {
           ...assistantState.slash,
-          shownCount: 1,
+          count: 1,
           whenShownMillis: Date.now(),
         },
       },
     ];
   }
 
-  if (assistantState.slash.shownCount < MaxShownCount) {
+  if (assistantState.slash.count < MaxShownCount) {
     return [
       message,
       [],
       {
         slash: {
           ...assistantState.slash,
-          shownCount: assistantState.slash.shownCount + 1,
+          count: assistantState.slash.count + 1,
           whenShownMillis: Date.now(),
         },
       },
@@ -128,7 +151,7 @@ function getSlashPrompt():
       {
         slash: {
           ...assistantState.slash,
-          shownCount: 1,
+          count: 1,
           whenShownMillis: Date.now(),
         },
       },
@@ -136,6 +159,233 @@ function getSlashPrompt():
   }
 
   return null;
+}
+
+function getTimeoutPrompt():
+  | [React.ReactNode, AssistantAction[], Partial<State>]
+  | null {
+  if (!assistantState.nudge.show) {
+    return null;
+  }
+
+  if (assistantState.nudge.count < MaxShownCount - 1) {
+    return [
+      'Could it be you’ve already made up your mind?',
+      [],
+      {
+        nudge: {
+          ...assistantState.nudge,
+          count: assistantState.nudge.count + 1,
+        },
+      },
+    ];
+  }
+
+  return [
+    'Could it be you’ve already made up your mind?',
+    [],
+    {
+      nudge: {
+        ...assistantState.nudge,
+        count: 0,
+        show: false,
+      },
+    },
+  ];
+}
+
+function getCategorizerPrompt(
+  tools: Node[]
+): [React.ReactNode, AssistantAction[], Partial<State>] | null {
+  if (assistantState.categorizer.count >= MaxShownCount) {
+    return null;
+  }
+
+  if (tools.find((node) => node.type === CategorizerElement.Wrapper) != null) {
+    return null;
+  }
+
+  return [
+    <>
+      Do you know the type of this decision?{' '}
+      <AssistantKeyboardCommand>Add Categorizer tool</AssistantKeyboardCommand>
+    </>,
+    [
+      (e) => {
+        insertCategorizerTool(e);
+      },
+    ],
+    {
+      categorizer: {
+        ...assistantState.categorizer,
+        count: assistantState.categorizer.count + 1,
+      },
+    },
+  ];
+}
+
+function getChoicesPrompt(
+  tools: Node[]
+): [React.ReactNode, AssistantAction[], Partial<State>] | null {
+  if (assistantState.choices.count >= MaxShownCount) {
+    return null;
+  }
+
+  if (tools.find((node) => node.type === ChoicesElement.Wrapper) != null) {
+    return null;
+  }
+
+  return [
+    <>
+      Do you know your choices?{' '}
+      <AssistantKeyboardCommand>Add Choices tool</AssistantKeyboardCommand>
+    </>,
+    [
+      (e) => {
+        insertChoicesTool(e);
+      },
+    ],
+    {
+      choices: {
+        ...assistantState.choices,
+        count: assistantState.choices.count + 1,
+      },
+    },
+  ];
+}
+
+function getGoalsPrompt(
+  tools: Node[]
+): [React.ReactNode, AssistantAction[], Partial<State>] | null {
+  if (assistantState.goals.count >= MaxShownCount) {
+    return null;
+  }
+
+  if (tools.find((node) => node.type === GoalsElement.Wrapper) != null) {
+    return null;
+  }
+
+  return [
+    <>
+      Have any goals in mind?{' '}
+      <AssistantKeyboardCommand>Add Goals tool</AssistantKeyboardCommand>
+    </>,
+    [
+      (e) => {
+        insertGoalsTool(e);
+      },
+    ],
+    {
+      goals: {
+        ...assistantState.goals,
+        count: assistantState.goals.count + 1,
+      },
+    },
+  ];
+}
+
+function getInversionPrompt(
+  tools: Node[]
+): [React.ReactNode, AssistantAction[], Partial<State>] | null {
+  if (assistantState.inversion.count >= MaxShownCount) {
+    return null;
+  }
+
+  if (tools.find((node) => node.type === InversionElement.Wrapper) != null) {
+    if (assistantState.inversion.countEliminate >= MaxShownCount) {
+      return null;
+    }
+
+    const usedChoiceTool =
+      tools.find((node) => node.type === ChoicesElement.Wrapper) != null;
+    const usedInversionTool =
+      tools.find((node) => node.type === InversionElement.Wrapper) != null;
+
+    if (usedChoiceTool && usedInversionTool) {
+      return [
+        'Can you cross out some choices now?',
+        [],
+        {
+          inversion: {
+            ...assistantState.inversion,
+            countEliminate: assistantState.inversion.countEliminate + 1,
+          },
+        },
+      ];
+    }
+
+    return null;
+  }
+
+  return [
+    <>
+      What's the worst that could happen?{' '}
+      <AssistantKeyboardCommand>Add Inversion tool</AssistantKeyboardCommand>
+    </>,
+    [
+      (e) => {
+        insertInversionTool(e);
+      },
+    ],
+    {
+      inversion: {
+        ...assistantState.inversion,
+        count: assistantState.inversion.count + 1,
+      },
+    },
+  ];
+}
+
+function getSimulationPrompt(
+  tools: Node[]
+): [React.ReactNode, AssistantAction[], Partial<State>] | null {
+  if (assistantState.simulation.count >= MaxShownCount) {
+    return null;
+  }
+
+  if (tools.find((node) => node.type === SimulationElement.Tool) != null) {
+    if (assistantState.simulation.countEliminate >= MaxShownCount) {
+      return null;
+    }
+
+    const usedChoiceTool =
+      tools.find((node) => node.type === ChoicesElement.Wrapper) != null;
+    const usedSimulationTool =
+      tools.find((node) => node.type === SimulationElement.Tool) != null;
+
+    if (usedChoiceTool && usedSimulationTool) {
+      return [
+        'Can you cross out some choices now?',
+        [],
+        {
+          simulation: {
+            ...assistantState.simulation,
+            countEliminate: assistantState.simulation.countEliminate + 1,
+          },
+        },
+      ];
+    }
+
+    return null;
+  }
+
+  return [
+    <>
+      Can you simulate what happens with each choice?{' '}
+      <AssistantKeyboardCommand>Add Simulation tool</AssistantKeyboardCommand>
+    </>,
+    [
+      (e) => {
+        insertSimulationTool(e);
+      },
+    ],
+    {
+      simulation: {
+        ...assistantState.simulation,
+        count: assistantState.simulation.count + 1,
+      },
+    },
+  ];
 }
 
 function getDefaultPrompt(): [
@@ -157,106 +407,22 @@ function getDefaultPrompt(): [
   ];
 }
 
-function getCategorizerPrompt(
-  tools: Node[]
-): [React.ReactNode, AssistantAction[], Partial<State>] | null {
-  if (assistantState.categorizer.shownCount >= MaxShownCount) {
-    return null;
-  }
-
-  if (tools.find((node) => node.type === CategorizerElement.Wrapper) != null) {
-    return null;
-  }
-
-  return [
-    <>
-      Do you know the type of this decision?{' '}
-      <AssistantKeyboardCommand>Add Categorizer tool</AssistantKeyboardCommand>
-    </>,
-    [
-      (e) => {
-        insertCategorizerTool(e);
-      },
-    ],
-    {
-      categorizer: {
-        ...assistantState.categorizer,
-        shownCount: assistantState.categorizer.shownCount + 1,
-      },
-    },
-  ];
-}
-
-function getChoicesPrompt(
-  tools: Node[]
-): [React.ReactNode, AssistantAction[], Partial<State>] | null {
-  if (assistantState.choices.shownCount >= MaxShownCount) {
-    return null;
-  }
-
-  if (tools.find((node) => node.type === ChoicesElement.Wrapper) != null) {
-    return null;
-  }
-
-  return [
-    <>
-      Do you know your choices?{' '}
-      <AssistantKeyboardCommand>Add Choices tool</AssistantKeyboardCommand>
-    </>,
-    [
-      (e) => {
-        insertChoicesTool(e);
-      },
-    ],
-    {
-      choices: {
-        ...assistantState.choices,
-        shownCount: assistantState.choices.shownCount + 1,
-      },
-    },
-  ];
-}
-
-function getGoalsPrompt(
-  tools: Node[]
-): [React.ReactNode, AssistantAction[], Partial<State>] | null {
-  if (assistantState.goals.shownCount >= MaxShownCount) {
-    return null;
-  }
-
-  if (tools.find((node) => node.type === GoalsElement.Wrapper) != null) {
-    return null;
-  }
-
-  return [
-    <>
-      Have any goals in mind?{' '}
-      <AssistantKeyboardCommand>Add Goals tool</AssistantKeyboardCommand>
-    </>,
-    [
-      (e) => {
-        insertGoalsTool(e);
-      },
-    ],
-    {
-      goals: {
-        ...assistantState.goals,
-        shownCount: assistantState.goals.shownCount + 1,
-      },
-    },
-  ];
-}
-
 /**
  * Returns assistant content as a function of Slate nodes.
  */
 function getAssistantPrompt(
-  nodes: Node[]
+  nodes: Node[],
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  decisionCategory: DecisionCategory | null
 ): [React.ReactNode, AssistantAction[], Partial<State>] {
   const tools = nodes.filter((node) => Tools.includes(node.type as string));
-  const toolCount = tools.length;
 
   let ret = getSlashPrompt();
+  if (ret != null) {
+    return ret;
+  }
+
+  ret = getTimeoutPrompt();
   if (ret != null) {
     return ret;
   }
@@ -276,49 +442,60 @@ function getAssistantPrompt(
     return ret;
   }
 
-  // Case: Timeout finished and takes priority
-  if (assistantState.showTimeoutNudge) {
-    return [
-      'Could it be you’ve already made up your mind?',
-      [],
-      {
-        showTimeoutNudge: false,
-      },
-    ];
+  ret = getInversionPrompt(tools);
+  if (ret != null) {
+    return ret;
   }
 
-  // Case: 1st tool is choice tool
-  const usedChoiceTool =
-    tools.find((node) => node.type === ChoicesElement.Wrapper) != null;
-
-  if (
-    usedChoiceTool &&
-    toolCount === 1 &&
-    !assistantState.showedEliminatePrompt
-  ) {
-    return [
-      'Can you cross out some choices now?',
-      [],
-      {
-        showedEliminatePrompt: true,
-      },
-    ];
+  ret = getSimulationPrompt(tools);
+  if (ret != null) {
+    return ret;
   }
+
+  /*
+  if (decisionCategory == null) {
+  } else {
+    switch (decisionCategory) {
+      case DecisionCategory.Snap:
+      case DecisionCategory.Dash:
+      case DecisionCategory.Capstone:
+      case DecisionCategory.Puzzle:
+      case DecisionCategory.Leap:
+      case DecisionCategory.Parachute:
+      case DecisionCategory.Summit:
+      case DecisionCategory.Mountain:
+      default:
+    }
+  }
+  */
 
   return getDefaultPrompt();
+}
+
+function scheduleNudge(): void {
+  if (assistantState.nudge.timeoutId != null) {
+    return;
+  }
+
+  assistantState.nudge.timeoutId = window.setTimeout(() => {
+    assistantState.nudge.show = true;
+    assistantState.nudge.timeoutId = null;
+
+    scheduleNudge();
+  }, 5 * 60 * 1000);
 }
 
 export default function AssistantPrompt(): JSX.Element {
   const editor = useEditor();
   const { setActions } = useContext(AssistantContext);
-  const timeoutId = useRef<number | null>(null);
 
   const { children } = editor;
+  const { decisionCategory } = useContext(CategorizerContext);
 
   // Only update the content when the doc changes
   const [content, newActions, stateUpdates] = useMemo(() => {
-    return getAssistantPrompt(children);
-  }, [children]);
+    return getAssistantPrompt(children, decisionCategory);
+  }, [children, decisionCategory]);
 
   // Run logic based on the current assistant output
   useEffect(() => {
@@ -331,19 +508,7 @@ export default function AssistantPrompt(): JSX.Element {
       ...stateUpdates,
     };
 
-    // Set timer for nudge if we haven't already
-    if (assistantState.shouldSetTimeoutNudge) {
-      timeoutId.current = window.setTimeout(() => {
-        // Make the nudge visible
-        assistantState.showTimeoutNudge = true;
-
-        if (timeoutId.current != null) {
-          window.clearTimeout(timeoutId.current);
-          timeoutId.current = null;
-        }
-      }, 5000);
-      assistantState.shouldSetTimeoutNudge = false;
-    }
+    scheduleNudge();
   }, [content, newActions, stateUpdates]);
 
   return <>{content}</>;
