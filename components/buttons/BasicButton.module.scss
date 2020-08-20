@@ -1,4 +1,4 @@
-.completeButton {
+.button {
   align-items: center;
   background: var(--color-white);
   border: none;
@@ -8,49 +8,26 @@
   color: var(--color-fg-gray-primary);
   cursor: pointer;
   display: flex;
+  flex-direction: row;
   font-size: 1.3rem;
   font-weight: 500;
   height: 2.8rem;
-  justify-content: center;
   line-height: 1.6rem;
-  outline: 0;
+  outline: none;
   padding: 0.6rem 0.8rem;
-  position: relative;
 }
 
-.completeButton:hover {
+.button:hover {
   background: #edeffe;
   box-shadow: 0 0.1rem 0.3rem var(--color-bg-gray-tertiary),
     inset 0 0 0 0.1rem var(--color-blue);
   color: var(--color-blue);
 }
 
-.completeButton:focus,
-.completeButton:active {
+.button:focus,
+.button:active {
   background: #edeffe;
   box-shadow: 0 0.1rem 0.3rem var(--color-bg-gray-tertiary),
     inset 0 0 0 0.2rem var(--color-blue);
   color: var(--color-blue);
-}
-
-.completeButton.complete {
-  background: #e5f3ee;
-  box-shadow: 0 0.1rem 0.3rem var(--color-bg-gray-tertiary),
-    inset 0 0 0 0.1rem #80c2a9;
-  color: var(--color-green);
-}
-
-.completeButton.complete:hover {
-  box-shadow: 0 0.1rem 0.3rem var(--color-bg-gray-tertiary),
-    inset 0 0 0 0.1rem var(--color-green);
-}
-
-.completeButton.complete:focus,
-.completeButton.complete:active {
-  box-shadow: 0 0.1rem 0.3rem var(--color-bg-gray-tertiary),
-    inset 0 0 0 0.2rem var(--color-green);
-}
-
-.icon {
-  margin-right: 0.6rem;
 }

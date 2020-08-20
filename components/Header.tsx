@@ -1,23 +1,22 @@
-import { useContext } from 'react';
 import Link from 'next/link';
-import { CategorizerContext } from 'components/context';
 import CompleteButton from 'components/CompleteButton';
+import SidebarToggle from 'components/sidebar/SidebarToggle';
+import { useContext } from 'react';
+import { CategorizerContext } from 'components/context';
 import styles from './Header.module.scss';
 
 export default function Header(): JSX.Element {
   return (
     <header className={styles.header}>
-      <div className={styles.content}>
-        <div className={styles.left}>
-          <Link href="/">
-            <a className={styles.logo}>Deca</a>
-          </Link>
-          <span className={styles.beta}>β</span>
-        </div>
-        <div className={styles.right}>
-          <Category />
-          <CompleteButton />
-        </div>
+      <div className={styles.left}>
+        <SidebarToggle />
+        <Link href="/">
+          <a className={styles.logo}>Deca</a>
+        </Link>
+      </div>
+      <div className={styles.right}>
+        <Category />
+        <CompleteButton />
       </div>
     </header>
   );

@@ -1,0 +1,34 @@
+.wrapper {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.2rem;
+  position: fixed;
+  right: 0;
+  top: 0;
+}
+
+.infoList {
+  color: var(--color-fg-gray-primary);
+  font-size: 1.3rem;
+  font-weight: 500;
+  list-style: none;
+  margin: 0;
+  padding: 0.4rem 0 0;
+  text-align: right;
+}
+
+.infoList li {
+  margin: 1.2rem 0.4rem;
+}
+
+.infoListIcon {
+  font-size: 1.6rem;
+  line-height: 1.6rem;
+  margin-right: 0.8rem;
+  width: 1.6rem;
+}
+
+.completeIcon {
+  margin-right: 0.6rem;
+}

@@ -1,14 +1,11 @@
 // @refresh reset
 
-import { useMemo, useState, useCallback, useRef } from 'react';
+import { useMemo, useState, useCallback, useRef, useContext } from 'react';
 import { withHistory } from 'slate-history';
 import { Slate, Editable, withReact, RenderLeafProps } from 'slate-react';
 import { createEditor, Editor, Node, Range, Transforms, Path } from 'slate';
 import { isKeyHotkey } from 'is-hotkey';
-import Element, {
-  BasicElement,
-  ReservedElement,
-} from 'components/elements/Element';
+import Element from 'components/elements/Element';
 import withLayout from 'components/editor/withLayout';
 import withVoids from 'components/editor/withVoids';
 import withMarkdown from 'components/editor/withMarkdown';
@@ -20,13 +17,21 @@ import AssistantContext, {
   AssistantAction,
 } from 'components/editor/AssistantContext';
 import handleAutoScroll from 'components/editor/handleAutoScroll';
-import useConfirmExit from 'components/editor/useConfirmExit';
 import useSlashMenu from 'components/editor/SlashMenu/useSlashMenu';
 import SlashMenu from 'components/editor/SlashMenu/SlashMenu';
 import Leaf from 'components/editor/Leaf';
+import { Store, Action, Doc } from 'store/store';
 import styles from './DecaEditor.module.scss';
 
-export default function DecaEditor(): JSX.Element {
+interface Props {
+  doc: Doc;
+}
+
+export default function DecaEditor(props: Props): JSX.Element {
+  const { doc } = props;
+
+  const { dispatch } = useContext(Store);
+
   const wrapperRef = useRef<HTMLDivElement>(null);
   const editor = useMemo(
     () =>
@@ -37,16 +42,7 @@ export default function DecaEditor(): JSX.Element {
       ),
     []
   );
-  const [value, setValue] = useState<Node[]>([
-    {
-      type: ReservedElement.Title,
-      children: [{ text: '' }],
-    },
-    {
-      type: BasicElement.Paragraph,
-      children: [{ text: '' }],
-    },
-  ]);
+  const [value, setValue] = useState<Node[]>(doc.content);
   const [assistantActions, setAssistantActions] = useState<AssistantAction[]>(
     []
   );
@@ -60,13 +56,14 @@ export default function DecaEditor(): JSX.Element {
     slashMenuIndex,
   ] = useSlashMenu(editor);
 
-  useConfirmExit();
-
-  const renderElement = useCallback((props) => <Element {...props} />, []);
+  const renderElement = useCallback(
+    (elementProps) => <Element {...elementProps} />,
+    []
+  );
 
   // NOTE: This is not memoized due to a Slate bug
   // See: https://github.com/ianstormtaylor/slate/issues/3447
-  const renderLeaf = (props: RenderLeafProps) => <Leaf {...props} />;
+  const renderLeaf = (leafProps: RenderLeafProps) => <Leaf {...leafProps} />;
 
   const decorate = useCallback(
     (entry) => {
@@ -153,6 +150,9 @@ export default function DecaEditor(): JSX.Element {
     (newValue) => {
       setValue(newValue);
       onChangeSlashMenu();
+
+      // Naive save doc on every change
+      dispatch({ type: Action.setDoc, docId: doc.id, content: newValue });
     },
     [setValue, onChangeSlashMenu]
   );

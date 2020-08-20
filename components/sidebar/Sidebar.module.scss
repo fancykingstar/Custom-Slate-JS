@@ -1,0 +1,80 @@
+.wrapper {
+  border-right: solid 0.1rem var(--color-bg-gray-tertiary);
+  position: relative;
+  width: 26.4rem;
+}
+
+.content {
+  position: sticky;
+  top: calc(var(--header-height) + 1.2rem);
+}
+
+.collapsedWrapper {
+  align-items: center;
+  display: flex;
+  left: 0;
+  padding: 1rem 1.2rem;
+  position: fixed;
+  top: 0;
+}
+
+.newButton {
+  margin: 1.2rem 0.8rem;
+}
+
+.newIcon {
+  margin-right: 0.6rem;
+}
+
+.fileListTitle {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.9rem;
+  margin: 1.2rem 1.2rem 0;
+}
+
+.fileList {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0.6rem 0.4rem;
+}
+
+.file {
+  margin-bottom: 0.2rem;
+}
+
+.fileLink {
+  align-items: center;
+  background: none;
+  border: none;
+  border-radius: 0.6rem;
+  color: var(--color-fg-gray-primary);
+  cursor: pointer;
+  display: flex;
+  font-size: 1.3rem;
+  font-weight: 500;
+  line-clamp: 1;
+  line-height: 1.6rem;
+  overflow: hidden;
+  padding: 0.8rem;
+  text-align: left;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.file.active .fileLink {
+  background: #edeffe;
+  color: var(--color-blue);
+}
+
+.file:not(.active):hover .fileLink {
+  background: var(--color-shadow-large);
+}
+
+.fileIcon {
+  margin-right: 0.8rem;
+}
