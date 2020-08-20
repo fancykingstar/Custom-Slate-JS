@@ -30,6 +30,7 @@ export default function insertGoalsTool(editor: Editor): void {
   Transforms.wrapNodes(
     editor,
     {
+      timestamp: Date.now(),
       type: GoalsElement.Wrapper,
       children: [],
     },

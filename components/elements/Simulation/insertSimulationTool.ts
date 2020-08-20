@@ -33,28 +33,27 @@ export default function insertSimulationTool(editor: Editor): void {
     })
   );
 
-  if (choices.length) {
-    choices
-      // Ignore empty choices
-      .filter((choice) => {
-        const [choiceNode] = choice;
-        return Node.string(choiceNode).length;
-      })
-      .forEach((choice) => {
-        const [choiceNode] = choice;
-        const content = Node.string(choiceNode);
+  const filledChoices = choices.filter((choice) => {
+    const [choiceNode] = choice;
+    return Node.string(choiceNode).length;
+  });
 
-        nodes.push({
-          type: SimulationElement.Choice,
-          children: [{ text: `Choice: ${content}` }],
-        });
-        nodes.push({
-          type: SimulationElement.Item,
-          children: [{ text: '' }],
-          indent: 0,
-          probability: SimulationProbability.None,
-        });
+  if (filledChoices.length) {
+    filledChoices.forEach((choice) => {
+      const [choiceNode] = choice;
+      const content = Node.string(choiceNode);
+
+      nodes.push({
+        type: SimulationElement.Choice,
+        children: [{ text: `Choice: ${content}` }],
       });
+      nodes.push({
+        type: SimulationElement.Item,
+        children: [{ text: '' }],
+        indent: 0,
+        probability: SimulationProbability.None,
+      });
+    });
 
     newSelection = newSelection.concat([1, 0]);
   } else {
@@ -68,6 +67,7 @@ export default function insertSimulationTool(editor: Editor): void {
   Transforms.insertNodes(
     editor,
     {
+      timestamp: Date.now(),
       type: SimulationElement.Tool,
       children: nodes,
     },

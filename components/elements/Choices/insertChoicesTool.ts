@@ -30,6 +30,7 @@ export default function insertChoicesTool(editor: Editor): void {
   Transforms.wrapNodes(
     editor,
     {
+      timestamp: Date.now(),
       type: ChoicesElement.Wrapper,
       children: [],
     },

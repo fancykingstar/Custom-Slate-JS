@@ -1,7 +1,6 @@
 import { Node, NodeEntry, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { BasicElement, ReservedElement } from 'components/elements/Element';
-import { isEmptyElement } from 'components/editor/queries';
 
 const withLayout = (editor: ReactEditor): ReactEditor => {
   const { normalizeNode } = editor;
@@ -22,10 +21,15 @@ const withLayout = (editor: ReactEditor): ReactEditor => {
       Transforms.insertNodes(editor, title, { at: path.concat(0) });
     }
 
-    // Enforce: If last element isn't empty, add a blank paragraph element
+    // TODO: In future, we should create the trailing paragraph on the fly to avoid
+    // the issue of unexpected paragraphs existing
+
+    // Enforce: If we're missing a body paragraph, add it
+    // Enforce: If last element is not a paragraph, add a blank paragraph element
+    const lastElement = editor.children[editor.children.length - 1];
     if (
       editor.children.length < 2 ||
-      !isEmptyElement(editor.children[editor.children.length - 1])
+      lastElement.type !== BasicElement.Paragraph
     ) {
       const paragraph = {
         type: BasicElement.Paragraph,

@@ -21,6 +21,12 @@ import useSlashMenu from 'components/editor/SlashMenu/useSlashMenu';
 import SlashMenu from 'components/editor/SlashMenu/SlashMenu';
 import Leaf from 'components/editor/Leaf';
 import { Store, Action, Doc } from 'store/store';
+import CardHand from 'components/cards/CardHand';
+import Placeholder from 'components/editor/Placeholder';
+import SlashPromptPlaceholder from 'components/editor/SlashPromptPlaceholder';
+import CardHandler from 'components/cards/CardContext';
+import WidgetSidebar from 'components/widgets/WidgetSidebar';
+import WidgetHandler from 'components/widgets/WidgetContext';
 import styles from './DecaEditor.module.scss';
 
 interface Props {
@@ -170,22 +176,30 @@ export default function DecaEditor(props: Props): JSX.Element {
     >
       <div className={styles.wrapper} ref={wrapperRef}>
         <Slate editor={editor} value={value} onChange={onChange}>
-          <Editable
-            id="editor"
-            autoFocus
-            className={styles.editor}
-            decorate={decorate}
-            onKeyDown={onKeyDown}
-            onSelect={onSelect}
-            renderElement={renderElement}
-            renderLeaf={renderLeaf}
-          />
-          <SlashMenu
-            activeIndex={slashMenuIndex}
-            content={slashMenuContent}
-            pos={slashMenuPos}
-            onAddTool={onAddTool}
-          />
+          <WidgetHandler>
+            <CardHandler>
+              <Editable
+                id="editor"
+                autoFocus
+                className={styles.editor}
+                decorate={decorate}
+                onKeyDown={onKeyDown}
+                onSelect={onSelect}
+                renderElement={renderElement}
+                renderLeaf={renderLeaf}
+              />
+              <SlashMenu
+                activeIndex={slashMenuIndex}
+                content={slashMenuContent}
+                pos={slashMenuPos}
+                onAddTool={onAddTool}
+              />
+              <SlashPromptPlaceholder wrapperRef={wrapperRef} />
+              <Placeholder />
+              <CardHand />
+              <WidgetSidebar />
+            </CardHandler>
+          </WidgetHandler>
         </Slate>
       </div>
     </AssistantContext.Provider>

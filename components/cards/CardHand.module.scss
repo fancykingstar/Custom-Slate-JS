@@ -1,0 +1,188 @@
+.hand {
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  left: 50%;
+  pointer-events: none;
+  position: fixed;
+  transform: translate3d(-50%, 0, 0);
+  z-index: 10;
+}
+
+.handContent {
+  display: flex;
+  pointer-events: all;
+  position: relative;
+  transform: translate3d(0, 14.8rem, 0);
+  transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.handContent.hovered {
+  transform: translate3d(0, 0, 0);
+}
+
+.hand.hidden .handContent {
+  pointer-events: none;
+  transform: translate3d(0, 21.6rem, 0);
+}
+
+.cardWrapper {
+  position: relative;
+}
+
+.cardButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  padding: 2.4rem 0.8rem 1.6rem;
+  text-align: left;
+  transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cardButton .card {
+  transform: translate3d(0, 0, 0);
+  transition: transform 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cardWrapper:hover .card {
+  background-color: #edeffe;
+  border-color: var(--color-blue);
+  transform: translate3d(0, 0, 0) scale(1.05);
+}
+
+.cardButton:active .card {
+  transform: translate3d(0, 0, 0) scale(1.03);
+  transition: none;
+}
+
+.card-0 .cardButton {
+  transform: translate3d(6.4rem, 0, 0) rotate(-3deg);
+}
+
+.card-2 .cardButton {
+  transform: translate3d(-6.4rem, 0, 0) rotate(3deg);
+}
+
+.handContent.hovered .card-0 .cardButton {
+  transform: translate3d(0, 0, 0);
+}
+.handContent.hovered .card-2 .cardButton {
+  transform: translate3d(0, 0, 0);
+}
+
+.card {
+  background: url(/img/card-dot-grid.svg) no-repeat var(--color-white);
+  background-position: center bottom 0.8rem;
+  border: solid 0.1rem var(--color-bg-gray-secondary);
+  border-radius: 1.6rem;
+  box-shadow: 0 0.1rem 0.3rem rgba(16, 17, 25, 0.08),
+    0 0.1rem 1rem rgba(16, 17, 25, 0.04);
+  display: flex;
+  flex-direction: column;
+  height: 18.4rem;
+  padding: 1.6rem 1.2rem 3.2rem;
+  width: 16rem;
+}
+
+.icon {
+  font-size: 2.4rem;
+  height: 2.4rem;
+  line-height: 2.4rem;
+  min-width: 2.4rem;
+}
+
+.card h3 {
+  font-size: 1.4rem;
+  font-weight: 500;
+  line-height: 1.96rem;
+  margin: auto 0 0;
+  max-width: 12.8rem;
+}
+
+.card p {
+  color: var(--color-bg-gray-primary);
+  font-size: 1.1rem;
+  font-weight: 500;
+  line-height: 1.3rem;
+  margin: 0.4rem 0 0;
+}
+
+.topPick {
+  align-items: center;
+  background: var(--color-white);
+  border: solid 0.1rem var(--color-bg-gray-tertiary);
+  border-radius: 1.2rem;
+  color: var(--color-fg-gray-primary);
+  display: flex;
+  font-size: 1.1rem;
+  font-weight: 500;
+  height: 2.4rem;
+  justify-content: center;
+  padding: 0.4rem 0.8rem;
+  position: absolute;
+  right: 1.2rem;
+  top: 1.6rem;
+  z-index: 10;
+}
+
+.closeButton {
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+
+  font-size: 0;
+  height: 4.4rem;
+  justify-content: center;
+  outline: none;
+  opacity: 0;
+  position: absolute;
+  right: -1.2rem;
+  top: 0.2rem;
+  transition: opacity 250ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  transform: scale(0.7);
+  width: 4.4rem;
+  z-index: 10;
+}
+
+.closeButton::before {
+  background: url(/img/close.svg) no-repeat var(--color-white);
+  background-position: center;
+
+  border-radius: 50%;
+  box-shadow: 0 0.1rem 0.3rem rgba(16, 17, 25, 0.08),
+    0 0.1rem 1rem rgba(16, 17, 25, 0.04),
+    inset 0 0 0 0.1rem var(--color-bg-gray-secondary);
+  content: '';
+  display: block;
+  height: 2.4rem;
+  width: 2.4rem;
+}
+
+.closeButton.visible {
+  opacity: 1;
+  transform: none;
+}
+
+.closeButton.visible:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.closeButton:hover::before {
+  background-color: #edeffe;
+  box-shadow: 0 0.1rem 0.3rem var(--color-bg-gray-tertiary),
+    inset 0 0 0 0.1rem var(--color-blue);
+  color: var(--color-blue);
+}
+
+.closeButton:focus::before,
+.closeButton:active::before {
+  background-color: #edeffe;
+  box-shadow: 0 0.1rem 0.3rem var(--color-bg-gray-tertiary),
+    inset 0 0 0 0.2rem var(--color-blue);
+  color: var(--color-blue);
+}

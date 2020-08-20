@@ -13,6 +13,8 @@ html {
   color: var(--color-black);
   font-size: 62.5%;
 
+  scroll-padding-top: var(--header-height);
+
   // Ensures there's space in the editor when repeatedly creating new lines
   scroll-padding-bottom: var(--scroll-bottom-padding);
 }

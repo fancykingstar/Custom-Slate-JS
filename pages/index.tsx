@@ -23,16 +23,16 @@ export default function Home(): JSX.Element {
 
   // If we have no stored docs, create a new one
   useEffect(() => {
-    // Load state from localStorage
-    const stateData = window.localStorage.getItem('state');
-    const parsedState = stateData != null ? JSON.parse(stateData) : null;
+    // // Load state from localStorage
+    // const stateData = window.localStorage.getItem('state');
+    // const parsedState = stateData != null ? JSON.parse(stateData) : null;
 
-    if (parsedState == null) {
-      // Create new doc if there is not persisted localStorage state
-      dispatch({ type: Action.createNewDoc });
-    } else {
-      dispatch({ type: Action.initState, state: parsedState });
-    }
+    // if (parsedState == null) {
+    // Create new doc if there is not persisted localStorage state
+    dispatch({ type: Action.createNewDoc });
+    // } else {
+    //   dispatch({ type: Action.initState, state: parsedState });
+    // }
   }, []);
 
   const { activeDocId: activeDoc, docs } = state;

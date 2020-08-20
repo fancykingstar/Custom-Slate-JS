@@ -30,6 +30,7 @@ export default function insertInversionTool(editor: Editor): void {
   Transforms.wrapNodes(
     editor,
     {
+      timestamp: Date.now(),
       type: InversionElement.Wrapper,
       children: [],
     },
