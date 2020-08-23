@@ -10,11 +10,13 @@ import { ChoicesElement } from 'components/elements/Choices/ChoicesElement';
 import { GoalsElement } from 'components/elements/Goals/GoalsElement';
 import { Node, Editor, Transforms, Range } from 'slate';
 import { CategorizerElement } from 'components/elements/Categorizer/CategorizerElement';
+import { EmotionElement } from 'components/elements/Emotion/EmotionElement';
 import { InversionElement } from 'components/elements/Inversion/InversionElement';
 import { SimulationElement } from 'components/elements/Simulation/SimulationElement';
 import { BasicElement } from 'components/elements/Element';
 import insertChoicesTool from 'components/elements/Choices/insertChoicesTool';
 import insertCategorizerTool from 'components/elements/Categorizer/insertCategorizerTool';
+import insertEmotionTool from 'components/elements/Emotion/insertEmotionTool';
 import insertGoalsTool from 'components/elements/Goals/insertGoalsTool';
 import insertInversionTool from 'components/elements/Inversion/insertInversionTool';
 import insertSimulationTool from 'components/elements/Simulation/insertSimulationTool';
@@ -34,6 +36,7 @@ export enum CardId {
   ToolInversionTimer,
   ToolSimulation,
   ToolSimulationTimer,
+  ToolEmotion,
   ToolProsCons,
 }
 
@@ -111,6 +114,12 @@ const cardData = {
     title: 'Spend 5 min on the Simulation Tool',
     description: 'List more probable outcomes',
   },
+  [CardId.ToolEmotion]: {
+    id: CardId.ToolEmotion,
+    icon: '🎭',
+    title: 'Add the Emotion Tool',
+    description: 'How do you feel?',
+  },
   [CardId.ToolProsCons]: {
     id: CardId.ToolProsCons,
     icon: '✅',
@@ -159,6 +168,14 @@ function genHand(nodes: Node[], usedCardIds: Set<CardId>): Card[] {
   );
   if (simulationTool == null) {
     pool.push([cardData[CardId.ToolSimulation], 0.5]);
+  }
+
+  // Insert: Emotion Tool
+  const emotionTool = nodes.find(
+    (node) => node.type === EmotionElement.Wrapper
+  );
+  if (emotionTool == null) {
+    pool.push([cardData[CardId.ToolEmotion], 0.5]);
   }
 
   // Insert: Choices Timer
@@ -360,6 +377,11 @@ export default function CardHandler(props: Props): JSX.Element {
         case CardId.ToolSimulation:
           prepareForAddTool(editor);
           insertSimulationTool(editor);
+          ReactEditor.focus(editor);
+          break;
+        case CardId.ToolEmotion:
+          prepareForAddTool(editor);
+          insertEmotionTool(editor);
           ReactEditor.focus(editor);
           break;
         case CardId.ToolChoicesTimer:

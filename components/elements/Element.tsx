@@ -10,6 +10,10 @@ import {
   ChoicesItemTitleElement,
 } from 'components/elements/Choices/ChoicesElement';
 import {
+  EmotionElement,
+  EmotionWrapperElement,
+} from 'components/elements/Emotion/EmotionElement';
+import {
   GoalsElement,
   GoalsWrapperElement,
   GoalsItemElement,
@@ -87,6 +91,8 @@ export default function Element(props: RenderElementProps): JSX.Element {
       return <ChoicesItemElement {...props} />;
     case ChoicesElement.ItemTitle:
       return <ChoicesItemTitleElement {...props} />;
+    case EmotionElement.Wrapper:
+      return <EmotionWrapperElement {...props} />;
     case GoalsElement.Wrapper:
       return <GoalsWrapperElement {...props} />;
     case GoalsElement.Item:

@@ -20,6 +20,7 @@ export enum ToolName {
   Categorizer = 'Categorizer',
   Choices = 'Choices',
   Comparison = 'Comparison of Choices',
+  Emotion = 'Emotion',
   Goals = 'Goals',
   Inversion = 'Inversion',
   ProsCons = 'Pros / Cons',
@@ -86,6 +87,13 @@ const slashMenuItems: MenuItem[] = [
     description: 'Predict the future you want',
     icon: '🧠',
     keywords: ['2nd Order Thinking'],
+  },
+  {
+    category: Category.Thinking,
+    title: ToolName.Emotion,
+    description: 'How do you feel?',
+    icon: '🎭',
+    keywords: [],
   },
   {
     category: Category.Comparing,
