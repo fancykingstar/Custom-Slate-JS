@@ -25,8 +25,15 @@ import CardHand from 'components/cards/CardHand';
 import Placeholder from 'components/editor/Placeholder';
 import SlashPromptPlaceholder from 'components/editor/SlashPromptPlaceholder';
 import CardHandler from 'components/cards/CardContext';
+import Indexer, {
+  LocatedKey,
+  indexState,
+  isInteresting,
+  isTop,
+} from 'components/intelligence/Indexer';
 import WidgetSidebar from 'components/widgets/WidgetSidebar';
 import WidgetHandler from 'components/widgets/WidgetContext';
+
 import styles from './DecaEditor.module.scss';
 
 interface Props {
@@ -48,6 +55,7 @@ export default function DecaEditor(props: Props): JSX.Element {
       ),
     []
   );
+
   const [value, setValue] = useState<Node[]>(doc.content);
   const [assistantActions, setAssistantActions] = useState<AssistantAction[]>(
     []
@@ -95,6 +103,28 @@ export default function DecaEditor(props: Props): JSX.Element {
             slashHighlight: true,
           };
           ranges.push(range);
+        }
+      } else {
+        const pathString = path.toString();
+        if (pathString in indexState.paths) {
+          indexState.paths[pathString].forEach((key: LocatedKey) => {
+            if (!isTop(key.key) || !isInteresting(key.key)) {
+              return;
+            }
+
+            const range = {
+              anchor: {
+                path,
+                offset: key.start,
+              },
+              focus: {
+                path,
+                offset: key.end,
+              },
+              interestingHighlight: true,
+            };
+            ranges.push(range);
+          });
         }
       }
 
@@ -200,6 +230,7 @@ export default function DecaEditor(props: Props): JSX.Element {
               <WidgetSidebar />
             </CardHandler>
           </WidgetHandler>
+          <Indexer />
         </Slate>
       </div>
     </AssistantContext.Provider>

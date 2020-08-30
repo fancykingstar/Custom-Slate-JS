@@ -36,6 +36,17 @@ export function getNodesWithType(
 }
 
 /**
+ * Returns all non-empty text nodes in the editor.
+ */
+export function getAllTextNodes(editor: Editor): NodeEntry<Node>[] {
+  const nodes = Editor.nodes(editor, {
+    at: [],
+    match: (n: Node) => Text.isText(n) && n.text !== '',
+  });
+  return Array.from(nodes);
+}
+
+/**
  * Returns true if node at location is the given type.
  */
 export function nodeIsType(editor: Editor, type: string): boolean {
