@@ -6,6 +6,7 @@ import { add, isAfter } from 'date-fns';
 import nlp from 'compromise';
 import lemmatize from 'wink-lemmatizer';
 import { frequency } from 'components/intelligence/frequency';
+import { stopwords } from 'components/intelligence/stopwords';
 
 interface IndexState {
   whenIndexedMillis: number | null;
@@ -102,7 +103,7 @@ export function isTop(key: string): boolean {
 }
 
 function addPosting(index: Index, key: string, posting: Posting): void {
-  if (!(key in frequency)) {
+  if (!(key in frequency) || stopwords.has(key)) {
     return;
   }
 

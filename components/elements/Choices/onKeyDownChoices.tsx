@@ -13,7 +13,7 @@ export default function onKeyDownChoices(
     return handleChoicesTabKey(editor, event);
   }
 
-  if (isKeyHotkey(Keys.Enter, event)) {
+  if (isKeyHotkey(Keys.Enter, event) || isKeyHotkey('shift+enter', event)) {
     return handleChoicesEnterKey(editor, event);
   }
 

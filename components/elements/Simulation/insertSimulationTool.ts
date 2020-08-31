@@ -29,7 +29,7 @@ export default function insertSimulationTool(editor: Editor): void {
   const choices = Array.from(
     Editor.nodes(editor, {
       at: [],
-      match: (n) => n.type === ChoicesElement.Item,
+      match: (n) => n.type === ChoicesElement.ItemTitle,
     })
   );
 

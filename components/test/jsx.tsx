@@ -1,6 +1,7 @@
 import { createHyperscript } from 'slate-hyperscript';
 import { BasicElement, ReservedElement } from 'components/elements/Element';
 import { ChoicesElement } from 'components/elements/Choices/ChoicesElement';
+import { ConclusionElement } from 'components/elements/Conclusion/ConclusionElement';
 import { GoalsElement } from 'components/elements/Goals/GoalsElement';
 import { InversionElement } from 'components/elements/Inversion/InversionElement';
 import { SimulationElement } from 'components/elements/Simulation/SimulationElement';
@@ -17,6 +18,9 @@ export default createHyperscript({
     choicesWrapper: { type: ChoicesElement.Wrapper },
     choicesItem: { type: ChoicesElement.Item },
     choicesItemTitle: { type: ChoicesElement.ItemTitle },
+    conclusionWrapper: { type: ConclusionElement.Wrapper },
+    conclusionItem: { type: ConclusionElement.Item },
+    conclusionItemTitle: { type: ConclusionElement.ItemTitle },
     goalsWrapper: { type: GoalsElement.Wrapper },
     goalsItem: { type: GoalsElement.Item },
     goalsItemTitle: { type: GoalsElement.ItemTitle },

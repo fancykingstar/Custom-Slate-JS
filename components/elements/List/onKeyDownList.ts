@@ -14,7 +14,7 @@ export default function onKeyDownList(
     return handleListTabKey(editor, event);
   }
 
-  if (isKeyHotkey(Keys.Enter, event)) {
+  if (isKeyHotkey(Keys.Enter, event) || isKeyHotkey('shift+enter', event)) {
     return handleListEnterKey(editor, event);
   }
 

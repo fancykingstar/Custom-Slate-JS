@@ -13,7 +13,7 @@ export default function onKeyDownInversion(
     return handleInversionTabKey(editor, event);
   }
 
-  if (isKeyHotkey(Keys.Enter, event)) {
+  if (isKeyHotkey(Keys.Enter, event) || isKeyHotkey('shift+enter', event)) {
     return handleInversionEnterKey(editor, event);
   }
 
