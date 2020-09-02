@@ -75,6 +75,24 @@ export default function SlashPromptPlaceholder(props: Props): JSX.Element {
     setVisible(false);
   }, [editor.selection, wrapperRef]);
 
+  let hint = (
+    <>
+      Type <kbd>/</kbd> to think…
+    </>
+  );
+  const { selection } = editor;
+  if (selection != null) {
+    const caretPoint = selection.anchor;
+    const [caretLine] = caretPoint.path;
+
+    if (caretLine > 1) {
+      const now = new Date();
+      if (now.getMinutes() % 2 === 0) {
+        hint = <>Write something…</>;
+      }
+    }
+  }
+
   return (
     <div
       className={`${styles.placeholder} ${!visible ? styles.hidden : ''}`}
@@ -82,7 +100,7 @@ export default function SlashPromptPlaceholder(props: Props): JSX.Element {
         transform: `translate3d(0, ${posY / 10}rem, 0)`,
       }}
     >
-      Type <kbd>/</kbd> to think…
+      {hint}
     </div>
   );
 }
