@@ -75,13 +75,13 @@ const slashMenuItems: MenuItem[] = [
     icon: '🍎',
     keywords: ['type'],
   },
-  // {
-  //   category: Category.Planning,
-  //   title: ToolName.Conclusion,
-  //   description: "When you've made your decision",
-  //   icon: '✅',
-  //   keywords: ['complete', 'conclusion', 'end', 'finish'],
-  // },
+  {
+    category: Category.Planning,
+    title: ToolName.Conclusion,
+    description: "When you've made your decision",
+    icon: '✅',
+    keywords: ['complete', 'conclusion', 'end', 'finish'],
+  },
   {
     category: Category.Thinking,
     title: ToolName.Inversion,

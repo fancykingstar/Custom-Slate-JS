@@ -155,55 +155,6 @@ interface ForSecondary {
   [secondary: string]: TertiaryEmotion[];
 }
 
-// const EmotionsMap: ForPrimary = {
-//   [PrimaryEmotion.Joy]: {
-//     [SecondaryEmotion.Euphoric]: [
-//       TertiaryEmotion.Jubilant,
-//       TertiaryEmotion.Elated,
-//     ],
-//     [SecondaryEmotion.Excited]: [
-//       TertiaryEmotion.Zealous,
-//       TertiaryEmotion.Enthusiastic,
-//     ],
-//     [SecondaryEmotion.Optimistic]: [
-//       TertiaryEmotion.Hopeful,
-//       TertiaryEmotion.Eager,
-//     ],
-//     [SecondaryEmotion.Proud]: [
-//       TertiaryEmotion.Illustrious,
-//       TertiaryEmotion.Triumphant,
-//     ],
-//     [SecondaryEmotion.Cheerful]: [
-//       TertiaryEmotion.Playful,
-//       TertiaryEmotion.Amused,
-//     ],
-//     [SecondaryEmotion.Happy]: [
-//       TertiaryEmotion.Delighted,
-//       TertiaryEmotion.Jovial,
-//     ],
-//     [SecondaryEmotion.Content]: [
-//       TertiaryEmotion.Pleased,
-//       TertiaryEmotion.Satisfied,
-//     ],
-//     [SecondaryEmotion.Peaceful]: [
-//       TertiaryEmotion.Serene,
-//       TertiaryEmotion.Tranquil,
-//     ],
-//   },
-//   [PrimaryEmotion.Sadness]: {
-//     [SecondaryEmotion.Hurt]: [
-//       TertiaryEmotion.Agonized,
-//       TertiaryEmotion.Disturbed,
-//     ],
-//   },
-//   [PrimaryEmotion.Surprise]: {
-//     [SecondaryEmotion.Stunned]: [
-//       TertiaryEmotion.Shocked,
-//       TertiaryEmotion.Bewildered,
-//     ],
-//   },
-// };
-
 function getAddPri(
   checkedPri: PrimaryEmotion[],
   setCheckedPri: (checkedPri: PrimaryEmotion[]) => void,
@@ -320,19 +271,6 @@ export function EmotionWrapperElement(props: RenderElementProps): JSX.Element {
     },
     [bag]
   );
-  // const replaceInBag = useCallback(
-  //   (toRemove: string, toAdd: string) => {
-  //     const b = new Set(bag);
-  //     if (!b.has(toAdd)) {
-  //       b.add(toAdd);
-  //     }
-  //     if (b.has(toRemove)) {
-  //       b.delete(toRemove);
-  //     }
-  //     setBag(Array.from(b));
-  //   },
-  //   [bag]
-  // );
 
   const [checkedPri, setCheckedPri] = useState<PrimaryEmotion[]>([]);
   const addPri = getAddPri(checkedPri, setCheckedPri, addToBag);
@@ -641,7 +579,7 @@ export function EmotionWrapperElement(props: RenderElementProps): JSX.Element {
           </div>
         </div>
         <div className={styles.suggestion}>
-          <h3 className={styles.suggestionLabel}>Emotions</h3>
+          <h3 className={styles.suggestionLabel}>My Emotions</h3>
           <Emotions bag={bag} />
         </div>
       </div>

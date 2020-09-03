@@ -12,6 +12,8 @@ import {
 import {
   ConclusionElement,
   ConclusionWrapperElement,
+  ConclusionChoicesElement,
+  ConclusionExplanationElement,
   ConclusionItemElement,
   ConclusionItemTitleElement,
 } from 'components/elements/Conclusion/ConclusionElement';
@@ -99,6 +101,10 @@ export default function Element(props: RenderElementProps): JSX.Element {
       return <ChoicesItemTitleElement {...props} />;
     case ConclusionElement.Wrapper:
       return <ConclusionWrapperElement {...props} />;
+    case ConclusionElement.Choices:
+      return <ConclusionChoicesElement {...props} />;
+    case ConclusionElement.Explanation:
+      return <ConclusionExplanationElement {...props} />;
     case ConclusionElement.Item:
       return <ConclusionItemElement {...props} />;
     case ConclusionElement.ItemTitle:

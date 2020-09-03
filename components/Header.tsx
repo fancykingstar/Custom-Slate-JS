@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import CompleteButton from 'components/CompleteButton';
 import SidebarToggle from 'components/sidebar/SidebarToggle';
 import { useContext } from 'react';
 import { CategorizerContext } from 'components/context';
@@ -16,7 +15,6 @@ export default function Header(): JSX.Element {
       </div>
       <div className={styles.right}>
         <Category />
-        <CompleteButton />
       </div>
     </header>
   );

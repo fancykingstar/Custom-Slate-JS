@@ -13,9 +13,9 @@ export default function onKeyDownConclusion(
     return handleConclusionTabKey(editor, event);
   }
 
-  if (isKeyHotkey(Keys.Enter, event) || isKeyHotkey('shift+enter', event)) {
-    return handleConclusionEnterKey(editor, event);
-  }
+  // if (isKeyHotkey(Keys.Enter, event) || isKeyHotkey('shift+enter', event)) {
+  //   return handleConclusionEnterKey(editor, event);
+  // }
 
   if (isKeyHotkey(Keys.Backspace, event)) {
     return handleConclusionBackspaceKey(editor, event);

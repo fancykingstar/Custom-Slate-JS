@@ -1,4 +1,4 @@
-import { Editor, Transforms } from 'slate';
+import { Editor, Node, Transforms } from 'slate';
 import { ConclusionElement } from 'components/elements/Conclusion/ConclusionElement';
 
 /**
@@ -18,24 +18,31 @@ export default function insertConclusionTool(editor: Editor): void {
 
   Transforms.delete(editor);
 
-  Transforms.setNodes(editor, {
-    type: ConclusionElement.ItemTitle,
+  const nodes: Node[] = [];
+
+  nodes.push({
+    type: ConclusionElement.Choices,
+    children: [{ text: '' }],
   });
 
-  Transforms.wrapNodes(editor, {
-    type: ConclusionElement.Item,
-    children: [],
+  nodes.push({
+    type: ConclusionElement.Explanation,
+    children: [{ text: '' }],
   });
 
-  Transforms.wrapNodes(
+  Transforms.insertNodes(
     editor,
     {
       timestamp: Date.now(),
       type: ConclusionElement.Wrapper,
-      children: [],
+      children: nodes,
     },
     {
       at: paragraphPath,
     }
   );
+
+  let newSelection = paragraphPath;
+  newSelection = newSelection.concat([1, 0]);
+  Transforms.select(editor, newSelection);
 }

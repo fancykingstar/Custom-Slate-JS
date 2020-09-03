@@ -1,8 +1,22 @@
+.choices {
+  user-select: none;
+  margin: 0;
+  padding: 0 0 0.2rem 0;
+  position: relative
+}
+
 .list {
   counter-reset: number;
   list-style: none;
   margin: 0;
   padding: 0;
+  position: relative
+}
+
+.explanation {
+  line-height: 2.4rem;
+  padding: 0.6rem 0 0.6rem 0;
+  position: relative
 }
 
 .item {
@@ -59,6 +73,16 @@
 }
 
 .itemTitle {
+  color: var(--color-bg-gray-primary);
+  font-size: 1.6rem;
+  font-weight: 500;
+  line-height: 2.4rem;
+  margin: 0;
+  position: relative;
+}
+
+.itemTitleSelected {
+  color: var(--color-black);
   font-size: 1.6rem;
   font-weight: 500;
   line-height: 2.4rem;
@@ -74,6 +98,19 @@
 
 .item li p {
   font-size: 0.9em;
+}
+
+.button {
+  color: var(--color-fg-gray-primary);
+  cursor: pointer;
+  font-size: 1.3rem;
+  font-weight: 500;
+  line-height: 1.8rem;
+  max-width: 20rem;
+}
+
+.input {
+  display: none;
 }
 
 .placeholder {

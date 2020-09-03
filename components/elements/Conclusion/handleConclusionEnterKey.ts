@@ -18,7 +18,7 @@ export default function handleConclusionEnterKey(
     return false;
   }
 
-  // Do nothing if we're not in the Criteria tool
+  // Do nothing if we're not in the Conclusion tool
   const wrapperEntry = Editor.above(editor, {
     match: (n) => n.type === ConclusionElement.Wrapper,
   });
