@@ -3,6 +3,7 @@ import { useSlate } from 'slate-react';
 import { BasicElement } from 'components/elements/Element';
 import { Editor, Node, Range } from 'slate';
 import { CardContext, CardId } from 'components/cards/CardContext';
+import { ChevronDown, ChevronUp } from 'components/icons/Icons';
 import styles from './CardHand.module.scss';
 
 export default function CardHand(): JSX.Element {
@@ -54,30 +55,60 @@ export default function CardHand(): JSX.Element {
 
   // TODO: Peek cards up on inactivity in blank paragraph node
 
+  const [disabled, setDisabled] = useState(false);
+
   return (
     <div className={`${styles.hand}`}>
-      <CardHandContent forceVisible={docBodyIsEmpty} />
+      <CardToggle disabled={disabled} setDisabled={setDisabled} />
+      <CardHandContent disabled={disabled} forceVisible={docBodyIsEmpty} />
     </div>
   );
 }
 
+interface CardToggleProps {
+  disabled: boolean;
+  setDisabled: (disabled: boolean) => void;
+}
+
+function CardToggle(props: CardToggleProps): JSX.Element {
+  const { disabled, setDisabled } = props;
+
+  return (
+    <button
+      type="button"
+      className={styles.toggle}
+      onClick={() => {
+        setDisabled(!disabled);
+      }}
+    >
+      {disabled ? <ChevronUp /> : <ChevronDown />}
+    </button>
+  );
+}
+
 interface CardHandContentProps {
+  disabled: boolean;
   forceVisible: boolean;
 }
 
 function CardHandContent(props: CardHandContentProps): JSX.Element {
-  const { forceVisible } = props;
+  const { disabled, forceVisible } = props;
   // Handle hover manually to add delay before cards are hidden
   const hoverRef = useRef<number | null>(null);
   const [hovered, setHovered] = useState(false);
 
   const { cards, cardAction, removeCard } = useContext(CardContext);
 
+  let moreClassName;
+  if (disabled) {
+    moreClassName = styles.disabled;
+  } else if (hovered || forceVisible) {
+    moreClassName = styles.hovered;
+  }
+
   return (
     <div
-      className={`${styles.handContent} ${
-        hovered || forceVisible ? styles.hovered : ''
-      }`}
+      className={`${styles.handContent} ${moreClassName}`}
       onMouseEnter={() => {
         // Clear any unhover timeouts
         if (hoverRef.current != null) {

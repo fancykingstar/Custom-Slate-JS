@@ -9,6 +9,34 @@
   z-index: 10;
 }
 
+.toggle {
+  align-items: center;
+  background: var(--color-white);
+  border: none;
+  border-radius: 0.8rem;
+  bottom: 5%;
+  box-shadow: 0 0.1rem 0.3rem var(--color-bg-gray-tertiary),
+    inset 0 0 0 0.1rem var(--color-bg-gray-secondary);
+  color: var(--color-fg-gray-primary);
+  cursor: pointer;
+  display: flex;
+  height: 3.2rem;
+  justify-content: center;
+  outline: 0;
+  padding: 0.6rem 0.8rem;
+  pointer-events: all;
+  position: fixed;
+  right: -15%;
+  width: 3.2rem;
+}
+
+.toggle:hover {
+  background: #edeffe;
+  box-shadow: 0 0.1rem 0.3rem var(--color-bg-gray-tertiary),
+    inset 0 0 0 0.1rem var(--color-blue);
+  color: var(--color-blue);
+}
+
 .handContent {
   display: flex;
   pointer-events: all;
@@ -19,6 +47,12 @@
 
 .handContent.hovered {
   transform: translate3d(0, 0, 0);
+}
+
+.handContent.disabled {
+  opacity: 50%;
+  pointer-events: none;
+  transform: translate3d(0, 17.6rem, 0);
 }
 
 .hand.hidden .handContent {
