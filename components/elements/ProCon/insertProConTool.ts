@@ -101,6 +101,13 @@ export default function insertProConTool(editor: Editor): void {
       };
     });
 
+  if (!nodes.length) {
+    editor.insertText(
+      '<Note: Fill in a choice in the Choices tool first to use the Pros / Cons tool>'
+    );
+    return;
+  }
+
   Transforms.insertNodes(
     editor,
     {
