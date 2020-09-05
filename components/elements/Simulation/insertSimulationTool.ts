@@ -1,7 +1,7 @@
 import { Editor, Transforms, Node } from 'slate';
 import {
   SimulationElement,
-  SimulationProbability,
+  SimulationImportance,
 } from 'components/elements/Simulation/SimulationElement';
 import { ChoicesElement } from 'components/elements/Choices/ChoicesElement';
 
@@ -51,7 +51,7 @@ export default function insertSimulationTool(editor: Editor): void {
         type: SimulationElement.Item,
         children: [{ text: '' }],
         indent: 0,
-        probability: SimulationProbability.None,
+        importance: SimulationImportance.None,
       });
     });
 

@@ -5,7 +5,7 @@ import { ReactEditor, withReact } from 'slate-react';
 import jsx from 'components/test/jsx';
 import removeMeta from 'components/test/removeMeta';
 import withSimulationElement from '../withSimulationElement';
-import { SimulationProbability } from '../SimulationElement';
+import { SimulationImportance } from '../SimulationElement';
 
 describe('Simulation Tool: Insert Break', () => {
   const spaceCases: [
@@ -31,10 +31,7 @@ describe('Simulation Tool: Insert Break', () => {
           <editor>
             <simulation>
               <simulationChoice>Choice 1</simulationChoice>
-              <simulationItem
-                indent={0}
-                probability={SimulationProbability.None}
-              >
+              <simulationItem indent={0} importance={SimulationImportance.None}>
                 <cursor />
               </simulationItem>
             </simulation>
@@ -59,10 +56,7 @@ describe('Simulation Tool: Insert Break', () => {
           <editor>
             <simulation>
               <simulationChoice>Choice 1</simulationChoice>
-              <simulationItem
-                indent={0}
-                probability={SimulationProbability.None}
-              >
+              <simulationItem indent={0} importance={SimulationImportance.None}>
                 <cursor />
               </simulationItem>
               <simulationChoice>Choice 2</simulationChoice>
@@ -78,10 +72,7 @@ describe('Simulation Tool: Insert Break', () => {
           <editor>
             <simulation>
               <simulationChoice>Choice 1</simulationChoice>
-              <simulationItem
-                indent={0}
-                probability={SimulationProbability.None}
-              >
+              <simulationItem indent={0} importance={SimulationImportance.None}>
                 Item 1<cursor />
               </simulationItem>
             </simulation>
@@ -91,16 +82,10 @@ describe('Simulation Tool: Insert Break', () => {
           <editor>
             <simulation>
               <simulationChoice>Choice 1</simulationChoice>
-              <simulationItem
-                indent={0}
-                probability={SimulationProbability.None}
-              >
+              <simulationItem indent={0} importance={SimulationImportance.None}>
                 Item 1
               </simulationItem>
-              <simulationItem
-                indent={0}
-                probability={SimulationProbability.None}
-              >
+              <simulationItem indent={0} importance={SimulationImportance.None}>
                 <cursor />
               </simulationItem>
             </simulation>
@@ -117,10 +102,7 @@ describe('Simulation Tool: Insert Break', () => {
               <simulationChoice>
                 Choice 1<cursor />
               </simulationChoice>
-              <simulationItem
-                indent={0}
-                probability={SimulationProbability.None}
-              >
+              <simulationItem indent={0} importance={SimulationImportance.None}>
                 Item 1
               </simulationItem>
             </simulation>
@@ -133,10 +115,7 @@ describe('Simulation Tool: Insert Break', () => {
               <simulationChoice>
                 <cursor />
               </simulationChoice>
-              <simulationItem
-                indent={0}
-                probability={SimulationProbability.None}
-              >
+              <simulationItem indent={0} importance={SimulationImportance.None}>
                 Item 1
               </simulationItem>
             </simulation>
@@ -181,10 +160,7 @@ describe('Simulation Tool: Insert Break', () => {
           <editor>
             <simulation>
               <simulationChoice>Choice 1</simulationChoice>
-              <simulationItem
-                indent={1}
-                probability={SimulationProbability.None}
-              >
+              <simulationItem indent={1} importance={SimulationImportance.None}>
                 <cursor />
               </simulationItem>
             </simulation>
@@ -194,10 +170,7 @@ describe('Simulation Tool: Insert Break', () => {
           <editor>
             <simulation>
               <simulationChoice>Choice 1</simulationChoice>
-              <simulationItem
-                indent={0}
-                probability={SimulationProbability.None}
-              >
+              <simulationItem indent={0} importance={SimulationImportance.None}>
                 <cursor />
               </simulationItem>
             </simulation>
@@ -212,10 +185,7 @@ describe('Simulation Tool: Insert Break', () => {
           <editor>
             <simulation>
               <simulationChoice>Choice 1</simulationChoice>
-              <simulationItem
-                indent={0}
-                probability={SimulationProbability.None}
-              >
+              <simulationItem indent={0} importance={SimulationImportance.None}>
                 <cursor />
               </simulationItem>
             </simulation>
@@ -240,10 +210,7 @@ describe('Simulation Tool: Insert Break', () => {
           <editor>
             <simulation>
               <simulationChoice>Choice 1</simulationChoice>
-              <simulationItem
-                indent={3}
-                probability={SimulationProbability.High}
-              >
+              <simulationItem indent={3} importance={SimulationImportance.High}>
                 Item 1<cursor />
               </simulationItem>
             </simulation>
@@ -253,16 +220,10 @@ describe('Simulation Tool: Insert Break', () => {
           <editor>
             <simulation>
               <simulationChoice>Choice 1</simulationChoice>
-              <simulationItem
-                indent={3}
-                probability={SimulationProbability.High}
-              >
+              <simulationItem indent={3} importance={SimulationImportance.High}>
                 Item 1
               </simulationItem>
-              <simulationItem
-                indent={3}
-                probability={SimulationProbability.None}
-              >
+              <simulationItem indent={3} importance={SimulationImportance.None}>
                 <cursor />
               </simulationItem>
             </simulation>

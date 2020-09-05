@@ -43,19 +43,16 @@
   }
 }
 
-.itemWrapper.probability-high .itemContent {
-  background: #fce7ea;
+.itemWrapper.importance-high .itemContent {
 }
 
-.itemWrapper.probability-med .itemContent {
-  background: #fff2ed;
+.itemWrapper.importance-med .itemContent {
 }
 
-.itemWrapper.probability-low .itemContent {
-  background: #fffbef;
+.itemWrapper.importance-low .itemContent {
 }
 
-.probabilityDot {
+.importanceDot {
   background: none;
   border: none;
   cursor: pointer;
@@ -69,7 +66,7 @@
   width: 3rem;
 }
 
-.probabilityDot::before {
+.importanceDot::before {
   background: var(--color-white);
   border: dashed 0.1rem transparent;
   border-radius: 50%;
@@ -84,59 +81,61 @@
   width: 1.2rem;
 }
 
-.probabilityDot.probability-high::before {
-  background: var(--color-red);
+.importanceDot.importance-high::before {
+  background: var(--color-blue);
   transform: rotate(90deg);
 }
 
-.probabilityDot.probability-high:hover::before {
+.importanceDot.importance-high:hover::before {
   transform: scale(1.5) rotate(90deg);
 }
 
-.probabilityDot.probability-high:active::before {
+.importanceDot.importance-high:active::before {
   transform: scale(1.4) rotate(90deg);
   transition: none;
 }
 
-.probabilityDot.probability-med::before {
-  background: #ff7c4b;
+.importanceDot.importance-med::before {
+  background: var(--color-blue);
+  opacity: 60%;
   transform: scale(0.7) rotate(60deg);
 }
 
-.probabilityDot.probability-med:hover::before {
+.importanceDot.importance-med:hover::before {
   transform: scale(1.4) rotate(60deg);
 }
 
-.probabilityDot.probability-med:active::before {
+.importanceDot.importance-med:active::before {
   transform: scale(1.3) rotate(60deg);
   transition: none;
 }
 
-.probabilityDot.probability-low::before {
-  background: #f2c932;
+.importanceDot.importance-low::before {
+  background: var(--color-blue);
+  opacity: 20%;
   transform: scale(0.4) rotate(30deg);
 }
 
-.probabilityDot.probability-low:hover::before {
+.importanceDot.importance-low:hover::before {
   transform: scale(1.3) rotate(30deg);
 }
 
-.probabilityDot.probability-low:active::before {
+.importanceDot.importance-low:active::before {
   transform: scale(1.2) rotate(30deg);
   transition: none;
 }
 
-.probabilityDot.probability-none::before {
+.importanceDot.importance-none::before {
   background: var(--color-white);
   border-color: var(--color-fg-gray-primary);
   transform: scale(0.7);
 }
 
-.probabilityDot.probability-none:hover::before {
+.importanceDot.importance-none:hover::before {
   transform: scale(1.2);
 }
 
-.probabilityDot.probability-none:active::before {
+.importanceDot.importance-none:active::before {
   transform: scale(1.1);
   transition: none;
 }
@@ -200,17 +199,17 @@
   background: url(/img/icons/16x16/trash.svg) no-repeat center;
 }
 
-.probabilityMenu {
+.importanceMenu {
   align-items: center;
   display: flex;
   padding: 0;
 }
 
-.probabilityMenu input[type='radio'] {
+.importanceMenu input[type='radio'] {
   display: none;
 }
 
-.probabilityMenu label {
+.importanceMenu label {
   align-items: center;
   cursor: pointer;
   display: flex;
@@ -220,30 +219,30 @@
   width: 3.2rem;
 }
 
-.probabilityMenuItem {
+.importanceMenuItem {
   position: relative;
 }
 
-.probabilityMenuItem:first-of-type {
+.importanceMenuItem:first-of-type {
   padding-left: 0.6rem;
   width: 3.8rem;
 }
 
-.probabilityMenuItem:last-of-type {
+.importanceMenuItem:last-of-type {
   padding-right: 0.6rem;
   width: 3.8rem;
 }
 
-.probabilityMenuIcon {
+.importanceMenuIcon {
   position: relative;
   transition: transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.probabilityMenuItem:hover .probabilityMenuIcon {
+.importanceMenuItem:hover .importanceMenuIcon {
   transform: scale(1.5);
 }
 
-.probabilityMenuItem:active .probabilityMenuIcon {
+.importanceMenuItem:active .importanceMenuIcon {
   transform: scale(1.4);
 }
 
@@ -251,7 +250,7 @@
   transition: stroke 100ms ease;
 }
 
-input[type='radio']:checked + .probabilityMenuItem .noneCircle {
+input[type='radio']:checked + .importanceMenuItem .noneCircle {
   stroke: var(--color-white);
 }
 
@@ -266,23 +265,26 @@ input[type='radio']:checked + .probabilityMenuItem .noneCircle {
   transition: stroke 100ms ease, fill 100ms ease;
 }
 
-input[type='radio']:checked + .probabilityMenuItem .noneCircleBG {
+input[type='radio']:checked + .importanceMenuItem .noneCircleBG {
   opacity: 1;
 }
 
-input[type='radio']:checked + .probabilityMenuItem .lowCircle {
+input[type='radio']:checked + .importanceMenuItem .lowCircle {
   stroke: none;
   fill: #f2c932;
+  opacity: 20%;
+  fill: var(--color-blue);
 }
 
-input[type='radio']:checked + .probabilityMenuItem .medCircle {
+input[type='radio']:checked + .importanceMenuItem .medCircle {
   stroke: none;
-  fill: #ff7c4b;
+  opacity: 60%;
+  fill: var(--color-blue);
 }
 
-input[type='radio']:checked + .probabilityMenuItem .highCircle {
+input[type='radio']:checked + .importanceMenuItem .highCircle {
   stroke: none;
-  fill: var(--color-red);
+  fill: var(--color-blue);
 }
 
 .tooltip {
@@ -315,6 +317,6 @@ input[type='radio']:checked + .probabilityMenuItem .highCircle {
   width: 0.6rem;
 }
 
-.probabilityMenuItem:hover .tooltip {
+.importanceMenuItem:hover .tooltip {
   display: block;
 }

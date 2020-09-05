@@ -18,7 +18,7 @@ export enum SimulationElement {
   Item = 'simulation-item',
 }
 
-export enum SimulationProbability {
+export enum SimulationImportance {
   None = 'none',
   Low = 'low',
   Med = 'med',
@@ -63,14 +63,14 @@ export function SimulationItemElement(props: RenderElementProps): JSX.Element {
   const { attributes, children, element } = props;
   const { selection } = editor;
 
-  const setProbability = useCallback(
-    (newProbability: SimulationProbability) => {
+  const setImportance = useCallback(
+    (newImportance: SimulationImportance) => {
       const nodePath = ReactEditor.findPath(editor, element);
 
       Transforms.setNodes(
         editor,
         {
-          probability: newProbability,
+          importance: newImportance,
         },
         {
           at: nodePath,
@@ -86,7 +86,7 @@ export function SimulationItemElement(props: RenderElementProps): JSX.Element {
   const classNames = [
     styles.itemWrapper,
     styles[`indent-${element.indent ?? 0}`],
-    styles[`probability-${element.probability ?? SimulationProbability.None}`],
+    styles[`importance-${element.importance ?? SimulationImportance.None}`],
   ];
 
   const isNodeFocused =
@@ -149,70 +149,70 @@ export function SimulationItemElement(props: RenderElementProps): JSX.Element {
     <ul {...attributes} className={classNames.join(' ')}>
       <li className={styles.itemContent}>
         {children}
-        <ProbabilityDot element={element} setProbability={setProbability} />
+        <ImportanceDot element={element} setImportance={setImportance} />
         <InlinePlaceholder element={element}>
           {placeholderText}
         </InlinePlaceholder>
       </li>
       {isNodeFocused ? (
-        <Menu element={element} setProbability={setProbability} />
+        <Menu element={element} setImportance={setImportance} />
       ) : null}
     </ul>
   );
 }
 
-interface ProbabilityDotProps {
+interface ImportanceDotProps {
   element: Element;
-  setProbability: (newProbability: SimulationProbability) => void;
+  setImportance: (newImportance: SimulationImportance) => void;
 }
 
-function ProbabilityDot(props: ProbabilityDotProps): JSX.Element {
-  const { element, setProbability } = props;
+function ImportanceDot(props: ImportanceDotProps): JSX.Element {
+  const { element, setImportance } = props;
 
-  const probability =
-    (element.probability as SimulationProbability | undefined) ??
-    SimulationProbability.None;
-  const probabilityClass = styles[`probability-${probability}`];
+  const importance =
+    (element.importance as SimulationImportance | undefined) ??
+    SimulationImportance.None;
+  const importanceClass = styles[`importance-${importance}`];
 
-  const increaseProbability = useCallback(() => {
-    let newProbability = null;
+  const increaseImportance = useCallback(() => {
+    let newImportance = null;
 
-    if (probability === SimulationProbability.None) {
-      newProbability = SimulationProbability.Low;
-    } else if (probability === SimulationProbability.Low) {
-      newProbability = SimulationProbability.Med;
-    } else if (probability === SimulationProbability.Med) {
-      newProbability = SimulationProbability.High;
-    } else if (probability === SimulationProbability.High) {
-      newProbability = SimulationProbability.None;
+    if (importance === SimulationImportance.None) {
+      newImportance = SimulationImportance.Low;
+    } else if (importance === SimulationImportance.Low) {
+      newImportance = SimulationImportance.Med;
+    } else if (importance === SimulationImportance.Med) {
+      newImportance = SimulationImportance.High;
+    } else if (importance === SimulationImportance.High) {
+      newImportance = SimulationImportance.None;
     }
 
-    if (newProbability != null) {
-      setProbability(newProbability);
+    if (newImportance != null) {
+      setImportance(newImportance);
     }
-  }, [probability]);
+  }, [importance]);
 
   return (
     <button
       type="button"
-      className={`${styles.probabilityDot} ${probabilityClass}`}
+      className={`${styles.importanceDot} ${importanceClass}`}
       contentEditable={false}
-      onClick={increaseProbability}
-      title="Increase probability"
+      onClick={increaseImportance}
+      title="Increase importance"
     >
-      {probability}
+      {importance}
     </button>
   );
 }
 
 interface MenuProps {
   element: Element;
-  setProbability: (newProbability: SimulationProbability) => void;
+  setImportance: (newImportance: SimulationImportance) => void;
 }
 
 function Menu(props: MenuProps): JSX.Element | null {
   const editor = useEditor();
-  const { element, setProbability } = props;
+  const { element, setImportance } = props;
   const nodePath = ReactEditor.findPath(editor, element);
 
   const radioGroupName = nodePath.join('');
@@ -220,23 +220,23 @@ function Menu(props: MenuProps): JSX.Element | null {
   return (
     <ul contentEditable={false} className={styles.menu}>
       <li>
-        <div className={styles.probabilityMenu}>
+        <div className={styles.importanceMenu}>
           <input
-            id={`${radioGroupName}-${SimulationProbability.None}`}
+            id={`${radioGroupName}-${SimulationImportance.None}`}
             type="radio"
             name={radioGroupName}
-            value={SimulationProbability.None}
-            checked={element.probability === SimulationProbability.None}
-            onChange={() => setProbability(SimulationProbability.None)}
+            value={SimulationImportance.None}
+            checked={element.importance === SimulationImportance.None}
+            onChange={() => setImportance(SimulationImportance.None)}
           />
           <label
-            className={`${styles.probabilityMenuItem} ${
-              styles[`menu-${SimulationProbability.None}`]
+            className={`${styles.importanceMenuItem} ${
+              styles[`menu-${SimulationImportance.None}`]
             }`}
-            htmlFor={`${radioGroupName}-${SimulationProbability.None}`}
+            htmlFor={`${radioGroupName}-${SimulationImportance.None}`}
           >
             <svg
-              className={styles.probabilityMenuIcon}
+              className={styles.importanceMenuIcon}
               width="16"
               height="16"
               fill="none"
@@ -261,25 +261,25 @@ function Menu(props: MenuProps): JSX.Element | null {
               />
             </svg>
 
-            <MenuTooltip>Unknown probability</MenuTooltip>
+            <MenuTooltip>Unknown importance</MenuTooltip>
           </label>
 
           <input
-            id={`${radioGroupName}-${SimulationProbability.Low}`}
+            id={`${radioGroupName}-${SimulationImportance.Low}`}
             type="radio"
             name={radioGroupName}
-            value={SimulationProbability.Low}
-            checked={element.probability === SimulationProbability.Low}
-            onChange={() => setProbability(SimulationProbability.Low)}
+            value={SimulationImportance.Low}
+            checked={element.importance === SimulationImportance.Low}
+            onChange={() => setImportance(SimulationImportance.Low)}
           />
           <label
-            className={`${styles.probabilityMenuItem} ${
-              styles[`menu-${SimulationProbability.Low}`]
+            className={`${styles.importanceMenuItem} ${
+              styles[`menu-${SimulationImportance.Low}`]
             }`}
-            htmlFor={`${radioGroupName}-${SimulationProbability.Low}`}
+            htmlFor={`${radioGroupName}-${SimulationImportance.Low}`}
           >
             <svg
-              className={styles.probabilityMenuIcon}
+              className={styles.importanceMenuIcon}
               width="16"
               height="16"
               viewBox="0 0 16 16"
@@ -296,25 +296,25 @@ function Menu(props: MenuProps): JSX.Element | null {
               />
             </svg>
 
-            <MenuTooltip>Low probability</MenuTooltip>
+            <MenuTooltip>Low importance</MenuTooltip>
           </label>
 
           <input
-            id={`${radioGroupName}-${SimulationProbability.Med}`}
+            id={`${radioGroupName}-${SimulationImportance.Med}`}
             type="radio"
             name={radioGroupName}
-            value={SimulationProbability.Med}
-            checked={element.probability === SimulationProbability.Med}
-            onChange={() => setProbability(SimulationProbability.Med)}
+            value={SimulationImportance.Med}
+            checked={element.importance === SimulationImportance.Med}
+            onChange={() => setImportance(SimulationImportance.Med)}
           />
           <label
-            className={`${styles.probabilityMenuItem} ${
-              styles[`menu-${SimulationProbability.Med}`]
+            className={`${styles.importanceMenuItem} ${
+              styles[`menu-${SimulationImportance.Med}`]
             }`}
-            htmlFor={`${radioGroupName}-${SimulationProbability.Med}`}
+            htmlFor={`${radioGroupName}-${SimulationImportance.Med}`}
           >
             <svg
-              className={styles.probabilityMenuIcon}
+              className={styles.importanceMenuIcon}
               width="16"
               height="16"
               fill="none"
@@ -330,25 +330,25 @@ function Menu(props: MenuProps): JSX.Element | null {
               />
             </svg>
 
-            <MenuTooltip>Med probability</MenuTooltip>
+            <MenuTooltip>Med importance</MenuTooltip>
           </label>
 
           <input
-            id={`${radioGroupName}-${SimulationProbability.High}`}
+            id={`${radioGroupName}-${SimulationImportance.High}`}
             type="radio"
             name={radioGroupName}
-            value={SimulationProbability.High}
-            checked={element.probability === SimulationProbability.High}
-            onChange={() => setProbability(SimulationProbability.High)}
+            value={SimulationImportance.High}
+            checked={element.importance === SimulationImportance.High}
+            onChange={() => setImportance(SimulationImportance.High)}
           />
           <label
-            className={`${styles.probabilityMenuItem} ${
-              styles[`menu-${SimulationProbability.High}`]
+            className={`${styles.importanceMenuItem} ${
+              styles[`menu-${SimulationImportance.High}`]
             }`}
-            htmlFor={`${radioGroupName}-${SimulationProbability.High}`}
+            htmlFor={`${radioGroupName}-${SimulationImportance.High}`}
           >
             <svg
-              className={styles.probabilityMenuIcon}
+              className={styles.importanceMenuIcon}
               width="16"
               height="16"
               fill="none"
@@ -363,7 +363,7 @@ function Menu(props: MenuProps): JSX.Element | null {
                 strokeWidth="1.33"
               />
             </svg>
-            <MenuTooltip>High probability</MenuTooltip>
+            <MenuTooltip>High importance</MenuTooltip>
           </label>
         </div>
       </li>

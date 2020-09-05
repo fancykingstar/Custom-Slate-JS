@@ -5,7 +5,7 @@ import { ReactEditor, withReact } from 'slate-react';
 import jsx from 'components/test/jsx';
 import removeMeta from 'components/test/removeMeta';
 import withSimulationElement from 'components/elements/Simulation/withSimulationElement';
-import { SimulationProbability } from 'components/elements/Simulation/SimulationElement';
+import { SimulationImportance } from 'components/elements/Simulation/SimulationElement';
 
 describe('Simulation Tool: Delete Backward', () => {
   const spaceCases: [
@@ -262,16 +262,10 @@ describe('Simulation Tool: Delete Backward', () => {
           <editor>
             <simulation>
               <simulationChoice>Choice 1</simulationChoice>
-              <simulationItem
-                indent={5}
-                probability={SimulationProbability.High}
-              >
+              <simulationItem indent={5} importance={SimulationImportance.High}>
                 <text />
               </simulationItem>
-              <simulationItem
-                indent={3}
-                probability={SimulationProbability.None}
-              >
+              <simulationItem indent={3} importance={SimulationImportance.None}>
                 <cursor />
                 Item 1
               </simulationItem>
@@ -282,10 +276,7 @@ describe('Simulation Tool: Delete Backward', () => {
           <editor>
             <simulation>
               <simulationChoice>Choice 1</simulationChoice>
-              <simulationItem
-                indent={5}
-                probability={SimulationProbability.High}
-              >
+              <simulationItem indent={5} importance={SimulationImportance.High}>
                 <cursor />
                 Item 1
               </simulationItem>

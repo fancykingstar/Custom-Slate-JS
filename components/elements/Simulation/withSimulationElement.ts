@@ -2,7 +2,7 @@ import { ReactEditor } from 'slate-react';
 import { Editor, Transforms, Element, Path, Node } from 'slate';
 import {
   SimulationElement,
-  SimulationProbability,
+  SimulationImportance,
 } from 'components/elements/Simulation/SimulationElement';
 import {
   isSelectionAtBlockStart,
@@ -45,7 +45,7 @@ function convertItemToChoice(editor: Editor, at: Path): void {
       at,
     }
   );
-  Transforms.unsetNodes(editor, ['probability', 'indent'], {
+  Transforms.unsetNodes(editor, ['importance', 'indent'], {
     at,
   });
 }
@@ -56,7 +56,7 @@ function convertChoiceToItem(editor: Editor, at: Path): void {
     {
       type: SimulationElement.Item,
       indent: 0,
-      probability: SimulationProbability.None,
+      importance: SimulationImportance.None,
       children: [],
     },
     {
@@ -140,7 +140,7 @@ const withSimulationElement = (editor: ReactEditor): ReactEditor => {
       });
 
       Transforms.setNodes(editor, {
-        probability: SimulationProbability.None,
+        importance: SimulationImportance.None,
       });
       return;
     }
