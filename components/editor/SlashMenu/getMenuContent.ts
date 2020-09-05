@@ -79,7 +79,7 @@ const slashMenuItems: MenuItem[] = [
     category: Category.Planning,
     title: ToolName.Conclusion,
     description: "When you've made your decision",
-    icon: '✅',
+    icon: '✒️',
     keywords: ['complete', 'conclusion', 'end', 'finish'],
   },
   {

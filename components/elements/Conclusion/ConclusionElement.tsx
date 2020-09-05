@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { Editor, Node, Path } from 'slate';
 import { RenderElementProps, useEditor, ReactEditor } from 'slate-react';
 import ToolWrapper from 'components/editor/ToolWrapper';
-import { IconToolChoices } from 'components/icons/IconTool';
+import { IconToolConclusion } from 'components/icons/IconTool';
 import InlinePlaceholder from 'components/editor/InlinePlaceholder';
 import { ChoicesElement } from 'components/elements/Choices/ChoicesElement';
 
@@ -24,7 +24,7 @@ export function ConclusionWrapperElement(
     <ToolWrapper
       attributes={attributes}
       name="Conclusion"
-      icon={<IconToolChoices />}
+      icon={<IconToolConclusion />}
     >
       {children}
     </ToolWrapper>

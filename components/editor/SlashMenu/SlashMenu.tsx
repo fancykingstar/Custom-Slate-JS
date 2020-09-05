@@ -25,16 +25,31 @@ export default function SlashMenu(props: Props): JSX.Element {
     }
   }, [pos]);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const suggestion = content?.suggestion;
-  const suggestionItem = suggestion?.item;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const suggestionItem = null; // Re-add if suggestions are wanted: suggestion?.item;
   const availableMenuItems = content.items.filter(
     (menuItem) => menuItem.comingSoon == null
   );
 
-  const hasSearchResults =
-    availableMenuItems.filter(
-      (menuItem) => menuItem.title !== suggestionItem?.title
-    ).length > 0;
+  const hasSearchResults = availableMenuItems.length > 0;
+  // Re-add if suggestions are wanted:
+  //
+  // availableMenuItems.filter(
+  //   (menuItem) => menuItem.title !== suggestionItem?.title
+  // ).length > 0;
+
+  const assistantCard = null;
+  // Re-add if suggestions are wanted:
+  //
+  // <AssistantCard
+  //   content={content}
+  //   onAddTool={onAddTool}
+  //   isActive={
+  //     suggestionItem?.title === availableMenuItems[activeIndex]?.title
+  //   }
+  // />
 
   return (
     <div
@@ -48,13 +63,7 @@ export default function SlashMenu(props: Props): JSX.Element {
           : {}
       }
     >
-      <AssistantCard
-        content={content}
-        onAddTool={onAddTool}
-        isActive={
-          suggestionItem?.title === availableMenuItems[activeIndex]?.title
-        }
-      />
+      {assistantCard}
       {availableMenuItems.length ? (
         <div className={styles.list} ref={listRef}>
           {content.isFiltered && hasSearchResults ? (
@@ -77,18 +86,20 @@ export default function SlashMenu(props: Props): JSX.Element {
                 );
               }
 
-              if (item.title !== suggestionItem?.title) {
-                output.push(
-                  <SlashMenuItem
-                    key={item.title}
-                    isActive={
-                      item.title === availableMenuItems[activeIndex].title
-                    }
-                    item={item}
-                    onAddTool={onAddTool}
-                  />
-                );
-              }
+              // Re-add if suggestions are wanted:
+              //
+              // if (item.title !== suggestionItem?.title) {
+              output.push(
+                <SlashMenuItem
+                  key={item.title}
+                  isActive={
+                    item.title === availableMenuItems[activeIndex].title
+                  }
+                  item={item}
+                  onAddTool={onAddTool}
+                />
+              );
+              // }
 
               return output;
             })}
@@ -105,6 +116,7 @@ interface AssistantCardProps {
   isActive: boolean;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function AssistantCard(props: AssistantCardProps): JSX.Element {
   const [suggestionLoading, setSuggestionLoading] = useState(false);
   const debounceRef = useRef<number | null>(null);

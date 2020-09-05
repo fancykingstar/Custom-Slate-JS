@@ -56,13 +56,13 @@ export function InversionItemTitleElement(
 
   const placeholderText =
     nodeIndex === 0
-      ? 'What’s one of the worst choices you could make?'
-      : 'What’s another bad choice for this decision?';
+      ? 'What’s one of the worst outcomes you could choose?'
+      : 'What’s another bad outcome for this decision?';
 
   return (
     <h3 {...attributes} className={styles.itemTitle}>
       {children}
-      <InlinePlaceholder element={element} blurChildren="Untitled bad choice…">
+      <InlinePlaceholder element={element} blurChildren="Untitled bad outcome…">
         {placeholderText}
       </InlinePlaceholder>
     </h3>
@@ -109,8 +109,8 @@ export function InversionSublistItemParagraphElement(
 
   const placeholderText =
     nodeIndex === 0
-      ? 'Why is this a bad choice?'
-      : 'What’s another reason this is a bad choice?';
+      ? 'Why is this a bad outcome?'
+      : 'What’s another reason this is a bad outcome?';
 
   return (
     <p {...attributes} className={styles.sublistItemParagraph}>

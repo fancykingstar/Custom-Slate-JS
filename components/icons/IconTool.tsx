@@ -96,3 +96,27 @@ export function IconToolCategorizer(): JSX.Element {
     </svg>
   );
 }
+
+export function IconToolConclusion(): JSX.Element {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      className="feather feather-pen-tool"
+      viewBox="0 0 24 24"
+    >
+      <path d="M12 19l7-7 3 3-7 7-3-3z" opacity="0.5" />
+      <path
+        d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5zM2 2l7.586 7.586"
+        opacity="0.5"
+      />
+      <circle cx="11" cy="11" r="2" opacity="0.5" />
+    </svg>
+  );
+}

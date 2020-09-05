@@ -7,6 +7,7 @@ import {
 } from 'react';
 import { useEditor, ReactEditor } from 'slate-react';
 import { ChoicesElement } from 'components/elements/Choices/ChoicesElement';
+import { ConclusionElement } from 'components/elements/Conclusion/ConclusionElement';
 import { GoalsElement } from 'components/elements/Goals/GoalsElement';
 import { Node, Editor, Transforms, Range } from 'slate';
 import { CategorizerElement } from 'components/elements/Categorizer/CategorizerElement';
@@ -15,6 +16,7 @@ import { InversionElement } from 'components/elements/Inversion/InversionElement
 import { SimulationElement } from 'components/elements/Simulation/SimulationElement';
 import { BasicElement } from 'components/elements/Element';
 import insertChoicesTool from 'components/elements/Choices/insertChoicesTool';
+import insertConclusionTool from 'components/elements/Conclusion/insertConclusionTool';
 import insertCategorizerTool from 'components/elements/Categorizer/insertCategorizerTool';
 import insertEmotionTool from 'components/elements/Emotion/insertEmotionTool';
 import insertGoalsTool from 'components/elements/Goals/insertGoalsTool';
@@ -30,6 +32,7 @@ export enum CardId {
   ToolCategorizer,
   ToolChoices,
   ToolChoicesTimer,
+  ToolConclusion,
   ToolGoals,
   ToolGoalsTimer,
   ToolInversion,
@@ -77,6 +80,12 @@ const cardData = {
     icon: '⏱ 🌈',
     title: 'Focus 2 min on the Choices Tool',
     description: 'Do a mini-brainstorm for new options',
+  },
+  [CardId.ToolConclusion]: {
+    id: CardId.ToolConclusion,
+    icon: '✒️',
+    title: 'Add the Conclusion Tool',
+    description: 'Make your decision',
   },
   [CardId.ToolGoals]: {
     id: CardId.ToolGoals,
@@ -176,6 +185,14 @@ function genHand(nodes: Node[], usedCardIds: Set<CardId>): Card[] {
   );
   if (emotionTool == null) {
     pool.push([cardData[CardId.ToolEmotion], 0.5]);
+  }
+
+  // Insert: Conclusion Tool
+  const conclusionTool = nodes.find(
+    (node) => node.type === ConclusionElement.Wrapper
+  );
+  if (conclusionTool == null) {
+    pool.push([cardData[CardId.ToolConclusion], 0.4]);
   }
 
   // Insert: Choices Timer
@@ -362,6 +379,11 @@ export default function CardHandler(props: Props): JSX.Element {
         case CardId.ToolChoices:
           prepareForAddTool(editor);
           insertChoicesTool(editor);
+          ReactEditor.focus(editor);
+          break;
+        case CardId.ToolConclusion:
+          prepareForAddTool(editor);
+          insertConclusionTool(editor);
           ReactEditor.focus(editor);
           break;
         case CardId.ToolGoals:
