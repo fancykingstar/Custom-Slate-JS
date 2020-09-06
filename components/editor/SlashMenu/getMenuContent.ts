@@ -21,6 +21,7 @@ export enum ToolName {
   Choices = 'Choices',
   Conclusion = 'Conclusion',
   Comparison = 'Comparison of Choices',
+  Data = 'Data',
   Emotion = 'Emotion',
   Goals = 'Goals',
   Inversion = 'Inversion',
@@ -88,6 +89,13 @@ const slashMenuItems: MenuItem[] = [
     description: 'Flip your point of view',
     icon: '⏳',
     keywords: [],
+  },
+  {
+    category: Category.Thinking,
+    title: ToolName.Data,
+    description: 'What do I know? Need to know?',
+    icon: '💎',
+    keywords: ['fact'],
   },
   {
     category: Category.Thinking,

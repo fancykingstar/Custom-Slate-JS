@@ -1,6 +1,7 @@
 import { Editor } from 'slate';
 import onKeyDownList from 'components/elements/List/onKeyDownList';
 import onKeyDownChoices from 'components/elements/Choices/onKeyDownChoices';
+import onKeyDownData from 'components/elements/Data/onKeyDownData';
 import onKeyDownConclusion from 'components/elements/Conclusion/onKeyDownConclusion';
 import onKeyDownGoals from 'components/elements/Goals/onKeyDownGoals';
 import onKeyDownInversion from 'components/elements/Inversion/onKeyDownInversion';
@@ -17,6 +18,9 @@ export default function onElementKeyDown(
     return;
   }
   if (onKeyDownConclusion(editor, event)) {
+    return;
+  }
+  if (onKeyDownData(editor, event)) {
     return;
   }
   if (onKeyDownGoals(editor, event)) {

@@ -18,6 +18,12 @@ import {
   ConclusionItemTitleElement,
 } from 'components/elements/Conclusion/ConclusionElement';
 import {
+  DataElement,
+  DataToolElement,
+  DataChoiceElement,
+  DataItemElement,
+} from 'components/elements/Data/DataElement';
+import {
   EmotionElement,
   EmotionWrapperElement,
 } from 'components/elements/Emotion/EmotionElement';
@@ -109,6 +115,12 @@ export default function Element(props: RenderElementProps): JSX.Element {
       return <ConclusionItemElement {...props} />;
     case ConclusionElement.ItemTitle:
       return <ConclusionItemTitleElement {...props} />;
+    case DataElement.Tool:
+      return <DataToolElement {...props} />;
+    case DataElement.Choice:
+      return <DataChoiceElement {...props} />;
+    case DataElement.Item:
+      return <DataItemElement {...props} />;
     case EmotionElement.Wrapper:
       return <EmotionWrapperElement {...props} />;
     case GoalsElement.Wrapper:

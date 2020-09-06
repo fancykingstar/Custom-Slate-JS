@@ -8,6 +8,7 @@ import {
 import { useEditor, ReactEditor } from 'slate-react';
 import { ChoicesElement } from 'components/elements/Choices/ChoicesElement';
 import { ConclusionElement } from 'components/elements/Conclusion/ConclusionElement';
+import { DataElement } from 'components/elements/Data/DataElement';
 import { GoalsElement } from 'components/elements/Goals/GoalsElement';
 import { Node, Editor, Transforms, Range } from 'slate';
 import { CategorizerElement } from 'components/elements/Categorizer/CategorizerElement';
@@ -16,6 +17,7 @@ import { InversionElement } from 'components/elements/Inversion/InversionElement
 import { SimulationElement } from 'components/elements/Simulation/SimulationElement';
 import { BasicElement } from 'components/elements/Element';
 import insertChoicesTool from 'components/elements/Choices/insertChoicesTool';
+import insertDataTool from 'components/elements/Data/insertDataTool';
 import insertConclusionTool from 'components/elements/Conclusion/insertConclusionTool';
 import insertCategorizerTool from 'components/elements/Categorizer/insertCategorizerTool';
 import insertEmotionTool from 'components/elements/Emotion/insertEmotionTool';
@@ -33,6 +35,7 @@ export enum CardId {
   ToolChoices,
   ToolChoicesTimer,
   ToolConclusion,
+  ToolData,
   ToolGoals,
   ToolGoalsTimer,
   ToolInversion,
@@ -86,6 +89,12 @@ const cardData = {
     icon: '✒️',
     title: 'Add the Conclusion Tool',
     description: 'Make your decision',
+  },
+  [CardId.ToolData]: {
+    id: CardId.ToolData,
+    icon: '💎',
+    title: 'Add the Data Tool',
+    description: 'List the data you know or need to know',
   },
   [CardId.ToolGoals]: {
     id: CardId.ToolGoals,
@@ -177,6 +186,12 @@ function genHand(nodes: Node[], usedCardIds: Set<CardId>): Card[] {
   );
   if (simulationTool == null) {
     pool.push([cardData[CardId.ToolSimulation], 0.5]);
+  }
+
+  // Insert: Data Tool
+  const dataTool = nodes.find((node) => node.type === DataElement.Tool);
+  if (dataTool == null) {
+    pool.push([cardData[CardId.ToolData], 0.5]);
   }
 
   // Insert: Emotion Tool
@@ -384,6 +399,11 @@ export default function CardHandler(props: Props): JSX.Element {
         case CardId.ToolConclusion:
           prepareForAddTool(editor);
           insertConclusionTool(editor);
+          ReactEditor.focus(editor);
+          break;
+        case CardId.ToolData:
+          prepareForAddTool(editor);
+          insertDataTool(editor);
           ReactEditor.focus(editor);
           break;
         case CardId.ToolGoals:

@@ -4,6 +4,7 @@ import { ReactEditor } from 'slate-react';
 import insertCategorizerTool from 'components/elements/Categorizer/insertCategorizerTool';
 import insertChoicesTool from 'components/elements/Choices/insertChoicesTool';
 import insertConclusionTool from 'components/elements/Conclusion/insertConclusionTool';
+import insertDataTool from 'components/elements/Data/insertDataTool';
 import insertEmotionTool from 'components/elements/Emotion/insertEmotionTool';
 import insertGoalsTool from 'components/elements/Goals/insertGoalsTool';
 import insertInversionTool from 'components/elements/Inversion/insertInversionTool';
@@ -70,6 +71,8 @@ export default function useSlashMenu(
         insertChoicesTool(editor);
       } else if (item.title === ToolName.Conclusion) {
         insertConclusionTool(editor);
+      } else if (item.title === ToolName.Data) {
+        insertDataTool(editor);
       } else if (item.title === ToolName.Emotion) {
         insertEmotionTool(editor);
       } else if (item.title === ToolName.Goals) {

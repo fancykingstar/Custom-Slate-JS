@@ -56,7 +56,7 @@ export function InversionItemTitleElement(
 
   const placeholderText =
     nodeIndex === 0
-      ? 'What’s one of the worst outcomes you could choose?'
+      ? 'What’s one of the worst outcomes that could happen?'
       : 'What’s another bad outcome for this decision?';
 
   return (
