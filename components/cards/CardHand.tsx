@@ -58,10 +58,12 @@ export default function CardHand(): JSX.Element {
   const [disabled, setDisabled] = useState(false);
 
   return (
-    <div className={`${styles.hand}`}>
+    <>
+      <div className={`${styles.hand}`}>
+        <CardHandContent disabled={disabled} forceVisible={docBodyIsEmpty} />
+      </div>
       <CardToggle disabled={disabled} setDisabled={setDisabled} />
-      <CardHandContent disabled={disabled} forceVisible={docBodyIsEmpty} />
-    </div>
+    </>
   );
 }
 
