@@ -5,6 +5,7 @@ import { DataElement } from 'components/elements/Data/DataElement';
 import { ConclusionElement } from 'components/elements/Conclusion/ConclusionElement';
 import { GoalsElement } from 'components/elements/Goals/GoalsElement';
 import { InversionElement } from 'components/elements/Inversion/InversionElement';
+import { PeopleElement } from 'components/elements/People/PeopleElement';
 import { SimulationElement } from 'components/elements/Simulation/SimulationElement';
 
 export default createHyperscript({
@@ -36,6 +37,9 @@ export default createHyperscript({
     inversionSublistItemParagraph: {
       type: InversionElement.ItemSublistItemParagraph,
     },
+    people: { type: PeopleElement.Tool },
+    peopleTeam: { type: PeopleElement.Team },
+    peopleItem: { type: PeopleElement.Item },
     simulation: { type: SimulationElement.Tool },
     simulationChoice: { type: SimulationElement.Choice },
     simulationItem: { type: SimulationElement.Item },

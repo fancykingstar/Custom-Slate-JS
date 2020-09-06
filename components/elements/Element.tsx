@@ -43,6 +43,12 @@ import {
   InversionSublistItemParagraphElement,
 } from 'components/elements/Inversion/InversionElement';
 import {
+  PeopleElement,
+  PeopleToolElement,
+  PeopleTeamElement,
+  PeopleItemElement,
+} from 'components/elements/People/PeopleElement';
+import {
   SimulationElement,
   SimulationToolElement,
   SimulationChoiceElement,
@@ -141,6 +147,12 @@ export default function Element(props: RenderElementProps): JSX.Element {
       return <InversionSublistItemElement {...props} />;
     case InversionElement.ItemSublistItemParagraph:
       return <InversionSublistItemParagraphElement {...props} />;
+    case PeopleElement.Tool:
+      return <PeopleToolElement {...props} />;
+    case PeopleElement.Team:
+      return <PeopleTeamElement {...props} />;
+    case PeopleElement.Item:
+      return <PeopleItemElement {...props} />;
     case SimulationElement.Tool:
       return <SimulationToolElement {...props} />;
     case SimulationElement.Choice:

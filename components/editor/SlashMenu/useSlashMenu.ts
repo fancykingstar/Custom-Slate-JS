@@ -8,6 +8,7 @@ import insertDataTool from 'components/elements/Data/insertDataTool';
 import insertEmotionTool from 'components/elements/Emotion/insertEmotionTool';
 import insertGoalsTool from 'components/elements/Goals/insertGoalsTool';
 import insertInversionTool from 'components/elements/Inversion/insertInversionTool';
+import insertPeopleTool from 'components/elements/People/insertPeopleTool';
 import insertSimulationTool from 'components/elements/Simulation/insertSimulationTool';
 import insertProConTool from 'components/elements/ProCon/insertProConTool';
 import getMenuContent, {
@@ -79,6 +80,8 @@ export default function useSlashMenu(
         insertGoalsTool(editor);
       } else if (item.title === ToolName.Inversion) {
         insertInversionTool(editor);
+      } else if (item.title === ToolName.People) {
+        insertPeopleTool(editor);
       } else if (item.title === ToolName.Simulation) {
         insertSimulationTool(editor);
       } else if (item.title === ToolName.ProsCons) {

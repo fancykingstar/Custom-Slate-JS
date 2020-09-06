@@ -3,6 +3,7 @@ import stemmer from 'stemmer';
 
 enum Category {
   Planning = 'Planning',
+  Context = 'Context',
   Thinking = 'Thinking',
   Comparing = 'Comparing',
 }
@@ -25,6 +26,7 @@ export enum ToolName {
   Emotion = 'Emotion',
   Goals = 'Goals',
   Inversion = 'Inversion',
+  People = 'People',
   ProsCons = 'Pros / Cons',
   Simulation = 'Simulation Thinking',
 }
@@ -84,18 +86,25 @@ const slashMenuItems: MenuItem[] = [
     keywords: ['complete', 'conclusion', 'end', 'finish'],
   },
   {
+    category: Category.Context,
+    title: ToolName.People,
+    description: 'Who should be involved?',
+    icon: '🧑🏾‍🚀',
+    keywords: ['person', 'team'],
+  },
+  {
+    category: Category.Context,
+    title: ToolName.Data,
+    description: 'What do I know? Need to know?',
+    icon: '💎',
+    keywords: ['fact'],
+  },
+  {
     category: Category.Thinking,
     title: ToolName.Inversion,
     description: 'Flip your point of view',
     icon: '⏳',
     keywords: [],
-  },
-  {
-    category: Category.Thinking,
-    title: ToolName.Data,
-    description: 'What do I know? Need to know?',
-    icon: '💎',
-    keywords: ['fact'],
   },
   {
     category: Category.Thinking,

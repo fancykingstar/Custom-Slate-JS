@@ -14,6 +14,7 @@ import { Node, Editor, Transforms, Range } from 'slate';
 import { CategorizerElement } from 'components/elements/Categorizer/CategorizerElement';
 import { EmotionElement } from 'components/elements/Emotion/EmotionElement';
 import { InversionElement } from 'components/elements/Inversion/InversionElement';
+import { PeopleElement } from 'components/elements/People/PeopleElement';
 import { SimulationElement } from 'components/elements/Simulation/SimulationElement';
 import { BasicElement } from 'components/elements/Element';
 import insertChoicesTool from 'components/elements/Choices/insertChoicesTool';
@@ -23,6 +24,7 @@ import insertCategorizerTool from 'components/elements/Categorizer/insertCategor
 import insertEmotionTool from 'components/elements/Emotion/insertEmotionTool';
 import insertGoalsTool from 'components/elements/Goals/insertGoalsTool';
 import insertInversionTool from 'components/elements/Inversion/insertInversionTool';
+import insertPeopleTool from 'components/elements/People/insertPeopleTool';
 import insertSimulationTool from 'components/elements/Simulation/insertSimulationTool';
 import { WidgetContext, WidgetType } from 'components/widgets/WidgetContext';
 import { v4 as uuidv4 } from 'uuid';
@@ -40,6 +42,7 @@ export enum CardId {
   ToolGoalsTimer,
   ToolInversion,
   ToolInversionTimer,
+  ToolPeople,
   ToolSimulation,
   ToolSimulationTimer,
   ToolEmotion,
@@ -120,6 +123,12 @@ const cardData = {
     title: 'Spend 5 min on the Inversion Tool',
     description: 'Grow your mental model with new perspectives',
   },
+  [CardId.ToolPeople]: {
+    id: CardId.ToolPeople,
+    icon: '🧑🏾‍🚀',
+    title: 'Add the People Tool',
+    description: 'Figure out who should be involved',
+  },
   [CardId.ToolSimulation]: {
     id: CardId.ToolSimulation,
     icon: '🧠',
@@ -186,6 +195,12 @@ function genHand(nodes: Node[], usedCardIds: Set<CardId>): Card[] {
   );
   if (simulationTool == null) {
     pool.push([cardData[CardId.ToolSimulation], 0.5]);
+  }
+
+  // Insert: Data Tool
+  const peopleTool = nodes.find((node) => node.type === PeopleElement.Tool);
+  if (peopleTool == null) {
+    pool.push([cardData[CardId.ToolPeople], 0.5]);
   }
 
   // Insert: Data Tool
@@ -414,6 +429,11 @@ export default function CardHandler(props: Props): JSX.Element {
         case CardId.ToolInversion:
           prepareForAddTool(editor);
           insertInversionTool(editor);
+          ReactEditor.focus(editor);
+          break;
+        case CardId.ToolPeople:
+          prepareForAddTool(editor);
+          insertPeopleTool(editor);
           ReactEditor.focus(editor);
           break;
         case CardId.ToolSimulation:

@@ -13,6 +13,7 @@ import Keys from 'components/editor/keys';
 import onElementKeyDown from 'components/elements/onElementKeyDown';
 import { isTopLevelPath } from 'components/editor/queries';
 import withDataElement from 'components/elements/Data/withDataElement';
+import withPeopleElement from 'components/elements/People/withPeopleElement';
 import withSimulationElement from 'components/elements/Simulation/withSimulationElement';
 import AssistantContext, {
   AssistantAction,
@@ -50,9 +51,11 @@ export default function DecaEditor(props: Props): JSX.Element {
   const editor = useMemo(
     () =>
       withDataElement(
-        withSimulationElement(
-          withVoids(
-            withMarkdown(withLayout(withHistory(withReact(createEditor()))))
+        withPeopleElement(
+          withSimulationElement(
+            withVoids(
+              withMarkdown(withLayout(withHistory(withReact(createEditor()))))
+            )
           )
         )
       ),
