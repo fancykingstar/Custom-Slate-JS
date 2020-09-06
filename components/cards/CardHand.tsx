@@ -70,9 +70,13 @@ interface CardToggleProps {
   setDisabled: (disabled: boolean) => void;
 }
 
-function CardToggle(props: CardToggleProps): JSX.Element {
-  const { disabled, setDisabled } = props;
+function CardToggle(props: CardToggleProps): JSX.Element | null {
+  const { cards } = useContext(CardContext);
+  if (!cards.length) {
+    return null;
+  }
 
+  const { disabled, setDisabled } = props;
   return (
     <button
       type="button"

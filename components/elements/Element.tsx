@@ -20,7 +20,7 @@ import {
 import {
   DataElement,
   DataToolElement,
-  DataChoiceElement,
+  DataCategoryElement,
   DataItemElement,
 } from 'components/elements/Data/DataElement';
 import {
@@ -117,8 +117,8 @@ export default function Element(props: RenderElementProps): JSX.Element {
       return <ConclusionItemTitleElement {...props} />;
     case DataElement.Tool:
       return <DataToolElement {...props} />;
-    case DataElement.Choice:
-      return <DataChoiceElement {...props} />;
+    case DataElement.Category:
+      return <DataCategoryElement {...props} />;
     case DataElement.Item:
       return <DataItemElement {...props} />;
     case EmotionElement.Wrapper:

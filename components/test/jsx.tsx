@@ -23,7 +23,7 @@ export default createHyperscript({
     conclusionItem: { type: ConclusionElement.Item },
     conclusionItemTitle: { type: ConclusionElement.ItemTitle },
     data: { type: DataElement.Tool },
-    dataChoice: { type: DataElement.Choice },
+    dataCategory: { type: DataElement.Category },
     dataItem: { type: DataElement.Item },
     goalsWrapper: { type: GoalsElement.Wrapper },
     goalsItem: { type: GoalsElement.Item },

@@ -3,7 +3,6 @@ import {
   DataElement,
   DataConfidence,
 } from 'components/elements/Data/DataElement';
-import { ChoicesElement } from 'components/elements/Choices/ChoicesElement';
 
 /**
  * Converts the node at the current selection into an Data tool.
@@ -25,44 +24,19 @@ export default function insertDataTool(editor: Editor): void {
   Transforms.delete(editor);
 
   const nodes: Node[] = [];
-  let newSelection = paragraphPath;
-  const choices = Array.from(
-    Editor.nodes(editor, {
-      at: [],
-      match: (n) => n.type === ChoicesElement.ItemTitle,
-    })
-  );
-
-  const filledChoices = choices.filter((choice) => {
-    const [choiceNode] = choice;
-    return Node.string(choiceNode).length;
+  nodes.push({
+    type: DataElement.Category,
+    children: [{ text: '' }],
+  });
+  nodes.push({
+    type: DataElement.Item,
+    children: [{ text: '' }],
+    indent: 0,
+    probability: DataConfidence.None,
   });
 
-  if (filledChoices.length) {
-    filledChoices.forEach((choice) => {
-      const [choiceNode] = choice;
-      const content = Node.string(choiceNode);
-
-      nodes.push({
-        type: DataElement.Choice,
-        children: [{ text: `Choice: ${content}` }],
-      });
-      nodes.push({
-        type: DataElement.Item,
-        children: [{ text: '' }],
-        indent: 0,
-        probability: DataConfidence.None,
-      });
-    });
-
-    newSelection = newSelection.concat([1, 0]);
-  } else {
-    nodes.push({
-      type: DataElement.Choice,
-      children: [{ text: '' }],
-    });
-    newSelection = newSelection.concat([0, 0]);
-  }
+  let newSelection = paragraphPath;
+  newSelection = newSelection.concat([1, 0]);
 
   Transforms.insertNodes(
     editor,

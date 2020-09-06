@@ -15,13 +15,13 @@ describe('Data Tool: Normalizer', () => {
     }
   ][] = [
     [
-      'Choice element not allowed outside of tool',
+      'Category element not allowed outside of tool',
       {
         input: (
           <editor>
-            <dataChoice>
+            <dataCategory>
               <cursor />
-            </dataChoice>
+            </dataCategory>
           </editor>
         ),
         output: (
@@ -34,14 +34,14 @@ describe('Data Tool: Normalizer', () => {
       },
     ],
     [
-      'Choice element not allowed nested in non-tool element',
+      'Category element not allowed nested in non-tool element',
       {
         input: (
           <editor>
             <p>
-              <dataChoice>
+              <dataCategory>
                 <cursor />
-              </dataChoice>
+              </dataCategory>
             </p>
           </editor>
         ),
@@ -92,9 +92,9 @@ describe('Data Tool: Normalizer', () => {
           <editor>
             <title>Title</title>
             <data>
-              <dataChoice>
+              <dataCategory>
                 <cursor />
-              </dataChoice>
+              </dataCategory>
             </data>
           </editor>
         ),

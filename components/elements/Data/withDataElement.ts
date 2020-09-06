@@ -34,11 +34,11 @@ function unindentItem(editor: Editor, element: Element, path: Path): void {
   );
 }
 
-function convertItemToChoice(editor: Editor, at: Path): void {
+function convertItemToCategory(editor: Editor, at: Path): void {
   Transforms.setNodes(
     editor,
     {
-      type: DataElement.Choice,
+      type: DataElement.Category,
       children: [],
     },
     {
@@ -50,7 +50,7 @@ function convertItemToChoice(editor: Editor, at: Path): void {
   });
 }
 
-function convertChoiceToItem(editor: Editor, at: Path): void {
+function convertCategoryToItem(editor: Editor, at: Path): void {
   Transforms.setNodes(
     editor,
     {
@@ -92,18 +92,18 @@ const withDataElement = (editor: ReactEditor): ReactEditor => {
       parentPath.concat(parentNode.children.length - 1)
     );
 
-    if (node.type === DataElement.Choice) {
+    if (node.type === DataElement.Category) {
       const nextNode = Editor.next(editor, {
         at: nodePath,
       });
-      const nextNodeIsChoice =
-        nextNode != null && nextNode[0].type === DataElement.Choice;
+      const nextNodeIsCategory =
+        nextNode != null && nextNode[0].type === DataElement.Category;
 
       // Create new sibling list item if there's nothing after, or no list items after
-      if (!nodeIsEmpty && (nodeIsLastChild || nextNodeIsChoice)) {
+      if (!nodeIsEmpty && (nodeIsLastChild || nextNodeIsCategory)) {
         const nextNodePath = Path.next(nodePath);
         insertBreak();
-        convertChoiceToItem(editor, nextNodePath);
+        convertCategoryToItem(editor, nextNodePath);
         return;
       }
 
@@ -130,7 +130,7 @@ const withDataElement = (editor: ReactEditor): ReactEditor => {
 
       // Convert list item to choice if it's empty, at end, and unindented
       if (nodeIsEmpty && nodeIsLastChild && indent != null && indent <= 0) {
-        convertItemToChoice(editor, nodePath);
+        convertItemToCategory(editor, nodePath);
         return;
       }
 
@@ -237,7 +237,7 @@ const withDataElement = (editor: ReactEditor): ReactEditor => {
     if (
       Editor.isBlock(editor, node) &&
       path.length > 0 &&
-      (node.type === DataElement.Choice || node.type === DataElement.Item)
+      (node.type === DataElement.Category || node.type === DataElement.Item)
     ) {
       const parentPath = Path.parent(path);
       const [parentNode] = Editor.node(editor, parentPath);
@@ -283,12 +283,12 @@ const withDataElement = (editor: ReactEditor): ReactEditor => {
     ) {
       // Rule: Tool must always have a first-child choice element
       const firstChild = children[0];
-      if (firstChild.type !== DataElement.Choice) {
+      if (firstChild.type !== DataElement.Category) {
         if (Editor.isBlock(editor, firstChild)) {
           Transforms.setNodes(
             editor,
             {
-              type: DataElement.Choice,
+              type: DataElement.Category,
             },
             {
               at: path.concat(0),
@@ -298,7 +298,7 @@ const withDataElement = (editor: ReactEditor): ReactEditor => {
           Transforms.wrapNodes(
             editor,
             {
-              type: DataElement.Choice,
+              type: DataElement.Category,
               children: [],
             },
             {
@@ -314,14 +314,14 @@ const withDataElement = (editor: ReactEditor): ReactEditor => {
       // Rule: Tool can only have choice and item children
       children.forEach((childNode, index) => {
         if (
-          childNode.type !== DataElement.Choice &&
+          childNode.type !== DataElement.Category &&
           childNode.type !== DataElement.Item
         ) {
           if (Editor.isBlock(editor, childNode)) {
             Transforms.setNodes(
               editor,
               {
-                type: DataElement.Choice,
+                type: DataElement.Category,
               },
               {
                 at: path.concat(index),
@@ -331,7 +331,7 @@ const withDataElement = (editor: ReactEditor): ReactEditor => {
             Transforms.wrapNodes(
               editor,
               {
-                type: DataElement.Choice,
+                type: DataElement.Category,
                 children: [],
               },
               {

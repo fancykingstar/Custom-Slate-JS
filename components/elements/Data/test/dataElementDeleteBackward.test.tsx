@@ -22,9 +22,9 @@ describe('Data Tool: Delete Backward', () => {
           <editor>
             <title>Title</title>
             <data>
-              <dataChoice>
+              <dataCategory>
                 <cursor />
-              </dataChoice>
+              </dataCategory>
             </data>
           </editor>
         ),
@@ -45,9 +45,9 @@ describe('Data Tool: Delete Backward', () => {
           <editor>
             <title>Title</title>
             <data>
-              <dataChoice>
+              <dataCategory>
                 <cursor />
-              </dataChoice>
+              </dataCategory>
               <dataItem>Item 1</dataItem>
             </data>
           </editor>
@@ -56,9 +56,9 @@ describe('Data Tool: Delete Backward', () => {
           <editor>
             <title>Title</title>
             <data>
-              <dataChoice>
+              <dataCategory>
                 <cursor />
-              </dataChoice>
+              </dataCategory>
               <dataItem>Item 1</dataItem>
             </data>
           </editor>
@@ -71,7 +71,7 @@ describe('Data Tool: Delete Backward', () => {
         input: (
           <editor>
             <data>
-              <dataChoice>Choice 1</dataChoice>
+              <dataCategory>Category 1</dataCategory>
               <dataItem>
                 <cursor />
                 Item 1
@@ -82,10 +82,10 @@ describe('Data Tool: Delete Backward', () => {
         output: (
           <editor>
             <data>
-              <dataChoice>
-                Choice 1<cursor />
+              <dataCategory>
+                Category 1<cursor />
                 Item 1
-              </dataChoice>
+              </dataCategory>
             </data>
           </editor>
         ),
@@ -97,21 +97,21 @@ describe('Data Tool: Delete Backward', () => {
         input: (
           <editor>
             <data>
-              <dataChoice>Choice 1</dataChoice>
-              <dataChoice>
+              <dataCategory>Category 1</dataCategory>
+              <dataCategory>
                 <cursor />
-                Choice 2
-              </dataChoice>
+                Category 2
+              </dataCategory>
             </data>
           </editor>
         ),
         output: (
           <editor>
             <data>
-              <dataChoice>
-                Choice 1<cursor />
-                Choice 2
-              </dataChoice>
+              <dataCategory>
+                Category 1<cursor />
+                Category 2
+              </dataCategory>
             </data>
           </editor>
         ),
@@ -123,7 +123,7 @@ describe('Data Tool: Delete Backward', () => {
         input: (
           <editor>
             <data>
-              <dataChoice>Choice 1</dataChoice>
+              <dataCategory>Category 1</dataCategory>
               <dataItem>Item 1</dataItem>
               <dataItem>
                 <cursor />
@@ -135,7 +135,7 @@ describe('Data Tool: Delete Backward', () => {
         output: (
           <editor>
             <data>
-              <dataChoice>Choice 1</dataChoice>
+              <dataCategory>Category 1</dataCategory>
               <dataItem>
                 Item 1<cursor />
                 Item 2
@@ -151,22 +151,22 @@ describe('Data Tool: Delete Backward', () => {
         input: (
           <editor>
             <data>
-              <dataChoice>Choice 1</dataChoice>
+              <dataCategory>Category 1</dataCategory>
               <dataItem>Item 1</dataItem>
-              <dataChoice>
+              <dataCategory>
                 <cursor />
-                Choice 2
-              </dataChoice>
+                Category 2
+              </dataCategory>
             </data>
           </editor>
         ),
         output: (
           <editor>
             <data>
-              <dataChoice>Choice 1</dataChoice>
+              <dataCategory>Category 1</dataCategory>
               <dataItem>
                 Item 1<cursor />
-                Choice 2
+                Category 2
               </dataItem>
             </data>
           </editor>
@@ -179,7 +179,7 @@ describe('Data Tool: Delete Backward', () => {
         input: (
           <editor>
             <data>
-              <dataChoice>Choice 1</dataChoice>
+              <dataCategory>Category 1</dataCategory>
             </data>
             <p>
               <cursor />
@@ -189,9 +189,9 @@ describe('Data Tool: Delete Backward', () => {
         output: (
           <editor>
             <data>
-              <dataChoice>
-                Choice 1<cursor />
-              </dataChoice>
+              <dataCategory>
+                Category 1<cursor />
+              </dataCategory>
             </data>
             <p>
               <text />
@@ -206,7 +206,7 @@ describe('Data Tool: Delete Backward', () => {
         input: (
           <editor>
             <data>
-              <dataChoice>Choice 1</dataChoice>
+              <dataCategory>Category 1</dataCategory>
               <dataItem>Item 1</dataItem>
             </data>
             <p>
@@ -217,7 +217,7 @@ describe('Data Tool: Delete Backward', () => {
         output: (
           <editor>
             <data>
-              <dataChoice>Choice 1</dataChoice>
+              <dataCategory>Category 1</dataCategory>
               <dataItem>
                 Item 1<cursor />
               </dataItem>
@@ -235,7 +235,7 @@ describe('Data Tool: Delete Backward', () => {
         input: (
           <editor>
             <data>
-              <dataChoice>Choice 1</dataChoice>
+              <dataCategory>Category 1</dataCategory>
               <dataItem>
                 <cursor />
                 Item 1
@@ -246,10 +246,10 @@ describe('Data Tool: Delete Backward', () => {
         output: (
           <editor>
             <data>
-              <dataChoice>
-                Choice 1<cursor />
+              <dataCategory>
+                Category 1<cursor />
                 Item 1
-              </dataChoice>
+              </dataCategory>
             </data>
           </editor>
         ),
@@ -261,7 +261,7 @@ describe('Data Tool: Delete Backward', () => {
         input: (
           <editor>
             <data>
-              <dataChoice>Choice 1</dataChoice>
+              <dataCategory>Category 1</dataCategory>
               <dataItem indent={5} probability={DataConfidence.High}>
                 <text />
               </dataItem>
@@ -275,7 +275,7 @@ describe('Data Tool: Delete Backward', () => {
         output: (
           <editor>
             <data>
-              <dataChoice>Choice 1</dataChoice>
+              <dataCategory>Category 1</dataCategory>
               <dataItem indent={5} probability={DataConfidence.High}>
                 <cursor />
                 Item 1

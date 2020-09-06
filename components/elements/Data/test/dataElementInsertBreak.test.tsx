@@ -21,16 +21,16 @@ describe('Data Tool: Insert Break', () => {
         input: (
           <editor>
             <data>
-              <dataChoice>
-                Choice 1<cursor />
-              </dataChoice>
+              <dataCategory>
+                Category 1<cursor />
+              </dataCategory>
             </data>
           </editor>
         ),
         output: (
           <editor>
             <data>
-              <dataChoice>Choice 1</dataChoice>
+              <dataCategory>Category 1</dataCategory>
               <dataItem indent={0} probability={DataConfidence.None}>
                 <cursor />
               </dataItem>
@@ -45,21 +45,21 @@ describe('Data Tool: Insert Break', () => {
         input: (
           <editor>
             <data>
-              <dataChoice>
-                Choice 1<cursor />
-              </dataChoice>
-              <dataChoice>Choice 2</dataChoice>
+              <dataCategory>
+                Category 1<cursor />
+              </dataCategory>
+              <dataCategory>Category 2</dataCategory>
             </data>
           </editor>
         ),
         output: (
           <editor>
             <data>
-              <dataChoice>Choice 1</dataChoice>
+              <dataCategory>Category 1</dataCategory>
               <dataItem indent={0} probability={DataConfidence.None}>
                 <cursor />
               </dataItem>
-              <dataChoice>Choice 2</dataChoice>
+              <dataCategory>Category 2</dataCategory>
             </data>
           </editor>
         ),
@@ -71,7 +71,7 @@ describe('Data Tool: Insert Break', () => {
         input: (
           <editor>
             <data>
-              <dataChoice>Choice 1</dataChoice>
+              <dataCategory>Category 1</dataCategory>
               <dataItem indent={0} probability={DataConfidence.None}>
                 Item 1<cursor />
               </dataItem>
@@ -81,7 +81,7 @@ describe('Data Tool: Insert Break', () => {
         output: (
           <editor>
             <data>
-              <dataChoice>Choice 1</dataChoice>
+              <dataCategory>Category 1</dataCategory>
               <dataItem indent={0} probability={DataConfidence.None}>
                 Item 1
               </dataItem>
@@ -99,9 +99,9 @@ describe('Data Tool: Insert Break', () => {
         input: (
           <editor>
             <data>
-              <dataChoice>
-                Choice 1<cursor />
-              </dataChoice>
+              <dataCategory>
+                Category 1<cursor />
+              </dataCategory>
               <dataItem indent={0} probability={DataConfidence.None}>
                 Item 1
               </dataItem>
@@ -111,10 +111,10 @@ describe('Data Tool: Insert Break', () => {
         output: (
           <editor>
             <data>
-              <dataChoice>Choice 1</dataChoice>
-              <dataChoice>
+              <dataCategory>Category 1</dataCategory>
+              <dataCategory>
                 <cursor />
-              </dataChoice>
+              </dataCategory>
               <dataItem indent={0} probability={DataConfidence.None}>
                 Item 1
               </dataItem>
@@ -129,9 +129,9 @@ describe('Data Tool: Insert Break', () => {
         input: (
           <editor>
             <data>
-              <dataChoice>
+              <dataCategory>
                 <cursor />
-              </dataChoice>
+              </dataCategory>
             </data>
             {/* NOTE: Assume the existence of a trailing paragraph node */}
             <p>
@@ -142,9 +142,9 @@ describe('Data Tool: Insert Break', () => {
         output: (
           <editor>
             <data>
-              <dataChoice>
+              <dataCategory>
                 <text />
-              </dataChoice>
+              </dataCategory>
             </data>
             <p>
               <cursor />
@@ -159,7 +159,7 @@ describe('Data Tool: Insert Break', () => {
         input: (
           <editor>
             <data>
-              <dataChoice>Choice 1</dataChoice>
+              <dataCategory>Category 1</dataCategory>
               <dataItem indent={1} probability={DataConfidence.None}>
                 <cursor />
               </dataItem>
@@ -169,7 +169,7 @@ describe('Data Tool: Insert Break', () => {
         output: (
           <editor>
             <data>
-              <dataChoice>Choice 1</dataChoice>
+              <dataCategory>Category 1</dataCategory>
               <dataItem indent={0} probability={DataConfidence.None}>
                 <cursor />
               </dataItem>
@@ -184,7 +184,7 @@ describe('Data Tool: Insert Break', () => {
         input: (
           <editor>
             <data>
-              <dataChoice>Choice 1</dataChoice>
+              <dataCategory>Category 1</dataCategory>
               <dataItem indent={0} probability={DataConfidence.None}>
                 <cursor />
               </dataItem>
@@ -194,10 +194,10 @@ describe('Data Tool: Insert Break', () => {
         output: (
           <editor>
             <data>
-              <dataChoice>Choice 1</dataChoice>
-              <dataChoice>
+              <dataCategory>Category 1</dataCategory>
+              <dataCategory>
                 <cursor />
-              </dataChoice>
+              </dataCategory>
             </data>
           </editor>
         ),
@@ -209,7 +209,7 @@ describe('Data Tool: Insert Break', () => {
         input: (
           <editor>
             <data>
-              <dataChoice>Choice 1</dataChoice>
+              <dataCategory>Category 1</dataCategory>
               <dataItem indent={3} probability={DataConfidence.High}>
                 Item 1<cursor />
               </dataItem>
@@ -219,7 +219,7 @@ describe('Data Tool: Insert Break', () => {
         output: (
           <editor>
             <data>
-              <dataChoice>Choice 1</dataChoice>
+              <dataCategory>Category 1</dataCategory>
               <dataItem indent={3} probability={DataConfidence.High}>
                 Item 1
               </dataItem>

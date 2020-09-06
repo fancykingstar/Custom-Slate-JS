@@ -14,7 +14,7 @@ import styles from './DataElement.module.scss';
 
 export enum DataElement {
   Tool = 'data',
-  Choice = 'data-choice',
+  Category = 'data-category',
   Item = 'data-item',
 }
 
@@ -34,13 +34,13 @@ export function DataToolElement(props: RenderElementProps): JSX.Element {
   );
 }
 
-export function DataChoiceElement(props: RenderElementProps): JSX.Element {
+export function DataCategoryElement(props: RenderElementProps): JSX.Element {
   const { attributes, children, element } = props;
 
   return (
-    <h3 {...attributes} className={styles.choice}>
+    <h3 {...attributes} className={styles.category}>
       {children}
-      <InlinePlaceholder element={element} blurChildren="Data">
+      <InlinePlaceholder element={element} blurChildren="Category">
         What's a category of data you want to list?
       </InlinePlaceholder>
     </h3>
@@ -92,11 +92,11 @@ export function DataItemElement(props: RenderElementProps): JSX.Element {
     const parentPath = nodePath.slice(0, nodePath.length - 1);
 
     // Find the first previous node which is has lower indent or
-    // is a choice element
+    // is a category element
     let parentNode: Node | null = null;
     for (let i = nodeIndex - 1; i >= 0; i -= 1) {
       const [node] = Editor.node(editor, parentPath.concat(i));
-      if (node.type === DataElement.Choice || node.indent === indent - 1) {
+      if (node.type === DataElement.Category || node.indent === indent - 1) {
         parentNode = node;
         break;
       }
