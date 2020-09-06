@@ -64,6 +64,11 @@ export default function insertSimulationTool(editor: Editor): void {
     newSelection = newSelection.concat([0, 0]);
   }
 
+  nodes.push({
+    type: SimulationElement.Legend,
+    children: [],
+  });
+
   Transforms.insertNodes(
     editor,
     {

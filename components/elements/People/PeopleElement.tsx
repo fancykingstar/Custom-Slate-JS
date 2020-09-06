@@ -16,6 +16,7 @@ export enum PeopleElement {
   Tool = 'people',
   Team = 'people-team',
   Item = 'people-item',
+  Legend = 'people-legend',
 }
 
 export enum PeopleRole {
@@ -45,7 +46,7 @@ export function PeopleTeamElement(props: RenderElementProps): JSX.Element {
     <h3 {...attributes} className={styles.team}>
       {children}
       <InlinePlaceholder element={element} blurChildren="Team">
-        What team should be involved?
+        What team or group of people should be involved?
       </InlinePlaceholder>
     </h3>
   );
@@ -58,14 +59,14 @@ export function PeopleItemElement(props: RenderElementProps): JSX.Element {
   const { attributes, children, element } = props;
   const { selection } = editor;
 
-  const setConfidence = useCallback(
-    (newConfidence: PeopleRole) => {
+  const setRole = useCallback(
+    (newRole: PeopleRole) => {
       const nodePath = ReactEditor.findPath(editor, element);
 
       Transforms.setNodes(
         editor,
         {
-          confidence: newConfidence,
+          role: newRole,
         },
         {
           at: nodePath,
@@ -81,7 +82,7 @@ export function PeopleItemElement(props: RenderElementProps): JSX.Element {
   const classNames = [
     styles.itemWrapper,
     styles[`indent-${element.indent ?? 0}`],
-    styles[`confidence-${element.confidence ?? PeopleRole.None}`],
+    styles[`role-${element.role ?? PeopleRole.None}`],
   ];
 
   const isNodeFocused =
@@ -127,69 +128,109 @@ export function PeopleItemElement(props: RenderElementProps): JSX.Element {
     <ul {...attributes} className={classNames.join(' ')}>
       <li className={styles.itemContent}>
         {children}
-        <ConfidenceDot element={element} setConfidence={setConfidence} />
+        <RoleDot element={element} setRole={setRole} />
         <InlinePlaceholder element={element}>
           {placeholderText}
         </InlinePlaceholder>
       </li>
-      {isNodeFocused ? (
-        <Menu element={element} setConfidence={setConfidence} />
-      ) : null}
+      {isNodeFocused ? <Menu element={element} setRole={setRole} /> : null}
     </ul>
   );
 }
 
-interface ConfidenceDotProps {
-  element: Element;
-  setConfidence: (newConfidence: PeopleRole) => void;
+export function PeopleLegendElement(props: RenderElementProps): JSX.Element {
+  const { attributes, children } = props;
+  return (
+    <ul {...attributes} contentEditable={false} className={styles.legend}>
+      {children}
+      <li className={styles.legendItem}>
+        <span
+          className={`${styles.legendDot} ${styles[`role-${PeopleRole.None}`]}`}
+          contentEditable={false}
+        />
+        Unassigned
+      </li>
+      <li className={styles.legendItem}>
+        <span
+          className={`${styles.legendDot} ${
+            styles[`role-${PeopleRole.Consultant}`]
+          }`}
+          contentEditable={false}
+        />
+        Consultant
+      </li>
+      <li className={styles.legendItem}>
+        <span
+          className={`${styles.legendDot} ${
+            styles[`role-${PeopleRole.Approver}`]
+          }`}
+          contentEditable={false}
+        />
+        Approver
+      </li>
+      <li className={styles.legendItem}>
+        <span
+          className={`${styles.legendDot} ${
+            styles[`role-${PeopleRole.Responsible}`]
+          }`}
+          contentEditable={false}
+        />
+        Responsible
+      </li>
+    </ul>
+  );
 }
 
-function ConfidenceDot(props: ConfidenceDotProps): JSX.Element {
-  const { element, setConfidence } = props;
+interface RoleDotProps {
+  element: Element;
+  setRole: (newRole: PeopleRole) => void;
+}
 
-  const confidence =
-    (element.confidence as PeopleRole | undefined) ?? PeopleRole.None;
-  const confidenceClass = styles[`confidence-${confidence}`];
+function RoleDot(props: RoleDotProps): JSX.Element {
+  const { element, setRole } = props;
 
-  const increaseConfidence = useCallback(() => {
-    let newConfidence = null;
+  const role = (element.role as PeopleRole | undefined) ?? PeopleRole.None;
+  const roleClass = styles[`role-${role}`];
 
-    if (confidence === PeopleRole.None) {
-      newConfidence = PeopleRole.Consultant;
-    } else if (confidence === PeopleRole.Consultant) {
-      newConfidence = PeopleRole.Approver;
-    } else if (confidence === PeopleRole.Approver) {
-      newConfidence = PeopleRole.Responsible;
-    } else if (confidence === PeopleRole.Responsible) {
-      newConfidence = PeopleRole.None;
+  const increaseRole = useCallback(() => {
+    let newRole = null;
+
+    if (role === PeopleRole.None) {
+      newRole = PeopleRole.Consultant;
+    } else if (role === PeopleRole.Consultant) {
+      newRole = PeopleRole.Approver;
+    } else if (role === PeopleRole.Approver) {
+      newRole = PeopleRole.Responsible;
+    } else if (role === PeopleRole.Responsible) {
+      newRole = PeopleRole.None;
     }
 
-    if (newConfidence != null) {
-      setConfidence(newConfidence);
+    if (newRole != null) {
+      setRole(newRole);
     }
-  }, [confidence]);
+  }, [role]);
 
   return (
     <button
       type="button"
-      className={`${styles.confidenceDot} ${confidenceClass}`}
+      className={`${styles.roleDot} ${roleClass}`}
       contentEditable={false}
-      onClick={increaseConfidence}
+      onClick={increaseRole}
       title="Change role"
     >
-      {confidence}
+      {role}
     </button>
   );
 }
 
 interface MenuProps {
   element: Element;
-  setConfidence: (newConfidence: PeopleRole) => void;
+  setRole: (newRole: PeopleRole) => void;
 }
 
 function Menu(props: MenuProps): JSX.Element | null {
   const editor = useEditor();
-  const { element, setConfidence } = props;
+  const { element, setRole } = props;
   const nodePath = ReactEditor.findPath(editor, element);
 
   const radioGroupName = nodePath.join('');
@@ -197,23 +238,23 @@ function Menu(props: MenuProps): JSX.Element | null {
   return (
     <ul contentEditable={false} className={styles.menu}>
       <li>
-        <div className={styles.confidenceMenu}>
+        <div className={styles.roleMenu}>
           <input
             id={`${radioGroupName}-${PeopleRole.None}`}
             type="radio"
             name={radioGroupName}
             value={PeopleRole.None}
-            checked={element.confidence === PeopleRole.None}
-            onChange={() => setConfidence(PeopleRole.None)}
+            checked={element.role === PeopleRole.None}
+            onChange={() => setRole(PeopleRole.None)}
           />
           <label
-            className={`${styles.confidenceMenuItem} ${
+            className={`${styles.roleMenuItem} ${
               styles[`menu-${PeopleRole.None}`]
             }`}
             htmlFor={`${radioGroupName}-${PeopleRole.None}`}
           >
             <svg
-              className={styles.confidenceMenuIcon}
+              className={styles.roleMenuIcon}
               width="16"
               height="16"
               fill="none"
@@ -238,7 +279,7 @@ function Menu(props: MenuProps): JSX.Element | null {
               />
             </svg>
 
-            <MenuTooltip>Unknown role</MenuTooltip>
+            <MenuTooltip>Unassigned</MenuTooltip>
           </label>
 
           <input
@@ -246,17 +287,17 @@ function Menu(props: MenuProps): JSX.Element | null {
             type="radio"
             name={radioGroupName}
             value={PeopleRole.Consultant}
-            checked={element.confidence === PeopleRole.Consultant}
-            onChange={() => setConfidence(PeopleRole.Consultant)}
+            checked={element.role === PeopleRole.Consultant}
+            onChange={() => setRole(PeopleRole.Consultant)}
           />
           <label
-            className={`${styles.confidenceMenuItem} ${
+            className={`${styles.roleMenuItem} ${
               styles[`menu-${PeopleRole.Consultant}`]
             }`}
             htmlFor={`${radioGroupName}-${PeopleRole.Consultant}`}
           >
             <svg
-              className={styles.confidenceMenuIcon}
+              className={styles.roleMenuIcon}
               width="16"
               height="16"
               viewBox="0 0 16 16"
@@ -281,17 +322,17 @@ function Menu(props: MenuProps): JSX.Element | null {
             type="radio"
             name={radioGroupName}
             value={PeopleRole.Approver}
-            checked={element.confidence === PeopleRole.Approver}
-            onChange={() => setConfidence(PeopleRole.Approver)}
+            checked={element.role === PeopleRole.Approver}
+            onChange={() => setRole(PeopleRole.Approver)}
           />
           <label
-            className={`${styles.confidenceMenuItem} ${
+            className={`${styles.roleMenuItem} ${
               styles[`menu-${PeopleRole.Approver}`]
             }`}
             htmlFor={`${radioGroupName}-${PeopleRole.Approver}`}
           >
             <svg
-              className={styles.confidenceMenuIcon}
+              className={styles.roleMenuIcon}
               width="16"
               height="16"
               fill="none"
@@ -315,17 +356,17 @@ function Menu(props: MenuProps): JSX.Element | null {
             type="radio"
             name={radioGroupName}
             value={PeopleRole.Responsible}
-            checked={element.confidence === PeopleRole.Responsible}
-            onChange={() => setConfidence(PeopleRole.Responsible)}
+            checked={element.role === PeopleRole.Responsible}
+            onChange={() => setRole(PeopleRole.Responsible)}
           />
           <label
-            className={`${styles.confidenceMenuItem} ${
+            className={`${styles.roleMenuItem} ${
               styles[`menu-${PeopleRole.Responsible}`]
             }`}
             htmlFor={`${radioGroupName}-${PeopleRole.Responsible}`}
           >
             <svg
-              className={styles.confidenceMenuIcon}
+              className={styles.roleMenuIcon}
               width="16"
               height="16"
               fill="none"

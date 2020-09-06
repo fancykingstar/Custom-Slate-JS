@@ -22,6 +22,7 @@ import {
   DataToolElement,
   DataCategoryElement,
   DataItemElement,
+  DataLegendElement,
 } from 'components/elements/Data/DataElement';
 import {
   EmotionElement,
@@ -47,12 +48,14 @@ import {
   PeopleToolElement,
   PeopleTeamElement,
   PeopleItemElement,
+  PeopleLegendElement,
 } from 'components/elements/People/PeopleElement';
 import {
   SimulationElement,
   SimulationToolElement,
   SimulationChoiceElement,
   SimulationItemElement,
+  SimulationLegendElement,
 } from 'components/elements/Simulation/SimulationElement';
 import ParagraphElement from 'components/elements/Paragraph/ParagraphElement';
 import TitleElement from 'components/elements/Title/TitleElement';
@@ -127,6 +130,8 @@ export default function Element(props: RenderElementProps): JSX.Element {
       return <DataCategoryElement {...props} />;
     case DataElement.Item:
       return <DataItemElement {...props} />;
+    case DataElement.Legend:
+      return <DataLegendElement {...props} />;
     case EmotionElement.Wrapper:
       return <EmotionWrapperElement {...props} />;
     case GoalsElement.Wrapper:
@@ -153,12 +158,16 @@ export default function Element(props: RenderElementProps): JSX.Element {
       return <PeopleTeamElement {...props} />;
     case PeopleElement.Item:
       return <PeopleItemElement {...props} />;
+    case PeopleElement.Legend:
+      return <PeopleLegendElement {...props} />;
     case SimulationElement.Tool:
       return <SimulationToolElement {...props} />;
     case SimulationElement.Choice:
       return <SimulationChoiceElement {...props} />;
     case SimulationElement.Item:
       return <SimulationItemElement {...props} />;
+    case SimulationElement.Legend:
+      return <SimulationLegendElement {...props} />;
     default:
       return <DefaultElement {...props} />;
   }

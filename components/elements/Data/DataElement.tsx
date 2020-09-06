@@ -16,6 +16,7 @@ export enum DataElement {
   Tool = 'data',
   Category = 'data-category',
   Item = 'data-item',
+  Legend = 'data-legend',
 }
 
 export enum DataConfidence {
@@ -131,6 +132,51 @@ export function DataItemElement(props: RenderElementProps): JSX.Element {
       {isNodeFocused ? (
         <Menu element={element} setConfidence={setConfidence} />
       ) : null}
+    </ul>
+  );
+}
+
+export function DataLegendElement(props: RenderElementProps): JSX.Element {
+  const { attributes, children } = props;
+  return (
+    <ul {...attributes} contentEditable={false} className={styles.legend}>
+      {children}
+      <li className={styles.legendItem}>
+        <span
+          className={`${styles.legendDot} ${
+            styles[`role-${DataConfidence.None}`]
+          }`}
+          contentEditable={false}
+        />
+        Need to know
+      </li>
+      <li className={styles.legendItem}>
+        <span
+          className={`${styles.legendDot} ${
+            styles[`role-${DataConfidence.Low}`]
+          }`}
+          contentEditable={false}
+        />
+        Low confidence
+      </li>
+      <li className={styles.legendItem}>
+        <span
+          className={`${styles.legendDot} ${
+            styles[`role-${DataConfidence.Med}`]
+          }`}
+          contentEditable={false}
+        />
+        Med confidence
+      </li>
+      <li className={styles.legendItem}>
+        <span
+          className={`${styles.legendDot} ${
+            styles[`role-${DataConfidence.High}`]
+          }`}
+          contentEditable={false}
+        />
+        High confidence
+      </li>
     </ul>
   );
 }

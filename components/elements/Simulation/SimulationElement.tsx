@@ -16,6 +16,7 @@ export enum SimulationElement {
   Tool = 'simulation',
   Choice = 'simulation-choice',
   Item = 'simulation-item',
+  Legend = 'simulation-legend',
 }
 
 export enum SimulationImportance {
@@ -157,6 +158,53 @@ export function SimulationItemElement(props: RenderElementProps): JSX.Element {
       {isNodeFocused ? (
         <Menu element={element} setImportance={setImportance} />
       ) : null}
+    </ul>
+  );
+}
+
+export function SimulationLegendElement(
+  props: RenderElementProps
+): JSX.Element {
+  const { attributes, children } = props;
+  return (
+    <ul {...attributes} contentEditable={false} className={styles.legend}>
+      {children}
+      <li className={styles.legendItem}>
+        <span
+          className={`${styles.legendDot} ${
+            styles[`role-${SimulationImportance.None}`]
+          }`}
+          contentEditable={false}
+        />
+        Unknown
+      </li>
+      <li className={styles.legendItem}>
+        <span
+          className={`${styles.legendDot} ${
+            styles[`role-${SimulationImportance.Low}`]
+          }`}
+          contentEditable={false}
+        />
+        Low importance
+      </li>
+      <li className={styles.legendItem}>
+        <span
+          className={`${styles.legendDot} ${
+            styles[`role-${SimulationImportance.Med}`]
+          }`}
+          contentEditable={false}
+        />
+        Med importance
+      </li>
+      <li className={styles.legendItem}>
+        <span
+          className={`${styles.legendDot} ${
+            styles[`role-${SimulationImportance.High}`]
+          }`}
+          contentEditable={false}
+        />
+        High importance
+      </li>
     </ul>
   );
 }

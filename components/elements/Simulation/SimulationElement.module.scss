@@ -320,3 +320,74 @@ input[type='radio']:checked + .importanceMenuItem .highCircle {
 .importanceMenuItem:hover .tooltip {
   display: block;
 }
+
+.legend {
+  align-items: center;
+  border-top: solid 0.1rem var(--color-bg-gray-tertiary);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 1.3rem 0 0 0;
+  position: relative;
+  user-select: none;
+}
+
+.legendItem {
+  border-radius: 0.6rem;
+  color: var(--color-bg-gray-primary);
+  font-size: 1.2rem;
+  overflow: hidden;
+  padding: 0.4rem 3.2rem 0.4rem 3.2rem;
+  position: relative;
+}
+
+.legendDot {
+  background: none;
+  border: none;
+  font-size: 0;
+  height: 3rem;
+  left: 0.1rem;
+  outline: 0;
+  position: absolute;
+  top: calc(50% - 1.5rem);
+  user-select: none;
+  width: 3rem;
+}
+
+.legendDot::before {
+  background: var(--color-white);
+  border: dashed 0.1rem transparent;
+  border-radius: 50%;
+  content: '';
+  display: block;
+  height: 1.2rem;
+  position: absolute;
+  left: calc(50% - 0.6rem);
+  top: calc(50% - 0.6rem);
+  transform-origin: center;
+  transition: transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  width: 1.2rem;
+}
+
+.legendDot.role-high::before {
+  background: var(--color-blue);
+  transform: rotate(90deg);
+}
+
+.legendDot.role-med::before {
+  background: var(--color-blue);
+  opacity: 60%;
+  transform: scale(0.7) rotate(60deg);
+}
+
+.legendDot.role-low::before {
+  background: var(--color-blue);
+  opacity: 20%;
+  transform: scale(0.4) rotate(30deg);
+}
+
+.legendDot.role-none::before {
+  background: var(--color-white);
+  border-color: var(--color-blue);
+  transform: scale(0.7);
+}
