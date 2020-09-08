@@ -10,10 +10,24 @@ import { stopwords } from 'components/intelligence/stopwords';
 
 interface IndexState {
   whenIndexedMillis: number | null;
+
   index: Index;
+
   rank: Rank;
   scores: Scores;
   paths: Paths;
+
+  sentenceScores: SentenceScores;
+}
+
+interface SentenceScores {
+  [path: string]: ScoredSentence[];
+}
+
+interface ScoredSentence {
+  range: Range;
+  score: number;
+  text: string;
 }
 
 interface Index {
@@ -48,9 +62,12 @@ interface Posting {
 export const indexState: IndexState = {
   whenIndexedMillis: null,
   index: {},
+
   rank: [],
   scores: {},
   paths: {},
+
+  sentenceScores: {},
 };
 
 const jsonOptions = {
@@ -66,6 +83,15 @@ const jsonOptions = {
   },
 };
 
+interface Sentence {
+  offset: {
+    length: number;
+    start: number;
+  };
+  terms: Term[];
+  text: string;
+}
+
 interface Phrase {
   terms: Term[];
 }
@@ -80,7 +106,7 @@ interface Term {
   tags: string[];
 }
 
-export function isInteresting(key: string): boolean {
+export function isInterestingTerm(key: string): boolean {
   if (key in indexState.scores) {
     return indexState.scores[key] > 5e-8;
   }
@@ -88,7 +114,7 @@ export function isInteresting(key: string): boolean {
   return false;
 }
 
-export function isTop(key: string): boolean {
+export function isTopTerm(key: string): boolean {
   for (let i = 0; i < 3; i += 1) {
     if (i >= indexState.rank.length) {
       return false;
@@ -100,6 +126,10 @@ export function isTop(key: string): boolean {
   }
 
   return false;
+}
+
+export function isInterestingSentence(sentence: ScoredSentence): boolean {
+  return sentence.score > 5e-6;
 }
 
 function addPosting(index: Index, key: string, posting: Posting): void {
@@ -132,12 +162,7 @@ function newPosting(path: Path, start: number, length: number): Posting {
   };
 }
 
-function addToIndex(
-  index: Index,
-  node: Node,
-  path: Path,
-  doc: nlp.Document
-): void {
+function addToIndex(index: Index, path: Path, doc: nlp.Document): void {
   const phrases = doc.terms().json(jsonOptions);
   phrases.forEach((phrase: Phrase) => {
     phrase.terms.forEach((term: Term) => {
@@ -190,7 +215,7 @@ function buildIndex(editor: Editor): Index {
     const [node, path] = ne;
     const doc = nlp(node.text);
 
-    addToIndex(index, node, path, doc);
+    addToIndex(index, path, doc);
   });
 
   return index;
@@ -258,6 +283,88 @@ function buildPaths(index: Index): Paths {
   return paths;
 }
 
+function addToSentenceScores(
+  sentenceScores: SentenceScores,
+  path: Path,
+  sentence: Sentence,
+  scores: Scores
+): void {
+  // Skip scoring the sentence:
+  //   1/ if it's empty or
+  //   2/ if it doesn't end with a completion punctuation.
+  if (sentence.text === '' || sentence.text.match(/^.*[^.!;:]$/)) {
+    return;
+  }
+
+  let score = 0;
+  let count = 0;
+  sentence.terms.forEach((term: Term) => {
+    const { clean } = term;
+    if (clean in scores) {
+      score += scores[clean];
+      count += 1;
+    }
+  });
+  if (count > 0) {
+    score /= count;
+  }
+
+  const scoredSentence = {
+    range: {
+      anchor: {
+        path,
+        offset: sentence.offset.start,
+      },
+      focus: {
+        path,
+        offset: sentence.offset.start + sentence.offset.length,
+      },
+    },
+    score,
+    text: sentence.text,
+  };
+
+  const pathString = path.toString();
+  let forPath: ScoredSentence[] = [];
+  if (pathString in sentenceScores) {
+    forPath = sentenceScores[pathString];
+  }
+
+  forPath.push(scoredSentence);
+  // eslint-disable-next-line no-param-reassign
+  sentenceScores[pathString] = forPath;
+}
+
+function buildSentenceScores(editor: Editor, scores: Scores): SentenceScores {
+  const sentenceScores: SentenceScores = {};
+
+  const textNodes = getAllTextNodes(editor);
+  textNodes.forEach((ne: NodeEntry) => {
+    if (ne == null || ne.length !== 2 || !Text.isText(ne[0])) {
+      return;
+    }
+
+    const [node, path] = ne;
+    const doc = nlp(node.text);
+
+    const sentences = doc.sentences().json(jsonOptions);
+    sentences.forEach((sentence: Sentence) => {
+      addToSentenceScores(sentenceScores, path, sentence, scores);
+    });
+
+    const pathString = path.toString();
+    if (pathString in sentenceScores) {
+      sentenceScores[pathString].sort(
+        (a: ScoredSentence, b: ScoredSentence) => {
+          return b.score - a.score;
+        }
+      );
+    }
+  });
+
+  return sentenceScores;
+}
+
 function refreshIndex(editor: Editor): void {
   const now: Date = new Date();
   if (
@@ -270,9 +377,13 @@ function refreshIndex(editor: Editor): void {
     )
   ) {
     indexState.index = buildIndex(editor);
+
     indexState.rank = buildRank(indexState.index);
     indexState.scores = buildScores(indexState.index);
     indexState.paths = buildPaths(indexState.index);
+
+    indexState.sentenceScores = buildSentenceScores(editor, indexState.scores);
+
     indexState.whenIndexedMillis = Date.now();
   }
 }

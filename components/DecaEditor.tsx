@@ -30,8 +30,7 @@ import CardHandler from 'components/cards/CardContext';
 import Indexer, {
   LocatedKey,
   indexState,
-  isInteresting,
-  isTop,
+  isInterestingSentence,
 } from 'components/intelligence/Indexer';
 import WidgetSidebar from 'components/widgets/WidgetSidebar';
 import WidgetHandler from 'components/widgets/WidgetContext';
@@ -112,24 +111,15 @@ export default function DecaEditor(props: Props): JSX.Element {
         }
       } else {
         const pathString = path.toString();
-        if (pathString in indexState.paths) {
-          indexState.paths[pathString].forEach((key: LocatedKey) => {
-            if (!isTop(key.key) || !isInteresting(key.key)) {
-              return;
+        if (pathString in indexState.sentenceScores) {
+          indexState.sentenceScores[pathString].forEach((sentence) => {
+            if (isInterestingSentence(sentence)) {
+              const range = {
+                ...sentence.range,
+                interestingHighlight: true,
+              };
+              ranges.push(range);
             }
-
-            const range = {
-              anchor: {
-                path,
-                offset: key.start,
-              },
-              focus: {
-                path,
-                offset: key.end,
-              },
-              interestingHighlight: true,
-            };
-            ranges.push(range);
           });
         }
       }

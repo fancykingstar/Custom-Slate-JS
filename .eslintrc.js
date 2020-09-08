@@ -40,7 +40,6 @@ module.exports = {
     'jsx-a11y/accessible-emoji': 'off',
     // https://stackoverflow.com/questions/55807329/why-eslint-throws-no-unused-vars-for-typescript-interface
     "@typescript-eslint/no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars-experimental": "warn"
   },
   settings: {
     react: {
