@@ -292,7 +292,7 @@ function addToSentenceScores(
   // Skip scoring the sentence:
   //   1/ if it's empty or
   //   2/ if it doesn't end with a completion punctuation.
-  if (sentence.text === '' || sentence.text.match(/^.*[^.!;:]$/)) {
+  if (sentence.text === '' || sentence.text.match(/^.*[^.!;:\\?]$/)) {
     return;
   }
 
