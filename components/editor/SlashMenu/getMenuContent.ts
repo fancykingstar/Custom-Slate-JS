@@ -86,20 +86,6 @@ const slashMenuItems: MenuItem[] = [
     keywords: ['complete', 'conclusion', 'end', 'finish'],
   },
   {
-    category: Category.Context,
-    title: ToolName.People,
-    description: 'Who should be involved?',
-    icon: '🧑🏾‍🚀',
-    keywords: ['person', 'team'],
-  },
-  {
-    category: Category.Context,
-    title: ToolName.Data,
-    description: 'What do I know? Need to know?',
-    icon: '💎',
-    keywords: ['fact'],
-  },
-  {
     category: Category.Thinking,
     title: ToolName.Inversion,
     description: 'Flip your point of view',
@@ -114,7 +100,21 @@ const slashMenuItems: MenuItem[] = [
     keywords: ['2nd Order Thinking'],
   },
   {
-    category: Category.Thinking,
+    category: Category.Context,
+    title: ToolName.People,
+    description: 'Who should be involved?',
+    icon: '🧑🏾‍🚀',
+    keywords: ['person', 'team'],
+  },
+  {
+    category: Category.Context,
+    title: ToolName.Data,
+    description: 'What do I know? Need to know?',
+    icon: '💎',
+    keywords: ['fact'],
+  },
+  {
+    category: Category.Context,
     title: ToolName.Emotion,
     description: 'How do you feel?',
     icon: '🎭',
