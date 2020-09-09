@@ -32,7 +32,7 @@
 }
 
 .toggle:hover {
-  background: #edeffe;
+  background: var(--color-bg-gray-blue);
   box-shadow: 0 0.1rem 0.3rem var(--color-bg-gray-tertiary),
     inset 0 0 0 0.1rem var(--color-blue);
   color: var(--color-blue);
@@ -81,7 +81,6 @@
 }
 
 .cardWrapper:hover .card {
-  background-color: #edeffe;
   border-color: var(--color-blue);
   transform: translate3d(0, 0, 0) scale(1.05);
 }
@@ -97,6 +96,10 @@
 
 .card-2 .cardButton {
   transform: translate3d(-6.4rem, 0, 0) rotate(3deg);
+}
+
+.cardButton .cardNew {
+  background-color: var(--color-bg-gray-blue);
 }
 
 .handContent.hovered .card-0 .cardButton {
@@ -208,7 +211,7 @@
 }
 
 .closeButton:hover::before {
-  background-color: #edeffe;
+  background-color: var(--color-bg-gray-blue);
   box-shadow: 0 0.1rem 0.3rem var(--color-bg-gray-tertiary),
     inset 0 0 0 0.1rem var(--color-blue);
   color: var(--color-blue);
@@ -216,7 +219,7 @@
 
 .closeButton:focus::before,
 .closeButton:active::before {
-  background-color: #edeffe;
+  background-color: var(--color-bg-gray-blue);
   box-shadow: 0 0.1rem 0.3rem var(--color-bg-gray-tertiary),
     inset 0 0 0 0.2rem var(--color-blue);
   color: var(--color-blue);

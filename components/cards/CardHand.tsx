@@ -143,7 +143,7 @@ function CardHandContent(props: CardHandContentProps): JSX.Element {
           icon={card.icon}
           title={card.title}
           description={card.description}
-          topPick={card.id === CardId.ToolCategorizer}
+          topPick={card.id === CardId.ToolChoices}
           onClick={() => {
             // setHovered(false);
             cardAction(card.id);
@@ -179,6 +179,8 @@ function Card(props: Props): JSX.Element {
     };
   }, []);
 
+  const [examined, setExamined] = useState(false);
+
   const {
     index,
     className,
@@ -200,8 +202,11 @@ function Card(props: Props): JSX.Element {
         }
 
         closeRef.current = window.setTimeout(() => {
+          if (!examined) {
+            setExamined(true);
+          }
           setCloseVisible(true);
-        }, 500);
+        }, 350);
       }}
       onMouseLeave={() => {
         // Clear any hover timeouts
@@ -236,7 +241,13 @@ function Card(props: Props): JSX.Element {
       </button>
 
       <button type="button" className={styles.cardButton} onClick={onClick}>
-        <div className={[styles.card, className].join(' ')}>
+        <div
+          className={[
+            styles.card,
+            className,
+            examined ? '' : styles.cardNew,
+          ].join(' ')}
+        >
           {topPick ? <div className={styles.topPick}>⭐ Top Pick</div> : null}
           <div className={styles.icon}>{icon}</div>
           <h3>{title}</h3>
