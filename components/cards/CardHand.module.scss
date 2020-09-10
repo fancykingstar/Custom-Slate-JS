@@ -126,14 +126,9 @@
   0% {
     opacity: 100%;
   }
-  25% {
-    opacity: 50%;
-  }
   50% {
-    opacity: 100%;
-  }
-  75% {
     opacity: 50%;
+    background-color: var(--color-bg-gray-blue);
   }
   100% {
     opacity: 100%;
