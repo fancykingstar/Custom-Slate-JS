@@ -16,7 +16,6 @@ export enum SimulationElement {
   Tool = 'simulation',
   Choice = 'simulation-choice',
   Item = 'simulation-item',
-  Legend = 'simulation-legend',
 }
 
 export enum SimulationImportance {
@@ -24,6 +23,33 @@ export enum SimulationImportance {
   Low = 'low',
   Med = 'med',
   High = 'high',
+}
+
+function renderLegend(): JSX.Element {
+  const importances: string[][] = [
+    [SimulationImportance.None, 'Unknown'],
+    [SimulationImportance.Low, 'Low importance'],
+    [SimulationImportance.Med, 'Med importance'],
+    [SimulationImportance.High, 'High importance'],
+  ];
+
+  return (
+    <ul contentEditable={false} className={styles.legend}>
+      {importances.map((importance) => {
+        return (
+          <li key={importance[0]} className={styles.legendItem}>
+            <span
+              className={`${styles.legendDot} ${
+                styles[`importance-${importance[0]}`]
+              }`}
+              contentEditable={false}
+            />
+            {importance[1]}
+          </li>
+        );
+      })}
+    </ul>
+  );
 }
 
 export function SimulationToolElement(props: RenderElementProps): JSX.Element {
@@ -35,6 +61,7 @@ export function SimulationToolElement(props: RenderElementProps): JSX.Element {
       icon={<IconToolSimulation />}
     >
       {children}
+      {renderLegend()}
     </ToolWrapper>
   );
 }
@@ -158,53 +185,6 @@ export function SimulationItemElement(props: RenderElementProps): JSX.Element {
       {isNodeFocused ? (
         <Menu element={element} setImportance={setImportance} />
       ) : null}
-    </ul>
-  );
-}
-
-export function SimulationLegendElement(
-  props: RenderElementProps
-): JSX.Element {
-  const { attributes, children } = props;
-  return (
-    <ul {...attributes} contentEditable={false} className={styles.legend}>
-      {children}
-      <li className={styles.legendItem}>
-        <span
-          className={`${styles.legendDot} ${
-            styles[`role-${SimulationImportance.None}`]
-          }`}
-          contentEditable={false}
-        />
-        Unknown
-      </li>
-      <li className={styles.legendItem}>
-        <span
-          className={`${styles.legendDot} ${
-            styles[`role-${SimulationImportance.Low}`]
-          }`}
-          contentEditable={false}
-        />
-        Low importance
-      </li>
-      <li className={styles.legendItem}>
-        <span
-          className={`${styles.legendDot} ${
-            styles[`role-${SimulationImportance.Med}`]
-          }`}
-          contentEditable={false}
-        />
-        Med importance
-      </li>
-      <li className={styles.legendItem}>
-        <span
-          className={`${styles.legendDot} ${
-            styles[`role-${SimulationImportance.High}`]
-          }`}
-          contentEditable={false}
-        />
-        High importance
-      </li>
     </ul>
   );
 }

@@ -368,24 +368,24 @@ input[type='radio']:checked + .confidenceMenuItem .highCircle {
   width: 1.2rem;
 }
 
-.legendDot.role-high::before {
+.legendDot.confidence-high::before {
   background: var(--color-blue);
   transform: rotate(90deg);
 }
 
-.legendDot.role-med::before {
+.legendDot.confidence-med::before {
   background: var(--color-blue);
   opacity: 60%;
   transform: scale(0.7) rotate(60deg);
 }
 
-.legendDot.role-low::before {
+.legendDot.confidence-low::before {
   background: var(--color-blue);
   opacity: 20%;
   transform: scale(0.4) rotate(30deg);
 }
 
-.legendDot.role-none::before {
+.legendDot.confidence-none::before {
   background: var(--color-white);
   border-color: var(--color-blue);
   transform: scale(0.7);

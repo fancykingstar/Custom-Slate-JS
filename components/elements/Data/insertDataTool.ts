@@ -34,10 +34,6 @@ export default function insertDataTool(editor: Editor): void {
     indent: 0,
     probability: DataConfidence.None,
   });
-  nodes.push({
-    type: DataElement.Legend,
-    children: [],
-  });
 
   let newSelection = paragraphPath;
   newSelection = newSelection.concat([1, 0]);

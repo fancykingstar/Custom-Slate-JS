@@ -16,7 +16,6 @@ export enum PeopleElement {
   Tool = 'people',
   Team = 'people-team',
   Item = 'people-item',
-  Legend = 'people-legend',
 }
 
 export enum PeopleRole {
@@ -24,6 +23,31 @@ export enum PeopleRole {
   Consultant = 'low',
   Approver = 'med',
   Responsible = 'high',
+}
+
+function renderLegend(): JSX.Element {
+  const roles: string[][] = [
+    [PeopleRole.None, 'Unassigned'],
+    [PeopleRole.Consultant, 'Consultant'],
+    [PeopleRole.Approver, 'Approver'],
+    [PeopleRole.Responsible, 'Responsible'],
+  ];
+
+  return (
+    <ul contentEditable={false} className={styles.legend}>
+      {roles.map((role) => {
+        return (
+          <li key={role[0]} className={styles.legendItem}>
+            <span
+              className={`${styles.legendDot} ${styles[`role-${role[0]}`]}`}
+              contentEditable={false}
+            />
+            {role[1]}
+          </li>
+        );
+      })}
+    </ul>
+  );
 }
 
 export function PeopleToolElement(props: RenderElementProps): JSX.Element {
@@ -35,6 +59,7 @@ export function PeopleToolElement(props: RenderElementProps): JSX.Element {
       icon={<IconToolPeople />}
     >
       {children}
+      {renderLegend()}
     </ToolWrapper>
   );
 }
@@ -134,49 +159,6 @@ export function PeopleItemElement(props: RenderElementProps): JSX.Element {
         </InlinePlaceholder>
       </li>
       {isNodeFocused ? <Menu element={element} setRole={setRole} /> : null}
-    </ul>
-  );
-}
-
-export function PeopleLegendElement(props: RenderElementProps): JSX.Element {
-  const { attributes, children } = props;
-  return (
-    <ul {...attributes} contentEditable={false} className={styles.legend}>
-      {children}
-      <li className={styles.legendItem}>
-        <span
-          className={`${styles.legendDot} ${styles[`role-${PeopleRole.None}`]}`}
-          contentEditable={false}
-        />
-        Unassigned
-      </li>
-      <li className={styles.legendItem}>
-        <span
-          className={`${styles.legendDot} ${
-            styles[`role-${PeopleRole.Consultant}`]
-          }`}
-          contentEditable={false}
-        />
-        Consultant
-      </li>
-      <li className={styles.legendItem}>
-        <span
-          className={`${styles.legendDot} ${
-            styles[`role-${PeopleRole.Approver}`]
-          }`}
-          contentEditable={false}
-        />
-        Approver
-      </li>
-      <li className={styles.legendItem}>
-        <span
-          className={`${styles.legendDot} ${
-            styles[`role-${PeopleRole.Responsible}`]
-          }`}
-          contentEditable={false}
-        />
-        Responsible
-      </li>
     </ul>
   );
 }

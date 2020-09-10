@@ -311,12 +311,11 @@ const withPeopleElement = (editor: ReactEditor): ReactEditor => {
 
       let modifiedChildren = false;
 
-      // Rule: Tool can only have choice, item, and legend children
+      // Rule: Tool can only have choice, item children
       children.forEach((childNode, index) => {
         if (
           childNode.type !== PeopleElement.Team &&
-          childNode.type !== PeopleElement.Item &&
-          childNode.type !== PeopleElement.Legend
+          childNode.type !== PeopleElement.Item
         ) {
           if (Editor.isBlock(editor, childNode)) {
             Transforms.setNodes(

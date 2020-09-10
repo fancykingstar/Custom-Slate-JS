@@ -34,10 +34,6 @@ export default function insertPeopleTool(editor: Editor): void {
     indent: 0,
     probability: PeopleRole.None,
   });
-  nodes.push({
-    type: PeopleElement.Legend,
-    children: [],
-  });
 
   let newSelection = paragraphPath;
   newSelection = newSelection.concat([1, 0]);

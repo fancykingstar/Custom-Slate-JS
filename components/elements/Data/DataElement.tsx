@@ -16,7 +16,6 @@ export enum DataElement {
   Tool = 'data',
   Category = 'data-category',
   Item = 'data-item',
-  Legend = 'data-legend',
 }
 
 export enum DataConfidence {
@@ -26,11 +25,39 @@ export enum DataConfidence {
   High = 'high',
 }
 
+function renderLegend(): JSX.Element {
+  const confidences: string[][] = [
+    [DataConfidence.None, 'Need to know'],
+    [DataConfidence.Low, 'Low confidence'],
+    [DataConfidence.Med, 'Med confidence'],
+    [DataConfidence.High, 'High confidence'],
+  ];
+
+  return (
+    <ul contentEditable={false} className={styles.legend}>
+      {confidences.map((confidence) => {
+        return (
+          <li key={confidence[0]} className={styles.legendItem}>
+            <span
+              className={`${styles.legendDot} ${
+                styles[`confidence-${confidence[0]}`]
+              }`}
+              contentEditable={false}
+            />
+            {confidence[1]}
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
 export function DataToolElement(props: RenderElementProps): JSX.Element {
   const { attributes, children } = props;
   return (
     <ToolWrapper attributes={attributes} name="Data" icon={<IconToolData />}>
       {children}
+      {renderLegend()}
     </ToolWrapper>
   );
 }
@@ -132,51 +159,6 @@ export function DataItemElement(props: RenderElementProps): JSX.Element {
       {isNodeFocused ? (
         <Menu element={element} setConfidence={setConfidence} />
       ) : null}
-    </ul>
-  );
-}
-
-export function DataLegendElement(props: RenderElementProps): JSX.Element {
-  const { attributes, children } = props;
-  return (
-    <ul {...attributes} contentEditable={false} className={styles.legend}>
-      {children}
-      <li className={styles.legendItem}>
-        <span
-          className={`${styles.legendDot} ${
-            styles[`role-${DataConfidence.None}`]
-          }`}
-          contentEditable={false}
-        />
-        Need to know
-      </li>
-      <li className={styles.legendItem}>
-        <span
-          className={`${styles.legendDot} ${
-            styles[`role-${DataConfidence.Low}`]
-          }`}
-          contentEditable={false}
-        />
-        Low confidence
-      </li>
-      <li className={styles.legendItem}>
-        <span
-          className={`${styles.legendDot} ${
-            styles[`role-${DataConfidence.Med}`]
-          }`}
-          contentEditable={false}
-        />
-        Med confidence
-      </li>
-      <li className={styles.legendItem}>
-        <span
-          className={`${styles.legendDot} ${
-            styles[`role-${DataConfidence.High}`]
-          }`}
-          contentEditable={false}
-        />
-        High confidence
-      </li>
     </ul>
   );
 }

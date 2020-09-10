@@ -315,8 +315,7 @@ const withDataElement = (editor: ReactEditor): ReactEditor => {
       children.forEach((childNode, index) => {
         if (
           childNode.type !== DataElement.Category &&
-          childNode.type !== DataElement.Item &&
-          childNode.type !== DataElement.Legend
+          childNode.type !== DataElement.Item
         ) {
           if (Editor.isBlock(editor, childNode)) {
             Transforms.setNodes(

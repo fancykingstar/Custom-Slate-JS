@@ -316,8 +316,7 @@ const withSimulationElement = (editor: ReactEditor): ReactEditor => {
       children.forEach((childNode, index) => {
         if (
           childNode.type !== SimulationElement.Choice &&
-          childNode.type !== SimulationElement.Item &&
-          childNode.type !== SimulationElement.Legend
+          childNode.type !== SimulationElement.Item
         ) {
           if (Editor.isBlock(editor, childNode)) {
             Transforms.setNodes(

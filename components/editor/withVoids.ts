@@ -2,7 +2,6 @@ import { ReactEditor } from 'slate-react';
 import { CategorizerElement } from 'components/elements/Categorizer/CategorizerElement';
 import { ConclusionElement } from 'components/elements/Conclusion/ConclusionElement';
 import { EmotionElement } from 'components/elements/Emotion/EmotionElement';
-import { PeopleElement } from 'components/elements/People/PeopleElement';
 
 const withVoids = (editor: ReactEditor): ReactEditor => {
   const { isVoid } = editor;
@@ -11,8 +10,7 @@ const withVoids = (editor: ReactEditor): ReactEditor => {
   editor.isVoid = (element) => {
     return element.type === CategorizerElement.Wrapper ||
       element.type === ConclusionElement.Choices ||
-      element.type === EmotionElement.Wrapper ||
-      element.type === PeopleElement.Legend
+      element.type === EmotionElement.Wrapper
       ? true
       : isVoid(element);
   };
