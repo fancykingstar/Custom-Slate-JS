@@ -139,11 +139,11 @@ function CardHandContent(props: CardHandContentProps): JSX.Element {
       {cards.map((card, index) => (
         <Card
           key={card.id}
+          id={card.id}
           index={index}
           icon={card.icon}
           title={card.title}
           description={card.description}
-          topPick={card.id === CardId.ToolChoices}
           onClick={() => {
             // setHovered(false);
             cardAction(card.id);
@@ -156,12 +156,12 @@ function CardHandContent(props: CardHandContentProps): JSX.Element {
 }
 
 interface Props {
+  id: CardId;
   index: number;
   className?: string;
   icon: React.ReactNode;
   title: string;
   description: string;
-  topPick?: boolean;
   onClick: () => void;
   dismiss: () => void;
 }
@@ -179,13 +179,15 @@ function Card(props: Props): JSX.Element {
     };
   }, []);
 
+  const [examined, setExamined] = useState(false);
+
   const {
+    id,
     index,
     className,
     icon,
     title,
     description,
-    topPick,
     onClick,
     dismiss,
   } = props;
@@ -200,6 +202,9 @@ function Card(props: Props): JSX.Element {
         }
 
         closeRef.current = window.setTimeout(() => {
+          if (!examined) {
+            setExamined(true);
+          }
           setCloseVisible(true);
         }, 350);
       }}
@@ -236,8 +241,8 @@ function Card(props: Props): JSX.Element {
       </button>
 
       <button type="button" className={styles.cardButton} onClick={onClick}>
-        <div className={[styles.card, className].join(' ')}>
-          {topPick ? <div className={styles.topPick}>⭐ Top Pick</div> : null}
+        <div key={id} className={[styles.card, className].join(' ')}>
+          {!examined ? <div className={styles.cardNew}>🌱 New</div> : null}
           <div className={styles.icon}>{icon}</div>
           <h3>{title}</h3>
           <p>{description}</p>

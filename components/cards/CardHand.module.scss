@@ -107,8 +107,8 @@
 }
 
 .card {
-  animation: flashIn 1s ease none;
-  animation-delay: 500ms;
+  animation: flashIn 750ms ease none;
+  animationDelay: 250ms;
   background: url(/img/card-dot-grid.svg) no-repeat var(--color-white);
   background-position: center bottom 0.8rem;
   border: solid 0.1rem var(--color-bg-gray-secondary);
@@ -124,14 +124,17 @@
 
 @keyframes flashIn {
   0% {
-    opacity: 100%;
+  }
+  25% {
+    background-color: var(--color-bg-gray-blue);
   }
   50% {
-    opacity: 50%;
+    background-color: var(--color-white);
+  }
+  75% {
     background-color: var(--color-bg-gray-blue);
   }
   100% {
-    opacity: 100%;
   }
 }
 
@@ -158,7 +161,7 @@
   margin: 0.4rem 0 0;
 }
 
-.topPick {
+.cardNew {
   align-items: center;
   background: var(--color-white);
   border: solid 0.1rem var(--color-bg-gray-tertiary);
