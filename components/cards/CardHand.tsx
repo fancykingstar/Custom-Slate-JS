@@ -179,8 +179,6 @@ function Card(props: Props): JSX.Element {
     };
   }, []);
 
-  const [examined, setExamined] = useState(false);
-
   const {
     index,
     className,
@@ -202,9 +200,6 @@ function Card(props: Props): JSX.Element {
         }
 
         closeRef.current = window.setTimeout(() => {
-          if (!examined) {
-            setExamined(true);
-          }
           setCloseVisible(true);
         }, 350);
       }}
@@ -241,13 +236,7 @@ function Card(props: Props): JSX.Element {
       </button>
 
       <button type="button" className={styles.cardButton} onClick={onClick}>
-        <div
-          className={[
-            styles.card,
-            className,
-            examined ? '' : styles.cardNew,
-          ].join(' ')}
-        >
+        <div className={[styles.card, className].join(' ')}>
           {topPick ? <div className={styles.topPick}>⭐ Top Pick</div> : null}
           <div className={styles.icon}>{icon}</div>
           <h3>{title}</h3>

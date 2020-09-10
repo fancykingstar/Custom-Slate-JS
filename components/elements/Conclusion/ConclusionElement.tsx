@@ -71,7 +71,7 @@ export function ConclusionChoicesElement(
 
   return (
     <div {...attributes} className={styles.choices}>
-      <ul className={styles.list}>
+      <ul contentEditable={false} className={styles.list}>
         {choiceTitles.map((title, i) => {
           return (
             <li

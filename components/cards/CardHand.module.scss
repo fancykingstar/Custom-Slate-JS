@@ -14,7 +14,7 @@
   background: var(--color-white);
   border: none;
   border-radius: 0.8rem;
-  bottom: 5%;
+  bottom: 0.8rem;
   box-shadow: 0 0.1rem 0.3rem var(--color-bg-gray-tertiary),
     inset 0 0 0 0.1rem var(--color-bg-gray-secondary);
   color: var(--color-fg-gray-primary);
@@ -26,7 +26,7 @@
   padding: 0.6rem 0.8rem;
   pointer-events: all;
   position: fixed;
-  right: 10%;
+  right: 0.8rem;
   width: 3.2rem;
   z-index: 10;
 }
@@ -81,6 +81,7 @@
 }
 
 .cardWrapper:hover .card {
+  background-color: var(--color-bg-gray-blue);
   border-color: var(--color-blue);
   transform: translate3d(0, 0, 0) scale(1.05);
 }
@@ -98,10 +99,6 @@
   transform: translate3d(-6.4rem, 0, 0) rotate(3deg);
 }
 
-.cardButton .cardNew {
-  background-color: var(--color-bg-gray-blue);
-}
-
 .handContent.hovered .card-0 .cardButton {
   transform: translate3d(0, 0, 0);
 }
@@ -110,6 +107,8 @@
 }
 
 .card {
+  animation: flashIn 1s ease none;
+  animation-delay: 500ms;
   background: url(/img/card-dot-grid.svg) no-repeat var(--color-white);
   background-position: center bottom 0.8rem;
   border: solid 0.1rem var(--color-bg-gray-secondary);
@@ -121,6 +120,24 @@
   height: 18.4rem;
   padding: 1.6rem 1.2rem 3.2rem;
   width: 16rem;
+}
+
+@keyframes flashIn {
+  0% {
+    opacity: 100%;
+  }
+  25% {
+    opacity: 50%;
+  }
+  50% {
+    opacity: 100%;
+  }
+  75% {
+    opacity: 50%;
+  }
+  100% {
+    opacity: 100%;
+  }
 }
 
 .icon {
