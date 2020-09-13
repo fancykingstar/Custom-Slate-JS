@@ -30,19 +30,29 @@
 
 .logo {
   align-items: center;
-  color: var(--color-black);
+  cursor: default;
   display: flex;
-  font-family: var(--font-serif);
+  flex-direction: row;
+  justify-content: center;
+  margin: 0 0 0 3.6rem;
+}
+
+.symbol {
+  color: var(--color-black);
+  cursor: default;
+  font-family: var(--font-symbol);
   font-size: 2.4rem;
-  font-weight: 700;
   line-height: 2.4rem;
-  letter-spacing: -0.04em;
-  margin-left: 1.2rem;
   text-decoration: none;
 }
 
-.logo:hover {
-  text-decoration: underline;
+.wordmark {
+  color: var(--color-black);
+  font-family: var(--font-wordmark);
+  font-size: 1.6rem;
+  line-height: 1.6rem;
+  letter-spacing: -0.04em;
+  margin: 0.6rem 0 0 0.8rem;
 }
 
 .categoryPill {

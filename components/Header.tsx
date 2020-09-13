@@ -9,9 +9,10 @@ export default function Header(): JSX.Element {
     <header className={styles.header}>
       <div className={styles.left}>
         <SidebarToggle />
-        <Link href="/">
-          <a className={styles.logo}>Deca</a>
-        </Link>
+        <div className={styles.logo}>
+          <span className={styles.symbol}>D</span>
+          <span className={styles.wordmark}>Deca</span>
+        </div>
       </div>
       <div className={styles.right}>
         <Category />
