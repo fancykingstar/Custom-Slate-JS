@@ -2771,10 +2771,10 @@ compose-function@3.0.3:
   dependencies:
     arity-n "^1.0.4"
 
-compromise-sentences@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/compromise-sentences/-/compromise-sentences-0.0.6.tgz#efc44b22a49654ed63b2b22f5505fae97fcbc83e"
-  integrity sha512-6/KMNKdgXOx0eukEeII1tXt9MhtqPDy0AWGGH87QzpDaXSMijbboqdcUgjtByGYiVvmfihAeChNYXQCGjHfFVA==
+compromise-sentences@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/compromise-sentences/-/compromise-sentences-0.1.0.tgz#bb95ab06e05d5783ec8daed67735a171f7de47f7"
+  integrity sha512-oKJBPncGoiWQnjyS0DdUWEJTAZpLzlMoHYp7mn2mcJ861/cW+DXtCbUusKYD20S2ipwGUMJgRGRNi3ccYEwRhg==
 
 compromise@^13.3.2:
   version "13.3.2"
