@@ -24,6 +24,7 @@ export enum Action {
   setActiveDocId = 'setActiveDocId',
   setDoc = 'setDoc',
   createNewDoc = 'createNewDoc',
+  setShowStarBar = 'showStarBar',
 }
 
 type ActionType =
@@ -38,12 +39,14 @@ type ActionType =
     }
   | {
       type: Action.createNewDoc;
-    };
+    }
+  | { type: Action.setShowStarBar; showStarBar: boolean };
 
 export interface State {
   sidebarVisible: boolean;
   activeDocId: string | null;
   docs: Doc[];
+  showStarBar: boolean;
 }
 
 export function reducer(state: State, action: ActionType): State {
@@ -113,6 +116,12 @@ export function reducer(state: State, action: ActionType): State {
             status: DocStatus.Incomplete,
           },
         ],
+      };
+      break;
+    case Action.setShowStarBar:
+      newState = {
+        ...newState,
+        showStarBar: action.showStarBar,
       };
       break;
     default:

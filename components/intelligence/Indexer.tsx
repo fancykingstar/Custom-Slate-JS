@@ -203,10 +203,9 @@ function addToIndex(index: Index, path: Path, doc: nlp.Document): void {
   });
 }
 
-function buildIndex(editor: Editor): Index {
+function buildIndex(textNodes: NodeEntry<Node>[]): Index {
   const index: Index = {};
 
-  const textNodes = getAllTextNodes(editor);
   textNodes.forEach((ne: NodeEntry) => {
     if (ne == null || ne.length !== 2 || !Text.isText(ne[0])) {
       return;
@@ -335,10 +334,12 @@ function addToSentenceScores(
   sentenceScores[pathString] = forPath;
 }
 
-function buildSentenceScores(editor: Editor, scores: Scores): SentenceScores {
+function buildSentenceScores(
+  textNodes: NodeEntry<Node>[],
+  scores: Scores
+): SentenceScores {
   const sentenceScores: SentenceScores = {};
 
-  const textNodes = getAllTextNodes(editor);
   textNodes.forEach((ne: NodeEntry) => {
     if (ne == null || ne.length !== 2 || !Text.isText(ne[0])) {
       return;
@@ -365,7 +366,7 @@ function buildSentenceScores(editor: Editor, scores: Scores): SentenceScores {
   return sentenceScores;
 }
 
-function refreshIndex(editor: Editor): void {
+function refreshIndex(textNodes: NodeEntry<Node>[]): void {
   const now: Date = new Date();
   if (
     indexState.whenIndexedMillis == null ||
@@ -376,13 +377,16 @@ function refreshIndex(editor: Editor): void {
       })
     )
   ) {
-    indexState.index = buildIndex(editor);
+    indexState.index = buildIndex(textNodes);
 
     indexState.rank = buildRank(indexState.index);
     indexState.scores = buildScores(indexState.index);
     indexState.paths = buildPaths(indexState.index);
 
-    indexState.sentenceScores = buildSentenceScores(editor, indexState.scores);
+    indexState.sentenceScores = buildSentenceScores(
+      textNodes,
+      indexState.scores
+    );
 
     indexState.whenIndexedMillis = Date.now();
   }
@@ -392,7 +396,8 @@ export default function Indexer(): JSX.Element | null {
   const editor = useEditor();
 
   useEffect(() => {
-    refreshIndex(editor);
+    const textNodes: NodeEntry<Node>[] = getAllTextNodes(editor);
+    refreshIndex(textNodes);
   });
 
   return null;

@@ -17,6 +17,7 @@ export default function Home(): JSX.Element {
     sidebarVisible: false,
     activeDocId: null,
     docs: [],
+    showStarBar: false,
   });
   // Memoize reducer to avoid unnecessary re-renders
   const value = useMemo(() => ({ state, dispatch }), [state]);

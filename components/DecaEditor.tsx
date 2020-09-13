@@ -34,6 +34,7 @@ import Indexer, {
 } from 'components/intelligence/Indexer';
 import WidgetSidebar from 'components/widgets/WidgetSidebar';
 import WidgetHandler from 'components/widgets/WidgetContext';
+import StarBar from 'components/elements/Star/StarBar';
 
 import styles from './DecaEditor.module.scss';
 
@@ -116,7 +117,7 @@ export default function DecaEditor(props: Props): JSX.Element {
             if (isInterestingSentence(sentence)) {
               const range = {
                 ...sentence.range,
-                interestingHighlight: true,
+                suggestedStar: true,
               };
               ranges.push(range);
             }
@@ -227,6 +228,7 @@ export default function DecaEditor(props: Props): JSX.Element {
             </CardHandler>
           </WidgetHandler>
           <Indexer />
+          <StarBar />
         </Slate>
       </div>
     </AssistantContext.Provider>
