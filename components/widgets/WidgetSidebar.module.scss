@@ -11,7 +11,7 @@
   background: url(/img/close.svg) no-repeat var(--color-white);
   background-position: center;
   border: none;
-  border-radius: 50%;
+  border-radius: var(--deca-border-radius);
   box-shadow: 0 0.1rem 0.3rem rgba(16, 17, 25, 0.08),
     0 0.1rem 1rem rgba(16, 17, 25, 0.04),
     inset 0 0 0 0.1rem var(--color-bg-gray-secondary);
@@ -51,7 +51,7 @@
 .timerWrapper {
   background: var(--color-white);
   border: solid 0.1rem var(--color-bg-gray-secondary);
-  border-radius: 1.6rem;
+  border-radius: var(--deca-border-radius);
   box-shadow: 0 0.1rem 0.3rem rgba(16, 17, 25, 0.08),
     0 0.1rem 1rem rgba(16, 17, 25, 0.04);
   display: flex;

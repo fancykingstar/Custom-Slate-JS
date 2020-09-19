@@ -44,7 +44,7 @@
 
 .assistant {
   background: #edeffe;
-  border-radius: 1rem;
+  border-radius: var(--deca-border-radius);
   box-shadow: 0 0.1rem 1rem var(--color-shadow-large),
     0 0.1rem 0.3rem var(--color-shadow-small),
     inset 0 0 0 0.2rem var(--color-blue);
@@ -65,7 +65,7 @@
 
 .list {
   background: var(--color-white);
-  border-radius: 1rem;
+  border-radius: var(--deca-border-radius);
   box-shadow: 0 0.1rem 1rem var(--color-shadow-large),
     0 0.1rem 0.3rem var(--color-shadow-small),
     inset 0 0 0 0.1rem var(--color-bg-gray-secondary);
@@ -99,7 +99,7 @@
   height: 0.6rem;
   background-color: var(--color-blue);
 
-  border-radius: 50%;
+  border-radius: var(--deca-border-radius);
   margin: 0 0.2rem;
   -webkit-animation: sk-bouncedelay 2000ms infinite ease-in-out both;
   animation: sk-bouncedelay 2000ms infinite ease-in-out both;
@@ -170,7 +170,7 @@
 }
 
 .assistantItem .item {
-  border-radius: 0 0 0.8rem 0.8rem;
+  border-radius: 0 0 var(--deca-border-radius) var(--deca-border-radius);
   padding: 0.1rem 3.2rem 0.3rem 1.2rem;
 }
 
@@ -223,7 +223,7 @@
   align-items: center;
   background: none;
   border: none;
-  border-radius: 0.6rem;
+  border-radius: var(--deca-border-radius);
   cursor: pointer;
   display: flex;
   height: 4.4rem;
@@ -234,11 +234,11 @@
 }
 
 .menu > .listItem:last-child .item {
-  border-radius: 0.6rem 0.6rem 0.8rem 0.8rem;
+  border-radius: var(--deca-border-radius) var(--deca-border-radius) var(--deca-border-radius) var(--deca-border-radius);
 }
 
 .menu > .listItem:only-child .item {
-  border-radius: 0.8rem;
+  border-radius: var(--deca-border-radius);
 }
 
 .item.active {
@@ -249,7 +249,7 @@
 .item.active::after {
   align-items: center;
   border: solid 0.1rem rgba(255, 255, 255, 0.32);
-  border-radius: 0.4rem;
+  border-radius: var(--deca-border-radius);
   content: '⏎';
   display: flex;
   font-size: 1.1rem;

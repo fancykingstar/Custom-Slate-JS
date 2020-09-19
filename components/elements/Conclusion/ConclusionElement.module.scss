@@ -30,7 +30,7 @@
 .item::before {
   align-items: center;
   background: var(--color-choice);
-  border-radius: 50%;
+  border-radius: var(--deca-border-radius);
   color: var(--color-white);
   content: counter(number, upper-alpha);
   display: flex;

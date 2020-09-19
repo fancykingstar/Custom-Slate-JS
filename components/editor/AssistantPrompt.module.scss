@@ -1,6 +1,6 @@
 .kbd {
   align-items: center;
-  border-radius: 0.4rem;
+  border-radius: var(--deca-border-radius);
   box-shadow: 0 0.1rem 0.3rem var(--color-shadow-large),
     0 0.3rem 1rem transparent, inset 0 0 0 0.1rem var(--color-bg-gray-tertiary);
   color: var(--color-fg-gray-primary);

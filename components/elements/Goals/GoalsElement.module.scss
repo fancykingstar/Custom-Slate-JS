@@ -15,7 +15,7 @@
 .item::before {
   align-items: center;
   box-shadow: 0 0 0 0.133rem var(--color-bg-gray-secondary);
-  border-radius: 0.2rem;
+  border-radius: var(--deca-border-radius);
   content: '';
   display: flex;
   height: 1.6rem;

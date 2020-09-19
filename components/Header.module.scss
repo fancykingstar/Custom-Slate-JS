@@ -41,35 +41,36 @@
   color: var(--color-black);
   cursor: default;
   font-family: var(--font-symbol);
-  font-size: 2.4rem;
-  line-height: 2.4rem;
+  font-size: 2.8rem;
+  line-height: 2.8rem;
   text-decoration: none;
 }
 
 .wordmark {
   color: var(--color-black);
   font-family: var(--font-wordmark);
-  font-size: 1.6rem;
-  line-height: 1.6rem;
+  font-size: 2rem;
+  line-height: 2rem;
   letter-spacing: -0.04em;
-  margin: 0.6rem 0 0 0.8rem;
+  margin: 0.8rem 0 0 1rem;
 }
 
 .categoryPill {
   align-items: center;
+  color: var(--color-fg-gray-primary);
   display: flex;
   font-size: 1.3rem;
   font-weight: 500;
+  line-height: 1.8rem;
   height: 3.2rem;
   padding: 0.8rem 1.4rem;
   position: relative;
 }
 
 .categoryPill::before {
-  border-style: solid;
-  border-width: 1.6rem;
-  border-image: url(/img/dot-border-pill.svg) repeat;
-  border-image-slice: 16;
+  border-radius: var(--deca-border-radius);
+  box-shadow: 0 0.1rem 0.3rem var(--color-shadow-large),
+    0 0.3rem 1rem transparent, inset 0 0 0 0.1rem var(--color-bg-gray-secondary);
   content: '';
   display: block;
   height: 100%;

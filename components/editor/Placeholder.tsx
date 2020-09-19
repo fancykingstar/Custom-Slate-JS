@@ -94,7 +94,7 @@ export default function Placeholder(): JSX.Element {
         }}
         contentEditable={false}
       >
-        Use a card below ⬇️ or start writing…
+        Start writing or use a card below ⬇️
       </div>
     </>
   );

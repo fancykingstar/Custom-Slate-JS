@@ -28,7 +28,7 @@
 }
 
 .itemContent {
-  border-radius: 0.6rem;
+  border-radius: var(--deca-border-radius);
   font-size: 1.6rem;
   line-height: 2.4rem;
   overflow: hidden;
@@ -144,7 +144,7 @@
   align-items: center;
   background: var(--color-white-overlay);
   backdrop-filter: blur(0.4rem);
-  border-radius: 0.6rem;
+  border-radius: var(--deca-border-radius);
   box-shadow: 0 0.1rem 1rem var(--color-shadow-large),
     0 0.1rem 0.3rem var(--color-shadow-small),
     0 0 0 0.1rem var(--color-bg-gray-secondary);
@@ -290,7 +290,7 @@ input[type='radio']:checked + .importanceMenuItem .highCircle {
 .tooltip {
   background: var(--color-black-overlay);
   backdrop-filter: blur(1rem);
-  border-radius: 0.4rem;
+  border-radius: var(--deca-border-radius);
   bottom: -100%;
   color: var(--color-white);
   display: none;
@@ -333,7 +333,7 @@ input[type='radio']:checked + .importanceMenuItem .highCircle {
 }
 
 .legendItem {
-  border-radius: 0.6rem;
+  border-radius: var(--deca-border-radius);
   color: var(--color-bg-gray-primary);
   font-size: 1.2rem;
   overflow: hidden;
