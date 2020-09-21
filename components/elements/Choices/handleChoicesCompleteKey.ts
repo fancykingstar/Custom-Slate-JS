@@ -53,7 +53,7 @@ export default function handleChoicesCompleteKey(
       const trimmedChoice = choice.trim();
       Transforms.setNodes(
         editor,
-        { text: '', author: Author.Deca },
+        { text: '', author: Author.Deca, original: trimmedChoice },
         { at: path }
       );
       Transforms.insertText(editor, trimmedChoice, { at: path });

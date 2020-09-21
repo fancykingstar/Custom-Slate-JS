@@ -23,12 +23,6 @@
     inset 0 0 0 0.2rem var(--color-bg-gray-tertiary);
 }
 
-.suggestedStar:hover {
-  box-shadow: 0 0.1rem 1rem var(--color-shadow-large),
-    0 0.1rem 0.3rem var(--color-shadow-small),
-    inset 0 0 0 0.2rem var(--color-bg-gray-secondary);
-}
-
 .generated {
   background: var(--color-bg-gray-tertiary);
   border-radius: var(--deca-border-radius);

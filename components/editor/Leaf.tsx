@@ -21,14 +21,16 @@ export default function Leaf(props: RenderLeafProps): JSX.Element {
     className = styles.suggestedStar;
   } else if (leaf.author && leaf.author === Author.Deca) {
     const original = leaf.original as string;
-    const distance = levenshtein.get(leaf.text, original);
-    if (original.length && distance / original.length <= 0.5) {
-      magicSymbol = (
-        <span className={styles.zap} contentEditable={false}>
-          <Zap />
-        </span>
-      );
-      className = styles.generated;
+    if (leaf.text && original) {
+      const distance = levenshtein.get(leaf.text, original);
+      if (original.length && distance / original.length <= 0.5) {
+        magicSymbol = (
+          <span className={styles.zap} contentEditable={false}>
+            <Zap />
+          </span>
+        );
+        className = styles.generated;
+      }
     }
   }
 
