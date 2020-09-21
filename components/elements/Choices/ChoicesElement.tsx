@@ -1,8 +1,10 @@
 import { RenderElementProps, useEditor, ReactEditor } from 'slate-react';
+import { Path } from 'slate';
+
 import ToolWrapper from 'components/editor/ToolWrapper';
 import { IconToolChoices } from 'components/icons/IconTool';
 import InlinePlaceholder from 'components/editor/InlinePlaceholder';
-import { Path } from 'slate';
+
 import styles from './ChoicesElement.module.scss';
 
 export enum ChoicesElement {
@@ -13,6 +15,7 @@ export enum ChoicesElement {
 
 export function ChoicesWrapperElement(props: RenderElementProps): JSX.Element {
   const { attributes, children } = props;
+
   return (
     <ToolWrapper
       attributes={attributes}

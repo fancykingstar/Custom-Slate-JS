@@ -62,7 +62,7 @@ import styles from './Element.module.scss';
  * Elements that users should not be able to manually add.
  */
 export enum ReservedElement {
-  Title = 'h1',
+  Title = 'title',
 }
 
 export enum BasicElement {

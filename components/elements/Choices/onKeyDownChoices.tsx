@@ -1,8 +1,9 @@
 import { Editor } from 'slate';
 import { isKeyHotkey } from 'is-hotkey';
 import Keys from 'components/editor/keys';
-import handleChoicesEnterKey from 'components/elements/Choices/handleChoicesEnterKey';
 import handleChoicesBackspaceKey from 'components/elements/Choices/handleChoicesBackspaceKey';
+import handleChoicesCompleteKey from 'components/elements/Choices/handleChoicesCompleteKey';
+import handleChoicesEnterKey from 'components/elements/Choices/handleChoicesEnterKey';
 import handleChoicesTabKey from 'components/elements/Choices/handleChoicesTabKey';
 
 export default function onKeyDownChoices(
@@ -19,6 +20,10 @@ export default function onKeyDownChoices(
 
   if (isKeyHotkey(Keys.Backspace, event)) {
     return handleChoicesBackspaceKey(editor, event);
+  }
+
+  if (isKeyHotkey('mod+space', event)) {
+    return handleChoicesCompleteKey(editor, event);
   }
 
   return false;

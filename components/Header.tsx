@@ -30,7 +30,7 @@ function Category(): JSX.Element | null {
 
   return (
     <div className={`${styles.categoryPill} ${styles[decisionCategory]}`}>
-      <span>{`${decisionCategory} decision`}</span>
+      <span>{`${decisionCategory}`}</span>
     </div>
   );
 }

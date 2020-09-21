@@ -11,6 +11,8 @@ import {
   Text,
 } from 'slate';
 
+import { ReservedElement } from 'components/elements/Element';
+
 /**
  * Returns nodes of the requested type at the current selection.
  */
@@ -33,6 +35,48 @@ export function getNodesWithType(
     at: newSelection,
   });
   return Array.from(nodes);
+}
+
+/**
+ * Returns all nodes of the requested type.
+ */
+export function getAllNodesWithType(
+  editor: Editor,
+  type: string
+): NodeEntry<Node>[] {
+  return Array.from(
+    Editor.nodes(editor, {
+      at: [],
+      match: (n: Node) => n.type === type,
+    })
+  );
+}
+
+/**
+ * Returns title string.
+ */
+export function getTitle(editor: Editor): string {
+  const entries: NodeEntry<Node>[] = Array.from(
+    Editor.nodes(editor, {
+      at: [],
+      match: (n: Node) => n.type === ReservedElement.Title,
+    })
+  );
+
+  if (!entries.length) {
+    return '';
+  }
+
+  const [node] = entries[0];
+  if (
+    !Element.isElement(node) ||
+    !node.children.length ||
+    !Text.isText(node.children[0])
+  ) {
+    return '';
+  }
+
+  return node.children[0].text;
 }
 
 /**
