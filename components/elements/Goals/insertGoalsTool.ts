@@ -1,5 +1,5 @@
 import { Editor, Transforms } from 'slate';
-import { GoalsElement } from 'components/elements/Goals/GoalsElement';
+import { GoalsElementType } from 'components/elements/Goals/GoalsElementType';
 
 /**
  * Converts the node at the current selection into a Choice tool.
@@ -19,11 +19,11 @@ export default function insertGoalsTool(editor: Editor): void {
   Transforms.delete(editor);
 
   Transforms.setNodes(editor, {
-    type: GoalsElement.ItemTitle,
+    type: GoalsElementType.ItemTitle,
   });
 
   Transforms.wrapNodes(editor, {
-    type: GoalsElement.Item,
+    type: GoalsElementType.Item,
     children: [],
   });
 
@@ -31,7 +31,7 @@ export default function insertGoalsTool(editor: Editor): void {
     editor,
     {
       timestamp: Date.now(),
-      type: GoalsElement.Wrapper,
+      type: GoalsElementType.Wrapper,
       children: [],
     },
     {

@@ -28,11 +28,11 @@ import {
   EmotionWrapperElement,
 } from 'components/elements/Emotion/EmotionElement';
 import {
-  GoalsElement,
   GoalsWrapperElement,
   GoalsItemElement,
   GoalsItemTitleElement,
 } from 'components/elements/Goals/GoalsElement';
+import { GoalsElementType } from 'components/elements/Goals/GoalsElementType';
 import {
   InversionElement,
   InversionWrapperElement,
@@ -123,11 +123,11 @@ export default function Element(props: RenderElementProps): JSX.Element {
       return <DataItemElement {...props} />;
     case EmotionElement.Wrapper:
       return <EmotionWrapperElement {...props} />;
-    case GoalsElement.Wrapper:
+    case GoalsElementType.Wrapper:
       return <GoalsWrapperElement {...props} />;
-    case GoalsElement.Item:
+    case GoalsElementType.Item:
       return <GoalsItemElement {...props} />;
-    case GoalsElement.ItemTitle:
+    case GoalsElementType.ItemTitle:
       return <GoalsItemTitleElement {...props} />;
     case InversionElement.Wrapper:
       return <InversionWrapperElement {...props} />;

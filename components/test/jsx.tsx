@@ -4,7 +4,7 @@ import { ReservedElement } from 'components/elements/ReservedElement';
 import { ChoicesType } from 'components/elements/Choices/ChoicesType';
 import { DataElement } from 'components/elements/Data/DataElement';
 import { ConclusionElement } from 'components/elements/Conclusion/ConclusionElement';
-import { GoalsElement } from 'components/elements/Goals/GoalsElement';
+import { GoalsElementType } from 'components/elements/Goals/GoalsElementType';
 import { InversionElement } from 'components/elements/Inversion/InversionElement';
 import { PeopleElement } from 'components/elements/People/PeopleElement';
 import { SimulationElement } from 'components/elements/Simulation/SimulationElement';
@@ -27,9 +27,9 @@ export default createHyperscript({
     data: { type: DataElement.Tool },
     dataCategory: { type: DataElement.Category },
     dataItem: { type: DataElement.Item },
-    goalsWrapper: { type: GoalsElement.Wrapper },
-    goalsItem: { type: GoalsElement.Item },
-    goalsItemTitle: { type: GoalsElement.ItemTitle },
+    goalsWrapper: { type: GoalsElementType.Wrapper },
+    goalsItem: { type: GoalsElementType.Item },
+    goalsItemTitle: { type: GoalsElementType.ItemTitle },
     inversionWrapper: { type: InversionElement.Wrapper },
     inversionItem: { type: InversionElement.Item },
     inversionItemTitle: { type: InversionElement.ItemTitle },

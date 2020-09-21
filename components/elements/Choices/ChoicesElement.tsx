@@ -4,10 +4,8 @@ import { Path } from 'slate';
 import InlinePlaceholder, { Magic } from 'components/editor/InlinePlaceholder';
 import ToolWrapper from 'components/editor/ToolWrapper';
 import { getTitle } from 'components/editor/queries';
-import {
-  getAllChoiceTitles,
-  getAllGoalTitles,
-} from 'components/elements/Choices/queries';
+import { getAllChoiceTitles } from 'components/elements/Choices/queries';
+import { getAllGoalTitles } from 'components/elements/Goals/queries';
 import { IconToolChoices } from 'components/icons/IconTool';
 import { readyToGenerateChoice } from 'components/intelligence/generator';
 

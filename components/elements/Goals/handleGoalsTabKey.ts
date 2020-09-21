@@ -3,7 +3,7 @@ import { isKeyHotkey } from 'is-hotkey';
 import Keys from 'components/editor/keys';
 import { nodeIsType, isRangeAtRoot } from 'components/editor/queries';
 import { BasicElement } from 'components/elements/Element';
-import { GoalsElement } from 'components/elements/Goals/GoalsElement';
+import { GoalsElementType } from 'components/elements/Goals/GoalsElementType';
 import indentListItem from 'components/editor/transforms/indentListItem';
 import unindentListItem from 'components/editor/transforms/unindentListItem';
 
@@ -15,7 +15,7 @@ export default function handleGoalsTabKey(
   event: KeyboardEvent
 ): boolean {
   const wrapperEntry = Editor.above(editor, {
-    match: (n) => n.type === GoalsElement.Wrapper,
+    match: (n) => n.type === GoalsElementType.Wrapper,
   });
   if (wrapperEntry == null) {
     return false;
@@ -23,7 +23,7 @@ export default function handleGoalsTabKey(
 
   // Do nothing if we're not in the Goals tool
   const [wrapperNode] = wrapperEntry;
-  if (wrapperNode.type !== GoalsElement.Wrapper) {
+  if (wrapperNode.type !== GoalsElementType.Wrapper) {
     return false;
   }
 
@@ -40,7 +40,7 @@ export default function handleGoalsTabKey(
 
   // Do nothing if not a choice tool item title or list item
   if (
-    !nodeIsType(editor, GoalsElement.ItemTitle) &&
+    !nodeIsType(editor, GoalsElementType.ItemTitle) &&
     !nodeIsType(editor, BasicElement.ListItem)
   ) {
     return false;

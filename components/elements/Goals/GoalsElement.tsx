@@ -1,15 +1,15 @@
-import { RenderElementProps, useEditor, ReactEditor } from 'slate-react';
 import { Path } from 'slate';
-import ToolWrapper from 'components/editor/ToolWrapper';
-import { IconToolGoals } from 'components/icons/IconTool';
-import InlinePlaceholder from 'components/editor/InlinePlaceholder';
-import styles from './GoalsElement.module.scss';
+import { RenderElementProps, useEditor, ReactEditor } from 'slate-react';
 
-export enum GoalsElement {
-  Wrapper = 'goals-wrapper',
-  Item = 'goals-item',
-  ItemTitle = 'goals-item-title',
-}
+import ToolWrapper from 'components/editor/ToolWrapper';
+import InlinePlaceholder, { Magic } from 'components/editor/InlinePlaceholder';
+import { getTitle } from 'components/editor/queries';
+import { getAllChoiceTitles } from 'components/elements/Choices/queries';
+import { getAllGoalTitles } from 'components/elements/Goals/queries';
+import { IconToolGoals } from 'components/icons/IconTool';
+import { readyToGenerateGoal } from 'components/intelligence/generator';
+
+import styles from './GoalsElement.module.scss';
 
 export function GoalsWrapperElement(props: RenderElementProps): JSX.Element {
   const { attributes, children } = props;
@@ -48,10 +48,23 @@ export function GoalsItemTitleElement(props: RenderElementProps): JSX.Element {
       ? 'What’s one of your goals?'
       : 'What’s another goal for this decision?';
 
+  let magic = null;
+  const [magicReady] = readyToGenerateGoal({
+    goals: getAllGoalTitles(editor),
+    title: getTitle(editor),
+  });
+  if (magicReady) {
+    magic = Magic.Ready;
+  }
+
   return (
     <h3 {...attributes} className={styles.itemTitle}>
       {children}
-      <InlinePlaceholder element={element} blurChildren="Untitled goal…">
+      <InlinePlaceholder
+        element={element}
+        blurChildren="Untitled goal…"
+        magic={magic}
+      >
         {placeholderText}
       </InlinePlaceholder>
     </h3>

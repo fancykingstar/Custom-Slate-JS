@@ -3,6 +3,7 @@ import { isKeyHotkey } from 'is-hotkey';
 import Keys from 'components/editor/keys';
 import handleGoalsEnterKey from 'components/elements/Goals/handleGoalsEnterKey';
 import handleGoalsBackspaceKey from 'components/elements/Goals/handleGoalsBackspaceKey';
+import handleGoalsCompletionKey from 'components/elements/Goals/handleGoalsCompletionKey';
 import handleGoalsTabKey from 'components/elements/Goals/handleGoalsTabKey';
 
 export default function onKeyDownGoals(
@@ -19,6 +20,10 @@ export default function onKeyDownGoals(
 
   if (isKeyHotkey(Keys.Backspace, event)) {
     return handleGoalsBackspaceKey(editor, event);
+  }
+
+  if (isKeyHotkey('mod+space', event)) {
+    return handleGoalsCompletionKey(editor, event);
   }
 
   return false;

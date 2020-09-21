@@ -2,12 +2,11 @@ import { Editor, Element, Text, Transforms } from 'slate';
 
 import { Author } from 'components/editor/author';
 import { isRangeAtRoot, getTitle } from 'components/editor/queries';
-import { ChoicesType } from 'components/elements/Choices/ChoicesType';
-import { getAllChoiceTitles } from 'components/elements/Choices/queries';
+import { GoalsElementType } from 'components/elements/Goals/GoalsElementType';
 import { getAllGoalTitles } from 'components/elements/Goals/queries';
-import { generateChoice } from 'components/intelligence/generator';
+import { generateGoal } from 'components/intelligence/generator';
 
-export default function handleChoicesCompleteKey(
+export default function handleGoalsCompleteKey(
   editor: Editor,
   event: KeyboardEvent
 ): boolean {
@@ -16,9 +15,9 @@ export default function handleChoicesCompleteKey(
     return false;
   }
 
-  // Do nothing if we're not in the Choices tool
+  // Do nothing if we're not in the Goals tool
   const wrapperEntry = Editor.above(editor, {
-    match: (n) => n.type === ChoicesType.Wrapper,
+    match: (n) => n.type === GoalsElementType.Wrapper,
   });
   if (wrapperEntry == null) {
     return false;
@@ -38,25 +37,24 @@ export default function handleChoicesCompleteKey(
   const parentPath = path.slice(0, path.length - 1);
   const [parentNode] = Editor.node(editor, parentPath);
 
-  if (!parentNode || parentNode.type !== ChoicesType.ItemTitle) {
+  if (!parentNode || parentNode.type !== GoalsElementType.ItemTitle) {
     return false;
   }
 
-  const generatedChoice = generateChoice({
-    choices: getAllChoiceTitles(editor),
+  const generatedGoal = generateGoal({
     goals: getAllGoalTitles(editor),
     title: getTitle(editor),
   });
 
-  generatedChoice.then(
-    (choice) => {
-      const trimmedChoice = choice.trim();
+  generatedGoal.then(
+    (goal: string) => {
+      const trimmedGoal = goal.trim();
       Transforms.setNodes(
         editor,
-        { text: '', author: Author.Deca },
+        { text: '', author: Author.Deca, original: trimmedGoal },
         { at: path }
       );
-      Transforms.insertText(editor, trimmedChoice, { at: path });
+      Transforms.insertText(editor, trimmedGoal, { at: path });
     },
     (err) => {
       // Ignore completion key when not ready.

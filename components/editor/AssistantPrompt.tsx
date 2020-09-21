@@ -4,7 +4,7 @@ import { Node } from 'slate';
 import { add, isAfter } from 'date-fns';
 import { CategorizerElement } from 'components/elements/Categorizer/CategorizerElement';
 import { ChoicesType } from 'components/elements/Choices/ChoicesType';
-import { GoalsElement } from 'components/elements/Goals/GoalsElement';
+import { GoalsElementType } from 'components/elements/Goals/GoalsElementType';
 import { InversionElement } from 'components/elements/Inversion/InversionElement';
 import { SimulationElement } from 'components/elements/Simulation/SimulationElement';
 import AssistantContext, {
@@ -25,7 +25,7 @@ const MaxShownCount = 5;
 const Tools: string[] = [
   CategorizerElement.Wrapper,
   ChoicesType.Wrapper,
-  GoalsElement.Wrapper,
+  GoalsElementType.Wrapper,
   InversionElement.Wrapper,
   SimulationElement.Tool,
 ];
@@ -261,7 +261,7 @@ function getGoalsPrompt(
     return null;
   }
 
-  if (tools.find((node) => node.type === GoalsElement.Wrapper) != null) {
+  if (tools.find((node) => node.type === GoalsElementType.Wrapper) != null) {
     return null;
   }
 

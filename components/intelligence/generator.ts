@@ -14,8 +14,10 @@ function trimUserString(userString: string): string {
     .trim();
 }
 
-const MinUserChoices = 1;
-const MinUserGoals = 1;
+const ChoiceConfig = {
+  minUserChoices: 1,
+  minUserGoals: 1,
+};
 
 export interface ChoiceInput {
   choices: string[];
@@ -38,8 +40,8 @@ export function readyToGenerateChoice(
 
   if (
     !cleanedInput.title.length ||
-    cleanedInput.choices.length < MinUserChoices ||
-    cleanedInput.goals.length < MinUserGoals
+    cleanedInput.choices.length < ChoiceConfig.minUserChoices ||
+    cleanedInput.goals.length < ChoiceConfig.minUserGoals
   ) {
     return [false, cleanedInput];
   }
@@ -63,6 +65,62 @@ export function generateChoice(input: ChoiceInput): Promise<string> {
     text = text.concat(`Reasonable choice: ${c}\n`);
   });
   text = text.concat('Reasonable choice:');
+
+  return getCompletion(
+    text,
+    {
+      numChoices: 1,
+      maxTokens: MaxGeneratedTokenLength,
+      stop: '\n',
+      temperature: 0.75,
+      topProbability: 1,
+    },
+    {
+      openAIKey: process.env.NEXT_PUBLIC_OPENAI_KEY,
+      openAISecretKey: process.env.NEXT_PUBLIC_OPENAI_SECRET_KEY,
+    }
+  );
+}
+const GoalConfig = {
+  minUserGoals: 1,
+};
+
+export interface GoalInput {
+  goals: string[];
+  title: string;
+}
+
+function cleanGoalInput(goalInput: GoalInput): GoalInput {
+  return {
+    goals: goalInput.goals.map((g) => trimUserString(g)).filter((g) => g),
+    title: trimUserString(goalInput.title),
+  };
+}
+
+export function readyToGenerateGoal(input: GoalInput): [boolean, GoalInput] {
+  const cleanedInput = cleanGoalInput(input);
+
+  if (
+    !cleanedInput.title.length ||
+    cleanedInput.goals.length < GoalConfig.minUserGoals
+  ) {
+    return [false, cleanedInput];
+  }
+
+  return [true, cleanedInput];
+}
+
+export function generateGoal(input: GoalInput): Promise<string> {
+  const [ready, cleanedInput] = readyToGenerateGoal(input);
+  if (!ready) {
+    return Promise.reject(new Error('Not ready'));
+  }
+
+  let text = `I'm trying to figure out this serious decision: "${cleanedInput.title}". Here are my goals:\n\n`;
+  cleanedInput.goals.forEach((g) => {
+    text = text.concat(`Reasonable goal: ${g}\n`);
+  });
+  text = text.concat('Reasonable goal:');
 
   return getCompletion(
     text,

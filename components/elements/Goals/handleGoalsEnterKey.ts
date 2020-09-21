@@ -1,6 +1,6 @@
 import { Editor } from 'slate';
 import { isRangeAtRoot } from 'components/editor/queries';
-import { GoalsElement } from 'components/elements/Goals/GoalsElement';
+import { GoalsElementType } from 'components/elements/Goals/GoalsElementType';
 import runEditorBehaviors from 'components/editor/runEditorBehaviors';
 import unindentEmptyNestedListItem from 'components/editor/behaviors/unindentEmptyNestedListItem';
 import exitListOnFirstOnlyEmptyRootListItem from 'components/editor/behaviors/exitListOnFirstOnlyEmptyRootListItem';
@@ -20,7 +20,7 @@ export default function handleGoalsEnterKey(
 
   // Do nothing if we're not in the Criteria tool
   const wrapperEntry = Editor.above(editor, {
-    match: (n) => n.type === GoalsElement.Wrapper,
+    match: (n) => n.type === GoalsElementType.Wrapper,
   });
   if (wrapperEntry == null) {
     return false;
@@ -29,7 +29,7 @@ export default function handleGoalsEnterKey(
   if (
     runEditorBehaviors(
       editor,
-      [GoalsElement.Wrapper],
+      [GoalsElementType.Wrapper],
       [
         unindentEmptyNestedListItem,
         exitListOnFirstOnlyEmptyRootListItem,

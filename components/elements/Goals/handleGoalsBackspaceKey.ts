@@ -1,5 +1,5 @@
 import { Editor, Range } from 'slate';
-import { GoalsElement } from 'components/elements/Goals/GoalsElement';
+import { GoalsElementType } from 'components/elements/Goals/GoalsElementType';
 import runEditorBehaviors from 'components/editor/runEditorBehaviors';
 import unindentNestedListItemOnStart from 'components/editor/behaviors/unindentNestedListItemOnStart';
 import mergeFromRootToPreviousLastListItem from 'components/editor/behaviors/mergeFromRootToPreviousLastListItem';
@@ -25,7 +25,7 @@ export default function handleGoalsBackspaceKey(
   if (
     runEditorBehaviors(
       editor,
-      [GoalsElement.Wrapper],
+      [GoalsElementType.Wrapper],
       [mergeFromRootToPreviousLastListItem]
     )
   ) {
@@ -35,7 +35,7 @@ export default function handleGoalsBackspaceKey(
 
   // Do nothing if we're not in the Criteria tool
   const wrapperEntry = Editor.above(editor, {
-    match: (n) => n.type === GoalsElement.Wrapper,
+    match: (n) => n.type === GoalsElementType.Wrapper,
   });
   if (wrapperEntry == null) {
     return false;
@@ -44,7 +44,7 @@ export default function handleGoalsBackspaceKey(
   if (
     runEditorBehaviors(
       editor,
-      [GoalsElement.Wrapper],
+      [GoalsElementType.Wrapper],
       [
         unindentNestedListItemOnStart,
         mergeStartOfListItemWithSublistToPrevItem,

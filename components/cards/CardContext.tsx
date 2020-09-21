@@ -9,7 +9,7 @@ import { useEditor, ReactEditor } from 'slate-react';
 import { ChoicesType } from 'components/elements/Choices/ChoicesType';
 import { ConclusionElement } from 'components/elements/Conclusion/ConclusionElement';
 import { DataElement } from 'components/elements/Data/DataElement';
-import { GoalsElement } from 'components/elements/Goals/GoalsElement';
+import { GoalsElementType } from 'components/elements/Goals/GoalsElementType';
 import { Node, Editor, Transforms, Range } from 'slate';
 import { CategorizerElement } from 'components/elements/Categorizer/CategorizerElement';
 import { EmotionElement } from 'components/elements/Emotion/EmotionElement';
@@ -161,14 +161,6 @@ type PoolItem = [Card, number];
 function genHand(nodes: Node[], usedCardIds: Set<CardId>): Card[] {
   const pool: PoolItem[] = [];
 
-  // Insert: Categorizer Tool
-  const categorizerTool = nodes.find(
-    (node) => node.type === CategorizerElement.Wrapper
-  );
-  if (categorizerTool == null) {
-    pool.push([cardData[CardId.ToolCategorizer], 1]);
-  }
-
   // Insert: Choice Tool
   const choiceTool = nodes.find((node) => node.type === ChoicesType.Wrapper);
   if (choiceTool == null) {
@@ -176,9 +168,19 @@ function genHand(nodes: Node[], usedCardIds: Set<CardId>): Card[] {
   }
 
   // Insert: Goals Tool
-  const goalsTool = nodes.find((node) => node.type === GoalsElement.Wrapper);
+  const goalsTool = nodes.find(
+    (node) => node.type === GoalsElementType.Wrapper
+  );
   if (goalsTool == null) {
     pool.push([cardData[CardId.ToolGoals], 1]);
+  }
+
+  // Insert: Categorizer Tool
+  const categorizerTool = nodes.find(
+    (node) => node.type === CategorizerElement.Wrapper
+  );
+  if (categorizerTool == null) {
+    pool.push([cardData[CardId.ToolCategorizer], 1]);
   }
 
   // Insert: Inversion Tool
@@ -477,14 +479,14 @@ export default function CardHandler(props: Props): JSX.Element {
               {
                 label: 'Go to Goals tool',
                 onClick: () => {
-                  selectTool(editor, GoalsElement.Wrapper);
+                  selectTool(editor, GoalsElementType.Wrapper);
                   ReactEditor.focus(editor);
                 },
               },
             ],
           });
 
-          selectTool(editor, GoalsElement.Wrapper);
+          selectTool(editor, GoalsElementType.Wrapper);
           ReactEditor.focus(editor);
           removeCard(CardId.ToolGoalsTimer);
           break;
