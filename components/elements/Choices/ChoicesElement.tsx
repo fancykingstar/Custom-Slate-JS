@@ -1,17 +1,17 @@
 import { RenderElementProps, useEditor, ReactEditor } from 'slate-react';
 import { Path } from 'slate';
 
+import InlinePlaceholder, { Magic } from 'components/editor/InlinePlaceholder';
 import ToolWrapper from 'components/editor/ToolWrapper';
+import { getTitle } from 'components/editor/queries';
+import {
+  getAllChoiceTitles,
+  getAllGoalTitles,
+} from 'components/elements/Choices/queries';
 import { IconToolChoices } from 'components/icons/IconTool';
-import InlinePlaceholder from 'components/editor/InlinePlaceholder';
+import { readyToGenerateChoice } from 'components/intelligence/generator';
 
 import styles from './ChoicesElement.module.scss';
-
-export enum ChoicesElement {
-  Wrapper = 'choices-wrapper',
-  Item = 'choices-item',
-  ItemTitle = 'choices-item-title',
-}
 
 export function ChoicesWrapperElement(props: RenderElementProps): JSX.Element {
   const { attributes, children } = props;
@@ -55,10 +55,24 @@ export function ChoicesItemTitleElement(
       ? 'What’s one of your options?'
       : 'What’s another option you could take?';
 
+  let magic = null;
+  const [magicReady] = readyToGenerateChoice({
+    choices: getAllChoiceTitles(editor),
+    goals: getAllGoalTitles(editor),
+    title: getTitle(editor),
+  });
+  if (magicReady) {
+    magic = Magic.Ready;
+  }
+
   return (
     <h3 {...attributes} className={styles.itemTitle}>
       {children}
-      <InlinePlaceholder element={element} blurChildren="Untitled choice…">
+      <InlinePlaceholder
+        element={element}
+        blurChildren="Untitled choice…"
+        magic={magic}
+      >
         {placeholderText}
       </InlinePlaceholder>
     </h3>

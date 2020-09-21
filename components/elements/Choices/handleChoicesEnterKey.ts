@@ -1,6 +1,6 @@
 import { Editor } from 'slate';
 import { isRangeAtRoot } from 'components/editor/queries';
-import { ChoicesElement } from 'components/elements/Choices/ChoicesElement';
+import { ChoicesType } from 'components/elements/Choices/ChoicesType';
 import runEditorBehaviors from 'components/editor/runEditorBehaviors';
 import exitListOnFirstOnlyEmptyRootListItem from 'components/editor/behaviors/exitListOnFirstOnlyEmptyRootListItem';
 import exitListOnFinalEmptyRootListItem from 'components/editor/behaviors/exitListOnFinalEmptyRootListItem';
@@ -20,7 +20,7 @@ export default function handleChoicesEnterKey(
 
   // Do nothing if we're not in the Criteria tool
   const wrapperEntry = Editor.above(editor, {
-    match: (n) => n.type === ChoicesElement.Wrapper,
+    match: (n) => n.type === ChoicesType.Wrapper,
   });
   if (wrapperEntry == null) {
     return false;
@@ -29,7 +29,7 @@ export default function handleChoicesEnterKey(
   if (
     runEditorBehaviors(
       editor,
-      [ChoicesElement.Wrapper],
+      [ChoicesType.Wrapper],
       [
         unindentEmptyNestedListItem,
         exitListOnFirstOnlyEmptyRootListItem,

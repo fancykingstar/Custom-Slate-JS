@@ -1,7 +1,8 @@
 /* eslint-disable no-case-declarations */
 import { createContext, Dispatch } from 'react';
 import { Node } from 'slate';
-import { ReservedElement, BasicElement } from 'components/elements/Element';
+import { BasicElement } from 'components/elements/Element';
+import { ReservedElement } from 'components/elements/ReservedElement';
 import { v4 as uuidv4 } from 'uuid';
 
 export enum DocStatus {

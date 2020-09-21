@@ -3,8 +3,8 @@ import {
   CategorizerElement,
   CategorizerWrapperElement,
 } from 'components/elements/Categorizer/CategorizerElement';
+import { ChoicesType } from 'components/elements/Choices/ChoicesType';
 import {
-  ChoicesElement,
   ChoicesWrapperElement,
   ChoicesItemElement,
   ChoicesItemTitleElement,
@@ -48,6 +48,7 @@ import {
   PeopleTeamElement,
   PeopleItemElement,
 } from 'components/elements/People/PeopleElement';
+import { ReservedElement } from 'components/elements/ReservedElement';
 import {
   SimulationElement,
   SimulationToolElement,
@@ -57,13 +58,6 @@ import {
 import ParagraphElement from 'components/elements/Paragraph/ParagraphElement';
 import TitleElement from 'components/elements/Title/TitleElement';
 import styles from './Element.module.scss';
-
-/**
- * Elements that users should not be able to manually add.
- */
-export enum ReservedElement {
-  Title = 'title',
-}
 
 export enum BasicElement {
   Paragraph = 'p',
@@ -105,11 +99,11 @@ export default function Element(props: RenderElementProps): JSX.Element {
       return <li {...attributes}>{children}</li>;
     case CategorizerElement.Wrapper:
       return <CategorizerWrapperElement {...props} />;
-    case ChoicesElement.Wrapper:
+    case ChoicesType.Wrapper:
       return <ChoicesWrapperElement {...props} />;
-    case ChoicesElement.Item:
+    case ChoicesType.Item:
       return <ChoicesItemElement {...props} />;
-    case ChoicesElement.ItemTitle:
+    case ChoicesType.ItemTitle:
       return <ChoicesItemTitleElement {...props} />;
     case ConclusionElement.Wrapper:
       return <ConclusionWrapperElement {...props} />;

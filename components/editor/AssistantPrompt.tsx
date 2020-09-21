@@ -3,7 +3,7 @@ import { useEditor } from 'slate-react';
 import { Node } from 'slate';
 import { add, isAfter } from 'date-fns';
 import { CategorizerElement } from 'components/elements/Categorizer/CategorizerElement';
-import { ChoicesElement } from 'components/elements/Choices/ChoicesElement';
+import { ChoicesType } from 'components/elements/Choices/ChoicesType';
 import { GoalsElement } from 'components/elements/Goals/GoalsElement';
 import { InversionElement } from 'components/elements/Inversion/InversionElement';
 import { SimulationElement } from 'components/elements/Simulation/SimulationElement';
@@ -24,7 +24,7 @@ const MaxShownCount = 5;
 
 const Tools: string[] = [
   CategorizerElement.Wrapper,
-  ChoicesElement.Wrapper,
+  ChoicesType.Wrapper,
   GoalsElement.Wrapper,
   InversionElement.Wrapper,
   SimulationElement.Tool,
@@ -231,7 +231,7 @@ function getChoicesPrompt(
     return null;
   }
 
-  if (tools.find((node) => node.type === ChoicesElement.Wrapper) != null) {
+  if (tools.find((node) => node.type === ChoicesType.Wrapper) != null) {
     return null;
   }
 
@@ -297,7 +297,7 @@ function getInversionPrompt(
     }
 
     const usedChoiceTool =
-      tools.find((node) => node.type === ChoicesElement.Wrapper) != null;
+      tools.find((node) => node.type === ChoicesType.Wrapper) != null;
     const usedInversionTool =
       tools.find((node) => node.type === InversionElement.Wrapper) != null;
 
@@ -349,7 +349,7 @@ function getSimulationPrompt(
     }
 
     const usedChoiceTool =
-      tools.find((node) => node.type === ChoicesElement.Wrapper) != null;
+      tools.find((node) => node.type === ChoicesType.Wrapper) != null;
     const usedSimulationTool =
       tools.find((node) => node.type === SimulationElement.Tool) != null;
 

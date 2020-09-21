@@ -1,6 +1,7 @@
 import { createHyperscript } from 'slate-hyperscript';
-import { BasicElement, ReservedElement } from 'components/elements/Element';
-import { ChoicesElement } from 'components/elements/Choices/ChoicesElement';
+import { BasicElement } from 'components/elements/Element';
+import { ReservedElement } from 'components/elements/ReservedElement';
+import { ChoicesType } from 'components/elements/Choices/ChoicesType';
 import { DataElement } from 'components/elements/Data/DataElement';
 import { ConclusionElement } from 'components/elements/Conclusion/ConclusionElement';
 import { GoalsElement } from 'components/elements/Goals/GoalsElement';
@@ -17,9 +18,9 @@ export default createHyperscript({
     li: { type: BasicElement.ListItem },
     p: { type: BasicElement.Paragraph },
     title: { type: ReservedElement.Title },
-    choicesWrapper: { type: ChoicesElement.Wrapper },
-    choicesItem: { type: ChoicesElement.Item },
-    choicesItemTitle: { type: ChoicesElement.ItemTitle },
+    choicesWrapper: { type: ChoicesType.Wrapper },
+    choicesItem: { type: ChoicesType.Item },
+    choicesItemTitle: { type: ChoicesType.ItemTitle },
     conclusionWrapper: { type: ConclusionElement.Wrapper },
     conclusionItem: { type: ConclusionElement.Item },
     conclusionItemTitle: { type: ConclusionElement.ItemTitle },

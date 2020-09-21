@@ -1,6 +1,7 @@
 import { Node, NodeEntry, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
-import { BasicElement, ReservedElement } from 'components/elements/Element';
+import { BasicElement } from 'components/elements/Element';
+import { ReservedElement } from 'components/elements/ReservedElement';
 
 const withLayout = (editor: ReactEditor): ReactEditor => {
   const { normalizeNode } = editor;

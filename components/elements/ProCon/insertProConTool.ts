@@ -1,5 +1,5 @@
 import { Editor, Transforms, Node } from 'slate';
-import { ChoicesElement } from 'components/elements/Choices/ChoicesElement';
+import { ChoicesType } from 'components/elements/Choices/ChoicesType';
 import { BasicElement } from 'components/elements/Element';
 
 export default function insertProConTool(editor: Editor): void {
@@ -19,7 +19,7 @@ export default function insertProConTool(editor: Editor): void {
   const choices = Array.from(
     Editor.nodes(editor, {
       at: [],
-      match: (n) => n.type === ChoicesElement.Item,
+      match: (n) => n.type === ChoicesType.Item,
     })
   );
 

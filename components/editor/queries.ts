@@ -11,7 +11,7 @@ import {
   Text,
 } from 'slate';
 
-import { ReservedElement } from 'components/elements/Element';
+import { ReservedElement } from 'components/elements/ReservedElement';
 
 /**
  * Returns nodes of the requested type at the current selection.

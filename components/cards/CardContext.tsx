@@ -6,7 +6,7 @@ import {
   useContext,
 } from 'react';
 import { useEditor, ReactEditor } from 'slate-react';
-import { ChoicesElement } from 'components/elements/Choices/ChoicesElement';
+import { ChoicesType } from 'components/elements/Choices/ChoicesType';
 import { ConclusionElement } from 'components/elements/Conclusion/ConclusionElement';
 import { DataElement } from 'components/elements/Data/DataElement';
 import { GoalsElement } from 'components/elements/Goals/GoalsElement';
@@ -170,7 +170,7 @@ function genHand(nodes: Node[], usedCardIds: Set<CardId>): Card[] {
   }
 
   // Insert: Choice Tool
-  const choiceTool = nodes.find((node) => node.type === ChoicesElement.Wrapper);
+  const choiceTool = nodes.find((node) => node.type === ChoicesType.Wrapper);
   if (choiceTool == null) {
     pool.push([cardData[CardId.ToolChoices], 1]);
   }
@@ -456,14 +456,14 @@ export default function CardHandler(props: Props): JSX.Element {
               {
                 label: 'Go to Choices tool',
                 onClick: () => {
-                  selectTool(editor, ChoicesElement.Wrapper);
+                  selectTool(editor, ChoicesType.Wrapper);
                   ReactEditor.focus(editor);
                 },
               },
             ],
           });
 
-          selectTool(editor, ChoicesElement.Wrapper);
+          selectTool(editor, ChoicesType.Wrapper);
           ReactEditor.focus(editor);
           removeCard(CardId.ToolChoicesTimer);
           break;

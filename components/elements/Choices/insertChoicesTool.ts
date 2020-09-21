@@ -1,5 +1,5 @@
 import { Editor, Transforms } from 'slate';
-import { ChoicesElement } from 'components/elements/Choices/ChoicesElement';
+import { ChoicesType } from 'components/elements/Choices/ChoicesType';
 
 /**
  * Converts the node at the current selection into a Choice tool.
@@ -19,11 +19,11 @@ export default function insertChoicesTool(editor: Editor): void {
   Transforms.delete(editor);
 
   Transforms.setNodes(editor, {
-    type: ChoicesElement.ItemTitle,
+    type: ChoicesType.ItemTitle,
   });
 
   Transforms.wrapNodes(editor, {
-    type: ChoicesElement.Item,
+    type: ChoicesType.Item,
     children: [],
   });
 
@@ -31,7 +31,7 @@ export default function insertChoicesTool(editor: Editor): void {
     editor,
     {
       timestamp: Date.now(),
-      type: ChoicesElement.Wrapper,
+      type: ChoicesType.Wrapper,
       children: [],
     },
     {

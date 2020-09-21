@@ -1,5 +1,5 @@
 import { Editor, Range } from 'slate';
-import { ChoicesElement } from 'components/elements/Choices/ChoicesElement';
+import { ChoicesType } from 'components/elements/Choices/ChoicesType';
 import runEditorBehaviors from 'components/editor/runEditorBehaviors';
 import unindentNestedListItemOnStart from 'components/editor/behaviors/unindentNestedListItemOnStart';
 import mergeFromRootToPreviousLastListItem from 'components/editor/behaviors/mergeFromRootToPreviousLastListItem';
@@ -25,7 +25,7 @@ export default function handleChoicesBackspaceKey(
   if (
     runEditorBehaviors(
       editor,
-      [ChoicesElement.Wrapper],
+      [ChoicesType.Wrapper],
       [mergeFromRootToPreviousLastListItem]
     )
   ) {
@@ -35,7 +35,7 @@ export default function handleChoicesBackspaceKey(
 
   // Do nothing if we're not in the Criteria tool
   const wrapperEntry = Editor.above(editor, {
-    match: (n) => n.type === ChoicesElement.Wrapper,
+    match: (n) => n.type === ChoicesType.Wrapper,
   });
   if (wrapperEntry == null) {
     return false;
@@ -44,7 +44,7 @@ export default function handleChoicesBackspaceKey(
   if (
     runEditorBehaviors(
       editor,
-      [ChoicesElement.Wrapper],
+      [ChoicesType.Wrapper],
       [
         unindentNestedListItemOnStart,
         mergeStartOfListItemWithSublistToPrevItem,

@@ -1,12 +1,21 @@
 import { useSlate, useSelected, useFocused, ReactEditor } from 'slate-react';
 import { Editor, Element, Path, Range } from 'slate';
+
+import { Zap } from 'components/icons/Icons';
+
 import styles from './InlinePlaceholder.module.scss';
+
+export enum Magic {
+  Ready = 'ready',
+  Started = 'started',
+}
 
 interface Props {
   children: React.ReactNode;
   element: Element;
   // Optional children to render when node has no focus (and is empty)
   blurChildren?: React.ReactNode;
+  magic?: Magic | null;
 }
 
 /**
@@ -32,7 +41,7 @@ export default function InlinePlaceholder(props: Props): JSX.Element | null {
   const selected = useSelected();
   const focused = useFocused();
 
-  const { children, element, blurChildren } = props;
+  const { children, element, blurChildren, magic } = props;
 
   // Render nothing if the user is not focused on this specific element
   const { selection } = editor;
@@ -73,9 +82,27 @@ export default function InlinePlaceholder(props: Props): JSX.Element | null {
     return null;
   }
 
+  let magicElement = null;
+  if (magic) {
+    if (magic === Magic.Ready) {
+      magicElement = (
+        <span className={[styles.zap, styles.zapReady].join(' ')}>
+          <Zap />
+        </span>
+      );
+    } else if (magic === Magic.Started) {
+      magicElement = (
+        <span className={[styles.zap, styles.zapStarted].join(' ')}>
+          <Zap />
+        </span>
+      );
+    }
+  }
+
   return (
-    <span className={styles.placeholder} contentEditable={false}>
-      {children}
+    <span className={styles.wrapper} contentEditable={false}>
+      {magicElement}
+      <span className={styles.placeholder}>{children}</span>
     </span>
   );
 }

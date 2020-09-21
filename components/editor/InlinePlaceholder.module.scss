@@ -1,12 +1,52 @@
+.wrapper {
+  pointer-events: none;
+  user-select: none;
+}
+
 .placeholder {
   color: var(--color-bg-gray-primary);
-  display: block;
+  display: inline;
   font-weight: 400;
   pointer-events: none;
-  position: absolute;
+  position: relative;
   top: 50%;
   transform: translateY(-50%);
   user-select: none;
   white-space: nowrap;
   z-index: 0;
+}
+
+.zap {
+  position: relative;
+  margin: 0 0.8rem 0 0;
+}
+
+.zapReady {
+  color: var(--color-fg-gray-primary);
+}
+
+.zapStarted {
+  animation: flash 1s infinite;
+  color: var(--color-blue);
+}
+
+@keyframes flash {
+  0% {
+    color: var(--color-blue);
+    opacity: 100%;
+  }
+  25% {
+    opacity: 50%;
+  }
+  50% {
+    color: var(--color-blue);
+    opacity: 100%;
+  }
+  75% {
+    opacity: 50%;
+  }
+  100% {
+    color: var(--color-blue);
+    opacity: 100%;
+  }
 }

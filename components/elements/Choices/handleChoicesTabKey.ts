@@ -3,7 +3,7 @@ import { isKeyHotkey } from 'is-hotkey';
 import Keys from 'components/editor/keys';
 import { nodeIsType, isRangeAtRoot } from 'components/editor/queries';
 import { BasicElement } from 'components/elements/Element';
-import { ChoicesElement } from 'components/elements/Choices/ChoicesElement';
+import { ChoicesType } from 'components/elements/Choices/ChoicesType';
 import indentListItem from 'components/editor/transforms/indentListItem';
 import unindentListItem from 'components/editor/transforms/unindentListItem';
 
@@ -15,7 +15,7 @@ export default function handleChoicesTabKey(
   event: KeyboardEvent
 ): boolean {
   const wrapperEntry = Editor.above(editor, {
-    match: (n) => n.type === ChoicesElement.Wrapper,
+    match: (n) => n.type === ChoicesType.Wrapper,
   });
   if (wrapperEntry == null) {
     return false;
@@ -23,7 +23,7 @@ export default function handleChoicesTabKey(
 
   // Do nothing if we're not in the Choices tool
   const [wrapperNode] = wrapperEntry;
-  if (wrapperNode.type !== ChoicesElement.Wrapper) {
+  if (wrapperNode.type !== ChoicesType.Wrapper) {
     return false;
   }
 
@@ -40,7 +40,7 @@ export default function handleChoicesTabKey(
 
   // Do nothing if not a choice tool item title or list item
   if (
-    !nodeIsType(editor, ChoicesElement.ItemTitle) &&
+    !nodeIsType(editor, ChoicesType.ItemTitle) &&
     !nodeIsType(editor, BasicElement.ListItem)
   ) {
     return false;

@@ -4,7 +4,7 @@ import { RenderElementProps, useEditor, ReactEditor } from 'slate-react';
 import ToolWrapper from 'components/editor/ToolWrapper';
 import { IconToolConclusion } from 'components/icons/IconTool';
 import InlinePlaceholder from 'components/editor/InlinePlaceholder';
-import { ChoicesElement } from 'components/elements/Choices/ChoicesElement';
+import { ChoicesType } from 'components/elements/Choices/ChoicesType';
 
 import styles from './ConclusionElement.module.scss';
 
@@ -35,7 +35,7 @@ function getChoiceTitles(editor: Editor): string[] {
   const choices = Array.from(
     Editor.nodes(editor, {
       at: [],
-      match: (n) => n.type === ChoicesElement.ItemTitle,
+      match: (n) => n.type === ChoicesType.ItemTitle,
     })
   );
 

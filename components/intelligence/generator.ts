@@ -14,8 +14,8 @@ function trimUserString(userString: string): string {
     .trim();
 }
 
-export const MinUserChoices = 1;
-export const MinUserGoals = 1;
+const MinUserChoices = 1;
+const MinUserGoals = 1;
 
 export interface ChoiceInput {
   choices: string[];
@@ -31,18 +31,26 @@ function cleanChoiceInput(choiceInput: ChoiceInput): ChoiceInput {
   };
 }
 
-export function generateChoice(input: ChoiceInput): Promise<string> {
+export function readyToGenerateChoice(
+  input: ChoiceInput
+): [boolean, ChoiceInput] {
   const cleanedInput = cleanChoiceInput(input);
 
-  if (!cleanedInput.title.length) {
-    return Promise.reject(new Error('Missing title'));
-  }
-
   if (
+    !cleanedInput.title.length ||
     cleanedInput.choices.length < MinUserChoices ||
     cleanedInput.goals.length < MinUserGoals
   ) {
-    return Promise.reject(new Error('Not enough choices or goals'));
+    return [false, cleanedInput];
+  }
+
+  return [true, cleanedInput];
+}
+
+export function generateChoice(input: ChoiceInput): Promise<string> {
+  const [ready, cleanedInput] = readyToGenerateChoice(input);
+  if (!ready) {
+    return Promise.reject(new Error('Not ready'));
   }
 
   let text = `I'm trying to figure out this serious decision: "${cleanedInput.title}". Here are my goals:\n\n`;

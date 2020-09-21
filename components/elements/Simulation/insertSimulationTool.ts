@@ -3,7 +3,7 @@ import {
   SimulationElement,
   SimulationImportance,
 } from 'components/elements/Simulation/SimulationElement';
-import { ChoicesElement } from 'components/elements/Choices/ChoicesElement';
+import { ChoicesType } from 'components/elements/Choices/ChoicesType';
 
 /**
  * Converts the node at the current selection into an Simulation tool.
@@ -29,7 +29,7 @@ export default function insertSimulationTool(editor: Editor): void {
   const choices = Array.from(
     Editor.nodes(editor, {
       at: [],
-      match: (n) => n.type === ChoicesElement.ItemTitle,
+      match: (n) => n.type === ChoicesType.ItemTitle,
     })
   );
 
