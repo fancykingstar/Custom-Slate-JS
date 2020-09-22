@@ -131,7 +131,7 @@ export function reducer(state: State, action: ActionType): State {
   }
 
   // Naively store full copy of reducer state in localstorage
-  // window.localStorage.setItem('state', JSON.stringify(newState));
+  window.localStorage.setItem('state', JSON.stringify(newState));
 
   return newState;
 }
