@@ -119,3 +119,25 @@ export function Zap(): JSX.Element {
     </svg>
   );
 }
+
+export function ZapOff(): JSX.Element {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1.2rem"
+      height="1.2rem"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      className="feather feather-zap-off"
+      viewBox="0 0 24 24"
+    >
+      <path d="M12.41 6.75L13 2 10.57 4.92" />
+      <path d="M18.57 12.91L21 10 15.66 10" />
+      <path d="M8 8L3 14 12 14 11 22 16 16" />
+      <path d="M1 1L23 23" />
+    </svg>
+  );
+}

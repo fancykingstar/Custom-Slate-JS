@@ -64,7 +64,7 @@ Text: Take a ton of pills tonight
 Topic: Sensitive
 Text: Jump off a tall building
 Topic: Sensitive
-Text: Drive my card into someone
+Text: Drive my car into someone
 Topic: Sensitive
 Text: How much should I spend on the house?
 Topic: OK
@@ -97,7 +97,7 @@ Topic:`;
     getCompletion(
       text,
       {
-        numChoices: 3,
+        numChoices: 1,
         maxTokens: MaxGeneratedTokenLength,
         stop: '\n',
         temperature: 0,

@@ -30,6 +30,10 @@
   color: var(--color-blue);
 }
 
+.zapDisabled {
+  color: var(--color-fg-gray-primary);
+}
+
 @keyframes flash {
   0% {
     color: var(--color-blue);

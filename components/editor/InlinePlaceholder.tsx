@@ -1,11 +1,12 @@
 import { useSlate, useSelected, useFocused, ReactEditor } from 'slate-react';
 import { Editor, Element, Path, Range } from 'slate';
 
-import { Zap } from 'components/icons/Icons';
+import { Zap, ZapOff } from 'components/icons/Icons';
 
 import styles from './InlinePlaceholder.module.scss';
 
 export enum Magic {
+  Disabled = 'disabled',
   Ready = 'ready',
   Started = 'started',
 }
@@ -78,7 +79,7 @@ export default function InlinePlaceholder(props: Props): JSX.Element | null {
     return null;
   }
 
-  if (children == null) {
+  if (children == null && magic !== Magic.Started) {
     return null;
   }
 
@@ -94,6 +95,12 @@ export default function InlinePlaceholder(props: Props): JSX.Element | null {
       magicElement = (
         <span className={[styles.zap, styles.zapStarted].join(' ')}>
           <Zap />
+        </span>
+      );
+    } else if (magic === Magic.Disabled) {
+      magicElement = (
+        <span className={[styles.zap, styles.zapDisabled].join(' ')}>
+          <ZapOff />
         </span>
       );
     }

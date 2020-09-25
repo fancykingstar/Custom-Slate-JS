@@ -43,11 +43,6 @@ export function GoalsItemTitleElement(props: RenderElementProps): JSX.Element {
     nodeIndex = parentPath[parentPath.length - 1];
   }
 
-  const placeholderText =
-    nodeIndex === 0
-      ? 'What’s one of your goals?'
-      : 'What’s another goal for this decision?';
-
   let magic = null;
   const [magicReady] = readyToGenerateGoal({
     goals: getAllGoalTitles(editor),
@@ -55,6 +50,15 @@ export function GoalsItemTitleElement(props: RenderElementProps): JSX.Element {
   });
   if (magicReady) {
     magic = Magic.Ready;
+  }
+
+  let placeholderText: string | null =
+    nodeIndex === 0
+      ? 'What’s one of your goals?'
+      : 'What’s another goal for this decision?';
+
+  if (magic === Magic.Started) {
+    placeholderText = null;
   }
 
   return (
