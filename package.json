@@ -38,7 +38,7 @@
     "react-dom": "16.13.1",
     "react-spring": "^8.0.27",
     "sass": "^1.26.11",
-    "slate": "^0.58.4",
+    "slate": "^0.59.0",
     "slate-history": "^0.58.4",
     "slate-hyperscript": "^0.58.4",
     "slate-react": "^0.58.4",
