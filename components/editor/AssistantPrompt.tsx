@@ -16,7 +16,7 @@ import insertGoalsTool from 'components/elements/Goals/insertGoalsTool';
 import insertInversionTool from 'components/elements/Inversion/insertInversionTool';
 import insertSimulationTool from 'components/elements/Simulation/insertSimulationTool';
 import AssistantKeyboardCommand from 'components/editor/AssistantKeyboardCommand';
-import { CategorizerContext, DecisionCategory } from 'components/context';
+import { Context, DecisionCategory } from 'components/context';
 import styles from './AssistantPrompt.module.scss';
 
 // Default max number of time a prompt should be shown.
@@ -490,12 +490,12 @@ export default function AssistantPrompt(): JSX.Element {
   const { setActions } = useContext(AssistantContext);
 
   const { children } = editor;
-  const { decisionCategory } = useContext(CategorizerContext);
+  const { categorizer } = useContext(Context);
 
   // Only update the content when the doc changes
   const [content, newActions, stateUpdates] = useMemo(() => {
-    return getAssistantPrompt(children, decisionCategory);
-  }, [children, decisionCategory]);
+    return getAssistantPrompt(children, categorizer.decisionCategory);
+  }, [children, categorizer.decisionCategory]);
 
   // Run logic based on the current assistant output
   useEffect(() => {

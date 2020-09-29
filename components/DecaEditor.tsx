@@ -5,6 +5,8 @@ import { withHistory } from 'slate-history';
 import { Slate, Editable, withReact, RenderLeafProps } from 'slate-react';
 import { createEditor, Editor, Node, Range, Transforms, Path } from 'slate';
 import { isKeyHotkey } from 'is-hotkey';
+
+import { Context } from 'components/context';
 import Element from 'components/elements/Element';
 import withLayout from 'components/editor/withLayout';
 import withVoids from 'components/editor/withVoids';
@@ -46,6 +48,7 @@ export default function DecaEditor(props: Props): JSX.Element {
   const { doc } = props;
 
   const { dispatch } = useContext(Store);
+  const context = useContext(Context);
 
   const wrapperRef = useRef<HTMLDivElement>(null);
   const editor = useMemo(
@@ -133,7 +136,7 @@ export default function DecaEditor(props: Props): JSX.Element {
   const onKeyDown = useCallback(
     (event) => {
       const { selection } = editor;
-      onElementKeyDown(editor, event);
+      onElementKeyDown(editor, context, event);
       onKeyDownSlashMenu(event);
 
       // Prevent creation of a new starter node from title when pressing enter

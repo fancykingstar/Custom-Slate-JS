@@ -215,7 +215,11 @@ describe('Tab-key', () => {
   ];
 
   test.each(tabCases)('%s', (_, { input, output }) => {
-    onElementKeyDown(input, new KeyboardEvent('keydown', { key: Keys.Tab }));
+    onElementKeyDown(
+      input,
+      null,
+      new KeyboardEvent('keydown', { key: Keys.Tab })
+    );
     const formattedInput = removeMeta(input);
     const formattedOutput = removeMeta(output);
     expect(formattedInput.children).toEqual(formattedOutput.children);

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import SidebarToggle from 'components/sidebar/SidebarToggle';
 import { useContext } from 'react';
-import { CategorizerContext } from 'components/context';
+import { Context } from 'components/context';
 import styles from './Header.module.scss';
 
 export default function Header(): JSX.Element {
@@ -22,15 +22,19 @@ export default function Header(): JSX.Element {
 }
 
 function Category(): JSX.Element | null {
-  const { decisionCategory } = useContext(CategorizerContext);
+  const { categorizer } = useContext(Context);
 
-  if (decisionCategory == null) {
+  if (categorizer.decisionCategory == null) {
     return null;
   }
 
   return (
-    <div className={`${styles.categoryPill} ${styles[decisionCategory]}`}>
-      <span>{`${decisionCategory}`}</span>
+    <div
+      className={`${styles.categoryPill} ${
+        styles[categorizer.decisionCategory]
+      }`}
+    >
+      <span>{`${categorizer.decisionCategory}`}</span>
     </div>
   );
 }

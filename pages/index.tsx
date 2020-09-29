@@ -1,13 +1,31 @@
 import { useState, useReducer, useMemo, useEffect } from 'react';
 import Head from 'next/head';
+
 import DecaEditor from 'components/DecaEditor';
-import styles from 'styles/Home.module.scss';
-import { CategorizerContext, DecisionCategory } from 'components/context';
-import { reducer, Store, Action } from 'store/store';
+import { Env, EnvProps } from 'components/env';
+import { Context, DecisionCategory } from 'components/context';
 import Sidebar from 'components/sidebar/Sidebar';
 import Header from 'components/Header';
+import { reducer, Store, Action } from 'store/store';
+import styles from 'styles/Home.module.scss';
 
-export default function Home(): JSX.Element {
+export async function getServerSideProps(): Promise<EnvProps> {
+  const openaiKey: string = process.env.OPENAI_KEY
+    ? process.env.OPENAI_KEY
+    : (process.env.NEXT_PUBLIC_OPENAI_KEY as string);
+  const openaiSecretKey: string = process.env.OPENAI_SECRET_KEY
+    ? process.env.OPENAI_SECRET_KEY
+    : (process.env.NEXT_PUBLIC_OPENAI_SECRET_KEY as string);
+
+  return {
+    props: {
+      openaiKey,
+      openaiSecretKey,
+    },
+  };
+}
+
+export default function Home(env: Env): JSX.Element {
   const [
     decisionCategory,
     setDecisionCategory,
@@ -59,10 +77,13 @@ export default function Home(): JSX.Element {
         />
       </Head>
 
-      <CategorizerContext.Provider
+      <Context.Provider
         value={{
-          decisionCategory,
-          setDecisionCategory,
+          categorizer: {
+            decisionCategory,
+            setDecisionCategory,
+          },
+          env,
         }}
       >
         <Store.Provider value={value}>
@@ -76,7 +97,7 @@ export default function Home(): JSX.Element {
             </main>
           </div>
         </Store.Provider>
-      </CategorizerContext.Provider>
+      </Context.Provider>
     </>
   );
 }

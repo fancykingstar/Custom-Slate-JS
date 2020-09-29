@@ -1,6 +1,7 @@
 import nlp from 'compromise';
 import stemmer from 'stemmer';
 
+import { ContextType } from 'components/context';
 import { getCompletion } from 'components/intelligence/gpt3/utility/completion/getCompletion';
 
 export const MaxUserStringLength = 50;
@@ -30,7 +31,10 @@ const jsonOptions = {
   },
 };
 
-export function classifySensitive(userString: string): Promise<boolean> {
+export function classifySensitive(
+  context: ContextType,
+  userString: string
+): Promise<boolean> {
   const text = `Text: Should I move to Texas?
 Topic: OK
 Text: Should I off myself
@@ -85,8 +89,8 @@ Topic:`;
         topProbability: 1,
       },
       {
-        openAIKey: process.env.NEXT_PUBLIC_OPENAI_KEY,
-        openAISecretKey: process.env.NEXT_PUBLIC_OPENAI_SECRET_KEY,
+        openAIKey: context.env.openaiKey,
+        openAISecretKey: context.env.openaiSecretKey,
       }
     ).then(
       (v) => {
@@ -139,7 +143,10 @@ export function readyToGenerateChoice(
   return [true, cleanedInput];
 }
 
-export async function generateChoice(input: ChoiceInput): Promise<string> {
+export async function generateChoice(
+  context: ContextType,
+  input: ChoiceInput
+): Promise<string> {
   const [ready, cleanedInput] = readyToGenerateChoice(input);
   if (!ready) {
     return Promise.reject(new Error('Not ready'));
@@ -166,8 +173,8 @@ export async function generateChoice(input: ChoiceInput): Promise<string> {
       topProbability: 1,
     },
     {
-      openAIKey: process.env.NEXT_PUBLIC_OPENAI_KEY,
-      openAISecretKey: process.env.NEXT_PUBLIC_OPENAI_SECRET_KEY,
+      openAIKey: context.env.openaiKey,
+      openAISecretKey: context.env.openaiSecretKey,
     }
   );
 }
@@ -201,7 +208,10 @@ export function readyToGenerateGoal(input: GoalInput): [boolean, GoalInput] {
   return [true, cleanedInput];
 }
 
-export async function generateGoal(input: GoalInput): Promise<string> {
+export async function generateGoal(
+  context: ContextType,
+  input: GoalInput
+): Promise<string> {
   const [ready, cleanedInput] = readyToGenerateGoal(input);
   if (!ready) {
     return Promise.reject(new Error('Not ready'));
@@ -223,8 +233,8 @@ export async function generateGoal(input: GoalInput): Promise<string> {
       topProbability: 1,
     },
     {
-      openAIKey: process.env.NEXT_PUBLIC_OPENAI_KEY,
-      openAISecretKey: process.env.NEXT_PUBLIC_OPENAI_SECRET_KEY,
+      openAIKey: context.env.openaiKey,
+      openAISecretKey: context.env.openaiSecretKey,
     }
   );
 }

@@ -1,5 +1,6 @@
 import { Editor, Element, NodeEntry, Text, Transforms } from 'slate';
 
+import { ContextType } from 'components/context';
 import {
   getFirstTextString,
   getTitleEntry,
@@ -22,6 +23,7 @@ import {
 
 export default function handleGoalsCompleteKey(
   editor: Editor,
+  context: ContextType,
   event: KeyboardEvent
 ): boolean {
   const [proper, path] = isTypeAndEmpty(
@@ -64,9 +66,10 @@ export default function handleGoalsCompleteKey(
 
   generateString(
     editor,
+    context,
     path,
     entries,
-    generateGoal.bind(null, {
+    generateGoal.bind(null, context, {
       goals,
       title,
     })

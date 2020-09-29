@@ -18,10 +18,28 @@ export enum DecisionCategory {
   Mountain = 'Mountain', // Weak understanding
 }
 
-export const CategorizerContext = createContext({
-  decisionCategory: <DecisionCategory | null>null,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  setDecisionCategory: (category: DecisionCategory | null) => {
-    // Do nothing.
+export type ContextType = {
+  categorizer: {
+    decisionCategory: DecisionCategory | null;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    setDecisionCategory: (category: DecisionCategory | null) => void;
+  };
+  env: {
+    openaiKey: string;
+    openaiSecretKey: string;
+  };
+};
+
+export const Context = createContext<ContextType>({
+  categorizer: {
+    decisionCategory: <DecisionCategory | null>null,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    setDecisionCategory: (category: DecisionCategory | null) => {
+      // Do nothing.
+    },
+  },
+  env: {
+    openaiKey: '',
+    openaiSecretKey: '',
   },
 });

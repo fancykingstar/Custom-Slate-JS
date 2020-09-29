@@ -1,5 +1,7 @@
 import { Editor } from 'slate';
 import { isKeyHotkey } from 'is-hotkey';
+
+import { ContextType } from 'components/context';
 import Keys from 'components/editor/keys';
 import handleChoicesBackspaceKey from 'components/elements/Choices/handleChoicesBackspaceKey';
 import handleChoicesCompleteKey from 'components/elements/Choices/handleChoicesCompleteKey';
@@ -8,6 +10,7 @@ import handleChoicesTabKey from 'components/elements/Choices/handleChoicesTabKey
 
 export default function onKeyDownChoices(
   editor: Editor,
+  context: ContextType | null,
   event: KeyboardEvent
 ): boolean {
   if (isKeyHotkey(Keys.Tab, event) || isKeyHotkey(Keys.ShiftTab, event)) {
@@ -22,8 +25,10 @@ export default function onKeyDownChoices(
     return handleChoicesBackspaceKey(editor, event);
   }
 
-  if (isKeyHotkey('mod+space', event)) {
-    return handleChoicesCompleteKey(editor, event);
+  if (context != null) {
+    if (isKeyHotkey('mod+space', event)) {
+      return handleChoicesCompleteKey(editor, context, event);
+    }
   }
 
   return false;

@@ -244,6 +244,7 @@ describe('Choices Tool: Shift+Tab Key', () => {
   test.each(tabCases)('%s', (_, { input, output }) => {
     onElementKeyDown(
       input,
+      null,
       new KeyboardEvent('keydown', { key: Keys.Tab, shiftKey: true })
     );
     const formattedInput = removeMeta(input);

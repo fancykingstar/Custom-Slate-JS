@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from 'react';
 import { RenderElementProps } from 'slate-react';
-import { CategorizerContext, DecisionCategory } from 'components/context';
+import { Context, DecisionCategory } from 'components/context';
 import ToolWrapper from 'components/editor/ToolWrapper';
 import { IconToolCategorizer } from 'components/icons/IconTool';
 import styles from './CategorizerElement.module.scss';
@@ -41,7 +41,7 @@ export function CategorizerWrapperElement(
     setUnderstanding,
   ] = useState<CategorizerUnderstanding | null>(null);
 
-  const context = useContext(CategorizerContext);
+  const context = useContext(Context);
 
   useEffect(() => {
     let category = null;
@@ -80,12 +80,12 @@ export function CategorizerWrapperElement(
       return;
     }
 
-    context.setDecisionCategory(category);
+    context.categorizer.setDecisionCategory(category);
   }, [reversibility, complexity, understanding]);
 
   useEffect(() => {
     return () => {
-      context.setDecisionCategory(null);
+      context.categorizer.setDecisionCategory(null);
     };
   }, []);
 
@@ -202,10 +202,10 @@ interface SuggestionProps {
 }
 
 function Suggestion(props: SuggestionProps): JSX.Element | null {
-  const { decisionCategory } = useContext(CategorizerContext);
+  const { categorizer } = useContext(Context);
   const { reversibility, complexity, understanding } = props;
 
-  if (decisionCategory == null) {
+  if (categorizer.decisionCategory == null) {
     let remaining = 0;
 
     if (reversibility == null) {
@@ -233,10 +233,10 @@ function Suggestion(props: SuggestionProps): JSX.Element | null {
     return <div className={styles.remainderPill}>{message}</div>;
   }
 
-  const title = `${decisionCategory} decision`;
+  const title = `${categorizer.decisionCategory} decision`;
   let body = null;
 
-  switch (decisionCategory) {
+  switch (categorizer.decisionCategory) {
     // Reversible, simple
     case DecisionCategory.Snap:
       body = 'Make a quick decision. You may already know the answer.';
@@ -283,7 +283,7 @@ function Suggestion(props: SuggestionProps): JSX.Element | null {
     <div className={styles.suggestionOutput}>
       <div
         className={`${styles.suggestionIcon} ${
-          styles[`suggestionIcon-${decisionCategory}`]
+          styles[`suggestionIcon-${categorizer.decisionCategory}`]
         }`}
       />
       <h3>{title}</h3>

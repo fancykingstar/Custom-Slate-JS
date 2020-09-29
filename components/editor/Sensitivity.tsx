@@ -10,6 +10,7 @@ import {
 } from 'slate';
 import stemmer from 'stemmer';
 
+import { ContextType } from 'components/context';
 import { Author } from 'components/editor/author';
 import { getFirstTextChild } from 'components/editor/queries';
 import { classifySensitive } from 'components/intelligence/generator';
@@ -90,6 +91,7 @@ function cacheSensitivityContext(
 
 export function checkAndGenerateSensitivity(
   editor: Editor,
+  context: ContextType,
   text: string,
   path: Path
 ): Promise<Sensitivity> {
@@ -101,7 +103,7 @@ export function checkAndGenerateSensitivity(
   }
 
   return new Promise((resolve, reject) => {
-    classifySensitive(text).then(
+    classifySensitive(context, text).then(
       (val: boolean) => {
         const sensitivity = val ? Sensitivity.Sensitive : Sensitivity.Ok;
         cacheSensitivityContext(editor, { sensitivity, text }, path);
@@ -144,6 +146,7 @@ export function reduceDisabled(
 
 export async function reduceSensitivity(
   editor: Editor,
+  context: ContextType,
   prev: Promise<Sensitivity> | null,
   nodeEntry: NodeEntry<Element>
 ): Promise<Sensitivity> {
@@ -160,7 +163,7 @@ export async function reduceSensitivity(
       return Promise.resolve(Sensitivity.Ok);
     }
 
-    return checkAndGenerateSensitivity(editor, text, path);
+    return checkAndGenerateSensitivity(editor, context, text, path);
   };
 
   if (prev == null) {
@@ -186,6 +189,7 @@ function magicOff(editor: Editor, path: Path): void {
 
 export function generateString(
   editor: Editor,
+  context: ContextType,
   path: Path,
   entries: NodeEntry<Element>[],
   generator: () => Promise<string>
@@ -196,7 +200,7 @@ export function generateString(
 
   entries
     .reduce(
-      reduceSensitivity.bind(null, editor),
+      reduceSensitivity.bind(null, editor, context),
       Promise.resolve(Sensitivity.Ok)
     )
     .then(

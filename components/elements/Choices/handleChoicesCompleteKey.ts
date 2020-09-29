@@ -1,5 +1,6 @@
 import { Editor, Element, NodeEntry, Text, Transforms } from 'slate';
 
+import { ContextType } from 'components/context';
 import { Author } from 'components/editor/author';
 import {
   getFirstTextString,
@@ -24,6 +25,7 @@ import {
 
 export default function handleChoicesCompleteKey(
   editor: Editor,
+  context: ContextType,
   event: KeyboardEvent
 ): boolean {
   const [proper, path] = isTypeAndEmpty(
@@ -69,9 +71,10 @@ export default function handleChoicesCompleteKey(
 
   generateString(
     editor,
+    context,
     path,
     entries,
-    generateChoice.bind(null, {
+    generateChoice.bind(null, context, {
       choices,
       goals,
       title,

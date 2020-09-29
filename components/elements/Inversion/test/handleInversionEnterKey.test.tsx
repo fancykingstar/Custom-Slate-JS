@@ -292,7 +292,11 @@ describe('Inversion Tool: Enter Key', () => {
   ];
 
   test.each(enterCases)('%s', (_, { input, output }) => {
-    onElementKeyDown(input, new KeyboardEvent('keydown', { key: Keys.Enter }));
+    onElementKeyDown(
+      input,
+      null,
+      new KeyboardEvent('keydown', { key: Keys.Enter })
+    );
     const formattedInput = removeMeta(input);
     const formattedOutput = removeMeta(output);
     expect(formattedInput.children).toEqual(formattedOutput.children);

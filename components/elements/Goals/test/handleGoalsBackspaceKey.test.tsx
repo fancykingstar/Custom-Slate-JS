@@ -476,6 +476,7 @@ describe('Goals Tool: Backspace Key', () => {
   test.each(backspaceCases)('%s', (_, { input, output }) => {
     onElementKeyDown(
       input,
+      null,
       new KeyboardEvent('keydown', { key: Keys.Backspace })
     );
     const formattedInput = removeMeta(input);

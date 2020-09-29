@@ -1,4 +1,6 @@
 import { Editor } from 'slate';
+
+import { ContextType } from 'components/context';
 import onKeyDownList from 'components/elements/List/onKeyDownList';
 import onKeyDownChoices from 'components/elements/Choices/onKeyDownChoices';
 import onKeyDownData from 'components/elements/Data/onKeyDownData';
@@ -10,12 +12,13 @@ import onKeyDownSimulation from 'components/elements/Simulation/onKeyDownSimulat
 
 export default function onElementKeyDown(
   editor: Editor,
+  context: ContextType | null,
   event: KeyboardEvent
 ): void {
   if (onKeyDownList(editor, event)) {
     return;
   }
-  if (onKeyDownChoices(editor, event)) {
+  if (onKeyDownChoices(editor, context, event)) {
     return;
   }
   if (onKeyDownConclusion(editor, event)) {
@@ -24,7 +27,7 @@ export default function onElementKeyDown(
   if (onKeyDownData(editor, event)) {
     return;
   }
-  if (onKeyDownGoals(editor, event)) {
+  if (onKeyDownGoals(editor, context, event)) {
     return;
   }
   if (onKeyDownInversion(editor, event)) {
