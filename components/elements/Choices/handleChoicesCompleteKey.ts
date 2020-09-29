@@ -1,66 +1,81 @@
-import { Editor, Element, Text, Transforms } from 'slate';
+import { Editor, Element, NodeEntry, Text, Transforms } from 'slate';
 
 import { Author } from 'components/editor/author';
-import { isRangeAtRoot, getTitle } from 'components/editor/queries';
+import {
+  getFirstTextString,
+  getTitleEntry,
+  isRangeAtRoot,
+  isTypeAndEmpty,
+  stringifyTitleEntry,
+} from 'components/editor/queries';
+import {
+  Sensitivity,
+  generateString,
+  reduceDisabled,
+  reduceSensitivity,
+} from 'components/editor/Sensitivity';
 import { ChoicesType } from 'components/elements/Choices/ChoicesType';
-import { getAllChoiceTitles } from 'components/elements/Choices/queries';
-import { getAllGoalTitles } from 'components/elements/Goals/queries';
-import { generateChoice } from 'components/intelligence/generator';
+import { getAllChoiceEntries } from 'components/elements/Choices/queries';
+import { getAllGoalEntries } from 'components/elements/Goals/queries';
+import {
+  generateChoice,
+  readyToGenerateChoice,
+} from 'components/intelligence/generator';
 
 export default function handleChoicesCompleteKey(
   editor: Editor,
   event: KeyboardEvent
 ): boolean {
-  const { selection } = editor;
-  if (selection == null || isRangeAtRoot(selection)) {
-    return false;
-  }
-
-  // Do nothing if we're not in the Choices tool
-  const wrapperEntry = Editor.above(editor, {
-    match: (n) => n.type === ChoicesType.Wrapper,
-  });
-  if (wrapperEntry == null) {
-    return false;
-  }
-
-  const path = selection.focus?.path;
-  if (!path || !path.length) {
-    return false;
-  }
-
-  const [currentNode] = Editor.node(editor, path);
-
-  if (!currentNode || !Text.isText(currentNode) || currentNode.text !== '') {
+  const [proper, path] = isTypeAndEmpty(
+    editor,
+    ChoicesType.Wrapper,
+    ChoicesType.ItemTitle
+  );
+  if (!proper || path == null) {
     return false;
   }
 
   const parentPath = path.slice(0, path.length - 1);
   const [parentNode] = Editor.node(editor, parentPath);
-
-  if (!parentNode || parentNode.type !== ChoicesType.ItemTitle) {
+  if (parentNode.magicStarted) {
     return false;
   }
 
-  const generatedChoice = generateChoice({
-    choices: getAllChoiceTitles(editor),
-    goals: getAllGoalTitles(editor),
-    title: getTitle(editor),
-  });
+  const choiceEntries: NodeEntry<Element>[] = getAllChoiceEntries(editor);
+  const choices = choiceEntries.map(getFirstTextString);
+  const goalEntries: NodeEntry<Element>[] = getAllGoalEntries(editor);
+  const goals = goalEntries.map(getFirstTextString);
 
-  generatedChoice.then(
-    (choice) => {
-      const trimmedChoice = choice.trim();
-      Transforms.setNodes(
-        editor,
-        { text: '', author: Author.Deca, original: trimmedChoice },
-        { at: path }
-      );
-      Transforms.insertText(editor, trimmedChoice, { at: path });
-    },
-    (err) => {
-      // Ignore completion key when not ready.
-    }
+  const titleEntry: NodeEntry<Element> | null = getTitleEntry(editor);
+  if (titleEntry == null) {
+    return false;
+  }
+  const title: string = stringifyTitleEntry(titleEntry);
+
+  const [ready] = readyToGenerateChoice({
+    choices,
+    goals,
+    title,
+  });
+  if (!ready) {
+    return false;
+  }
+
+  const entries = [titleEntry, ...choiceEntries, ...goalEntries];
+  const disabled: boolean = entries.reduce(reduceDisabled, false);
+  if (disabled) {
+    return false;
+  }
+
+  generateString(
+    editor,
+    path,
+    entries,
+    generateChoice.bind(null, {
+      choices,
+      goals,
+      title,
+    })
   );
 
   return true;

@@ -1,11 +1,16 @@
-import { Path } from 'slate';
+import { Element, NodeEntry, Path } from 'slate';
 import { RenderElementProps, useEditor, ReactEditor } from 'slate-react';
 
 import ToolWrapper from 'components/editor/ToolWrapper';
-import InlinePlaceholder, { Magic } from 'components/editor/InlinePlaceholder';
-import { getTitle } from 'components/editor/queries';
-import { getAllChoiceTitles } from 'components/elements/Choices/queries';
-import { getAllGoalTitles } from 'components/elements/Goals/queries';
+import { Magic, isMagical } from 'components/editor/Magic';
+import InlinePlaceholder from 'components/editor/InlinePlaceholder';
+import { reduceDisabled } from 'components/editor/Sensitivity';
+import {
+  getFirstTextString,
+  getTitleEntry,
+  stringifyTitleEntry,
+} from 'components/editor/queries';
+import { getAllGoalEntries } from 'components/elements/Goals/queries';
 import { IconToolGoals } from 'components/icons/IconTool';
 import { readyToGenerateGoal } from 'components/intelligence/generator';
 
@@ -43,13 +48,19 @@ export function GoalsItemTitleElement(props: RenderElementProps): JSX.Element {
     nodeIndex = parentPath[parentPath.length - 1];
   }
 
+  const goalEntries: NodeEntry<Element>[] = getAllGoalEntries(editor);
+  const goals = goalEntries.map(getFirstTextString);
+  const titleEntry: NodeEntry<Element> | null = getTitleEntry(editor);
   let magic = null;
-  const [magicReady] = readyToGenerateGoal({
-    goals: getAllGoalTitles(editor),
-    title: getTitle(editor),
-  });
-  if (magicReady) {
-    magic = Magic.Ready;
+  if (titleEntry != null) {
+    magic = isMagical(
+      element,
+      [titleEntry, ...goalEntries],
+      readyToGenerateGoal.bind(null, {
+        goals,
+        title: stringifyTitleEntry(titleEntry),
+      })
+    );
   }
 
   let placeholderText: string | null =

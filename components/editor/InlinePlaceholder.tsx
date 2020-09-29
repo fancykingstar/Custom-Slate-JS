@@ -1,15 +1,10 @@
 import { useSlate, useSelected, useFocused, ReactEditor } from 'slate-react';
 import { Editor, Element, Path, Range } from 'slate';
 
+import { Magic } from 'components/editor/Magic';
 import { Zap, ZapOff } from 'components/icons/Icons';
 
 import styles from './InlinePlaceholder.module.scss';
-
-export enum Magic {
-  Disabled = 'disabled',
-  Ready = 'ready',
-  Started = 'started',
-}
 
 interface Props {
   children: React.ReactNode;

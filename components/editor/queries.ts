@@ -55,7 +55,7 @@ export function getAllNodesWithType(
 /**
  * Returns title string.
  */
-export function getTitle(editor: Editor): string {
+export function getTitleEntry(editor: Editor): NodeEntry<Element> | null {
   const entries: NodeEntry<Node>[] = Array.from(
     Editor.nodes(editor, {
       at: [],
@@ -64,15 +64,19 @@ export function getTitle(editor: Editor): string {
   );
 
   if (!entries.length) {
+    return null;
+  }
+
+  return entries[0] as NodeEntry<Element>;
+}
+
+export function stringifyTitleEntry(titleEntry: NodeEntry<Element>): string {
+  if (titleEntry == null) {
     return '';
   }
 
-  const [node] = entries[0];
-  if (
-    !Element.isElement(node) ||
-    !node.children.length ||
-    !Text.isText(node.children[0])
-  ) {
+  const [node] = titleEntry;
+  if (!node.children.length || !Text.isText(node.children[0])) {
     return '';
   }
 
@@ -282,9 +286,74 @@ export function isEmptyElement(node: Node): boolean {
   );
 }
 
+export function getFirstTextChild(node: Node): Text | null {
+  if (!Element.isElement(node) || !node.children.length) {
+    return null;
+  }
+
+  const child = node.children[0];
+  if (!Text.isText(child)) {
+    return null;
+  }
+
+  return child;
+}
+
+export function getFirstTextString(nodeEntry: NodeEntry<Node>): string {
+  const [node] = nodeEntry;
+  const child = getFirstTextChild(node);
+  if (child == null) {
+    return '';
+  }
+
+  return child.text.trim();
+}
+
 /**
  * Returns true if the given path points to a top-level node.
  */
 export function isTopLevelPath(path: Path): boolean {
   return path.length === 2;
+}
+
+/**
+ * Returns true if the selection is in the given element types and the text is empty.
+ */
+export function isTypeAndEmpty(
+  editor: Editor,
+  wrapperType: string,
+  itemType: string
+): [boolean, Path | null] {
+  const { selection } = editor;
+  if (selection == null || isRangeAtRoot(selection)) {
+    return [false, null];
+  }
+
+  // Do nothing if we're not in the Goals tool
+  const wrapperEntry = Editor.above(editor, {
+    match: (n) => n.type === wrapperType,
+  });
+  if (wrapperEntry == null) {
+    return [false, null];
+  }
+
+  const path = selection.focus?.path;
+  if (!path || !path.length) {
+    return [false, null];
+  }
+
+  const [currentNode] = Editor.node(editor, path);
+
+  if (!currentNode || !Text.isText(currentNode) || currentNode.text !== '') {
+    return [false, null];
+  }
+
+  const parentPath = path.slice(0, path.length - 1);
+  const [parentNode] = Editor.node(editor, parentPath);
+
+  if (!parentNode || parentNode.type !== itemType) {
+    return [false, null];
+  }
+
+  return [true, path];
 }

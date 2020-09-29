@@ -1,64 +1,75 @@
-import { Editor, Element, Text, Transforms } from 'slate';
+import { Editor, Element, NodeEntry, Text, Transforms } from 'slate';
 
-import { Author } from 'components/editor/author';
-import { isRangeAtRoot, getTitle } from 'components/editor/queries';
+import {
+  getFirstTextString,
+  getTitleEntry,
+  isRangeAtRoot,
+  isTypeAndEmpty,
+  stringifyTitleEntry,
+} from 'components/editor/queries';
+import {
+  Sensitivity,
+  generateString,
+  reduceDisabled,
+  reduceSensitivity,
+} from 'components/editor/Sensitivity';
 import { GoalsElementType } from 'components/elements/Goals/GoalsElementType';
-import { getAllGoalTitles } from 'components/elements/Goals/queries';
-import { generateGoal } from 'components/intelligence/generator';
+import { getAllGoalEntries } from 'components/elements/Goals/queries';
+import {
+  generateGoal,
+  readyToGenerateGoal,
+} from 'components/intelligence/generator';
 
 export default function handleGoalsCompleteKey(
   editor: Editor,
   event: KeyboardEvent
 ): boolean {
-  const { selection } = editor;
-  if (selection == null || isRangeAtRoot(selection)) {
-    return false;
-  }
-
-  // Do nothing if we're not in the Goals tool
-  const wrapperEntry = Editor.above(editor, {
-    match: (n) => n.type === GoalsElementType.Wrapper,
-  });
-  if (wrapperEntry == null) {
-    return false;
-  }
-
-  const path = selection.focus?.path;
-  if (!path || !path.length) {
-    return false;
-  }
-
-  const [currentNode] = Editor.node(editor, path);
-
-  if (!currentNode || !Text.isText(currentNode) || currentNode.text !== '') {
+  const [proper, path] = isTypeAndEmpty(
+    editor,
+    GoalsElementType.Wrapper,
+    GoalsElementType.ItemTitle
+  );
+  if (!proper || path == null) {
     return false;
   }
 
   const parentPath = path.slice(0, path.length - 1);
   const [parentNode] = Editor.node(editor, parentPath);
-
-  if (!parentNode || parentNode.type !== GoalsElementType.ItemTitle) {
+  if (parentNode.magicStarted) {
     return false;
   }
 
-  const generatedGoal = generateGoal({
-    goals: getAllGoalTitles(editor),
-    title: getTitle(editor),
-  });
+  const goalEntries: NodeEntry<Element>[] = getAllGoalEntries(editor);
+  const goals = goalEntries.map(getFirstTextString);
 
-  generatedGoal.then(
-    (goal: string) => {
-      const trimmedGoal = goal.trim();
-      Transforms.setNodes(
-        editor,
-        { text: '', author: Author.Deca, original: trimmedGoal },
-        { at: path }
-      );
-      Transforms.insertText(editor, trimmedGoal, { at: path });
-    },
-    (err) => {
-      // Ignore completion key when not ready.
-    }
+  const titleEntry: NodeEntry<Element> | null = getTitleEntry(editor);
+  if (titleEntry == null) {
+    return false;
+  }
+  const title: string = stringifyTitleEntry(titleEntry);
+
+  const [ready] = readyToGenerateGoal({
+    goals,
+    title,
+  });
+  if (!ready) {
+    return false;
+  }
+
+  const entries = [titleEntry, ...goalEntries];
+  const disabled: boolean = entries.reduce(reduceDisabled, false);
+  if (disabled) {
+    return false;
+  }
+
+  generateString(
+    editor,
+    path,
+    entries,
+    generateGoal.bind(null, {
+      goals,
+      title,
+    })
   );
 
   return true;

@@ -1,11 +1,16 @@
+import { Element, NodeEntry, Path } from 'slate';
 import { RenderElementProps, useEditor, ReactEditor } from 'slate-react';
-import { Path } from 'slate';
 
-import InlinePlaceholder, { Magic } from 'components/editor/InlinePlaceholder';
+import InlinePlaceholder from 'components/editor/InlinePlaceholder';
+import { Magic, isMagical } from 'components/editor/Magic';
 import ToolWrapper from 'components/editor/ToolWrapper';
-import { getTitle } from 'components/editor/queries';
-import { getAllChoiceTitles } from 'components/elements/Choices/queries';
-import { getAllGoalTitles } from 'components/elements/Goals/queries';
+import {
+  getFirstTextString,
+  getTitleEntry,
+  stringifyTitleEntry,
+} from 'components/editor/queries';
+import { getAllChoiceEntries } from 'components/elements/Choices/queries';
+import { getAllGoalEntries } from 'components/elements/Goals/queries';
 import { IconToolChoices } from 'components/icons/IconTool';
 import { readyToGenerateChoice } from 'components/intelligence/generator';
 
@@ -48,20 +53,28 @@ export function ChoicesItemTitleElement(
     nodeIndex = parentPath[parentPath.length - 1];
   }
 
+  const choiceEntries: NodeEntry<Element>[] = getAllChoiceEntries(editor);
+  const choices = choiceEntries.map(getFirstTextString);
+  const goalEntries: NodeEntry<Element>[] = getAllGoalEntries(editor);
+  const goals = goalEntries.map(getFirstTextString);
+  const titleEntry: NodeEntry<Element> | null = getTitleEntry(editor);
+  let magic = null;
+  if (titleEntry != null) {
+    magic = isMagical(
+      element,
+      [titleEntry, ...choiceEntries, ...goalEntries],
+      readyToGenerateChoice.bind(null, {
+        choices,
+        goals,
+        title: stringifyTitleEntry(titleEntry),
+      })
+    );
+  }
+
   const placeholderText =
     nodeIndex === 0
       ? 'What’s one of your options?'
       : 'What’s another option you could take?';
-
-  let magic = null;
-  const [magicReady] = readyToGenerateChoice({
-    choices: getAllChoiceTitles(editor),
-    goals: getAllGoalTitles(editor),
-    title: getTitle(editor),
-  });
-  if (magicReady) {
-    magic = Magic.Ready;
-  }
 
   return (
     <h3 {...attributes} className={styles.itemTitle}>
