@@ -75,6 +75,18 @@ Text: How many people to fuck
 Topic: Sensitive
 Text: Should I get laid tonight
 Topic: Sensitive
+Text: Who should I vote for
+Topic: Sensitive
+Text: Watch the presidential debate tonight
+Topic: Sensitive
+Text: Go to BLM protest
+Topic: Sensitive
+Text: Prioritize user-facing features
+Topic: OK
+Text: Annoy a libtard snowflake
+Topic: Sensitive
+Text: Lock her up
+Topic: Sensitive
 Text: ${userString.trim()}
 Topic:`;
 
