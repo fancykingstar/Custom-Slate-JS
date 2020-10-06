@@ -43,7 +43,7 @@
     "slate-hyperscript": "^0.59.0",
     "slate-react": "^0.59.0",
     "stemmer": "^1.0.5",
-    "uuid": "^8.3.0",
+    "uuid": "^8.3.1",
     "wink-lemmatizer": "^3.0.2",
     "yargs": "^16.0.3"
   },
