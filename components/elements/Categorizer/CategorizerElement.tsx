@@ -19,11 +19,6 @@ export enum CategorizerComplexity {
   Complex,
 }
 
-export enum CategorizerUnderstanding {
-  Deep,
-  Weak,
-}
-
 export function CategorizerWrapperElement(
   props: RenderElementProps
 ): JSX.Element {
@@ -36,10 +31,6 @@ export function CategorizerWrapperElement(
   const [complexity, setComplexity] = useState<CategorizerComplexity | null>(
     null
   );
-  const [
-    understanding,
-    setUnderstanding,
-  ] = useState<CategorizerUnderstanding | null>(null);
 
   const context = useContext(Context);
 
@@ -48,31 +39,15 @@ export function CategorizerWrapperElement(
 
     if (reversibility === CategorizerReversibility.Reversible) {
       if (complexity === CategorizerComplexity.Simple) {
-        if (understanding === CategorizerUnderstanding.Deep) {
-          category = DecisionCategory.Snap;
-        } else if (understanding === CategorizerUnderstanding.Weak) {
-          category = DecisionCategory.Dash;
-        }
+        category = DecisionCategory.ReversibleSimple;
       } else if (complexity === CategorizerComplexity.Complex) {
-        if (understanding === CategorizerUnderstanding.Deep) {
-          category = DecisionCategory.Capstone;
-        } else if (understanding === CategorizerUnderstanding.Weak) {
-          category = DecisionCategory.Puzzle;
-        }
+        category = DecisionCategory.ReversibleComplex;
       }
     } else if (reversibility === CategorizerReversibility.NonReversible) {
       if (complexity === CategorizerComplexity.Simple) {
-        if (understanding === CategorizerUnderstanding.Deep) {
-          category = DecisionCategory.Leap;
-        } else if (understanding === CategorizerUnderstanding.Weak) {
-          category = DecisionCategory.Parachute;
-        }
+        category = DecisionCategory.NonreversibleSimple;
       } else if (complexity === CategorizerComplexity.Complex) {
-        if (understanding === CategorizerUnderstanding.Deep) {
-          category = DecisionCategory.Summit;
-        } else if (understanding === CategorizerUnderstanding.Weak) {
-          category = DecisionCategory.Mountain;
-        }
+        category = DecisionCategory.NonreversibleComplex;
       }
     }
 
@@ -81,7 +56,7 @@ export function CategorizerWrapperElement(
     }
 
     context.categorizer.setDecisionCategory(category);
-  }, [reversibility, complexity, understanding]);
+  }, [reversibility, complexity]);
 
   useEffect(() => {
     return () => {
@@ -151,43 +126,10 @@ export function CategorizerWrapperElement(
               </label>
             </div>
           </div>
-          <div className={styles.section}>
-            <p className={styles.question}>
-              How well do you understand this decision?
-            </p>
-            <div className={styles.buttons}>
-              <label className={styles.button}>
-                <input
-                  type="radio"
-                  name="understanding"
-                  value={CategorizerUnderstanding.Deep}
-                  onChange={() =>
-                    setUnderstanding(CategorizerUnderstanding.Deep)
-                  }
-                />
-                <span>Deeply</span>
-              </label>
-              <label className={styles.button}>
-                <input
-                  type="radio"
-                  name="understanding"
-                  value={CategorizerUnderstanding.Weak}
-                  onChange={() =>
-                    setUnderstanding(CategorizerUnderstanding.Weak)
-                  }
-                />
-                <span>Weakly</span>
-              </label>
-            </div>
-          </div>
         </div>
         <div className={styles.suggestion}>
           <h3 className={styles.suggestionLabel}>Suggestion</h3>
-          <Suggestion
-            reversibility={reversibility}
-            complexity={complexity}
-            understanding={understanding}
-          />
+          <Suggestion reversibility={reversibility} complexity={complexity} />
         </div>
       </div>
       {children}
@@ -198,12 +140,11 @@ export function CategorizerWrapperElement(
 interface SuggestionProps {
   reversibility: CategorizerReversibility | null;
   complexity: CategorizerComplexity | null;
-  understanding: CategorizerUnderstanding | null;
 }
 
 function Suggestion(props: SuggestionProps): JSX.Element | null {
   const { categorizer } = useContext(Context);
-  const { reversibility, complexity, understanding } = props;
+  const { reversibility, complexity } = props;
 
   if (categorizer.decisionCategory == null) {
     let remaining = 0;
@@ -213,10 +154,6 @@ function Suggestion(props: SuggestionProps): JSX.Element | null {
     }
 
     if (complexity == null) {
-      remaining += 1;
-    }
-
-    if (understanding == null) {
       remaining += 1;
     }
 
@@ -233,49 +170,23 @@ function Suggestion(props: SuggestionProps): JSX.Element | null {
     return <div className={styles.remainderPill}>{message}</div>;
   }
 
-  const title = `${categorizer.decisionCategory} decision`;
+  const title = `${categorizer.decisionCategory}`;
   let body = null;
 
   switch (categorizer.decisionCategory) {
-    // Reversible, simple
-    case DecisionCategory.Snap:
-      body = 'Make a quick decision. You may already know the answer.';
+    case DecisionCategory.ReversibleSimple:
+      body = 'Make a quick decision.';
       break;
-    case DecisionCategory.Dash:
+    case DecisionCategory.ReversibleComplex:
+      body = 'Spend some time but timebox the decision.';
+      break;
+    case DecisionCategory.NonreversibleSimple:
+      body = 'Even if simple, spend the time to make the right decision.';
+      break;
+    case DecisionCategory.NonreversibleComplex:
       body =
-        'Spend a bit more time to understand this decision, but timebox it. Then you might know the answer.';
+        'This is a hard one. Spend a lot of time to understand the decision.';
       break;
-
-    // Reversible, complex
-    case DecisionCategory.Capstone:
-      body =
-        'Spend a bit more time to check whether you’ve missed anything. Then place the final piece of the puzzle.';
-      break;
-    case DecisionCategory.Puzzle:
-      body =
-        'There’s some complexity to this decision. Spend some time to understand it.';
-      break;
-
-    // Non-reversible, simple
-    case DecisionCategory.Leap:
-      body =
-        'Double check the details by laying out your thinking. Then make the leap.';
-      break;
-    case DecisionCategory.Parachute:
-      body =
-        'It might be simple but not easily reversible. Spend more time to better understand it before the leap.';
-      break;
-
-    // Non-reversible, complex
-    case DecisionCategory.Summit:
-      body =
-        'Spend some time to lay out your thinking. Then climb that summit.';
-      break;
-    case DecisionCategory.Mountain:
-      body =
-        'This is a hard decision. Spend a lot of time to deeply understand it.';
-      break;
-
     default:
   }
 

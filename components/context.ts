@@ -1,21 +1,12 @@
 import { createContext } from 'react';
 
 export enum DecisionCategory {
-  // Reversible, simple
-  Snap = 'Snap', // Deep understanding
-  Dash = 'Dash', // Weak understanding
-
-  // Reversible, complex
-  Capstone = 'Capstone', // Deep understanding
-  Puzzle = 'Puzzle', // Weak understanding
-
-  // Non-reversible, simple
-  Leap = 'Leap', // Deep understanding
-  Parachute = 'Parachute', // Weak understanding
+  ReversibleSimple = 'Reversible, Simple',
+  ReversibleComplex = 'Reversible, Complex',
 
   // Non-reversible, complex
-  Summit = 'Summit', // Deep understanding
-  Mountain = 'Mountain', // Weak understanding
+  NonreversibleSimple = 'Nonreversible, Simple',
+  NonreversibleComplex = 'Nonreversible, Complex',
 }
 
 export type ContextType = {
