@@ -1,6 +1,5 @@
 import { MouseEvent, useContext } from 'react';
 
-import levenshtein from 'fast-levenshtein';
 import { RenderLeafProps } from 'slate-react';
 
 import { Author } from 'components/editor/author';
@@ -19,18 +18,14 @@ export default function Leaf(props: RenderLeafProps): JSX.Element {
     className = styles.slashHighlight;
   } else if (leaf.suggestedStar && leaf.text !== '') {
     className = styles.suggestedStar;
-  } else if (leaf.author && leaf.author === Author.Deca) {
-    const original = leaf.original as string;
-    if (leaf.text && original) {
-      const distance = levenshtein.get(leaf.text, original);
-      if (original.length && distance / original.length <= 0.5) {
-        magicSymbol = (
-          <span className={styles.zap} contentEditable={false}>
-            <Zap />
-          </span>
-        );
-        className = styles.generated;
-      }
+  } else if (leaf.author === Author.Deca) {
+    if (leaf.text) {
+      magicSymbol = (
+        <span className={styles.zap} contentEditable={false}>
+          <Zap />
+        </span>
+      );
+      className = styles.generated;
     }
   }
 

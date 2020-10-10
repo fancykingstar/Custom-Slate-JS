@@ -1,10 +1,12 @@
 import { Editor, Range } from 'slate';
 import { ChoicesType } from 'components/elements/Choices/ChoicesType';
 import runEditorBehaviors from 'components/editor/runEditorBehaviors';
+import clearGeneratedTextWhenEmpty from 'components/editor/behaviors/clearGeneratedTextWhenEmpty';
 import unindentNestedListItemOnStart from 'components/editor/behaviors/unindentNestedListItemOnStart';
 import mergeFromRootToPreviousLastListItem from 'components/editor/behaviors/mergeFromRootToPreviousLastListItem';
 import mergeStartOfListItemWithSublistToPrevItem from 'components/editor/behaviors/mergeStartOfListItemWithSublistToPrevItem';
 import nothingOnFirstListItemWithSublist from 'components/editor/behaviors/nothingOnFirstListItemWithSublist';
+import nothingOnFrontOfNonemptyGeneratedText from 'components/editor/behaviors/nothingOnFrontOfNonemptyGeneratedText';
 import exitListOnFirstOnlyEmptyRootListItem from 'components/editor/behaviors/exitListOnFirstOnlyEmptyRootListItem';
 import exitListOnFinalEmptyRootListItem from 'components/editor/behaviors/exitListOnFinalEmptyRootListItem';
 import exitListOnEmptyFirstListItemWithSiblings from 'components/editor/behaviors/exitListOnEmptyFirstListItemWithSiblings';
@@ -46,9 +48,11 @@ export default function handleChoicesBackspaceKey(
       editor,
       [ChoicesType.Wrapper],
       [
+        clearGeneratedTextWhenEmpty,
         unindentNestedListItemOnStart,
         mergeStartOfListItemWithSublistToPrevItem,
         nothingOnFirstListItemWithSublist,
+        nothingOnFrontOfNonemptyGeneratedText,
         exitListOnFirstOnlyEmptyRootListItem,
         exitListOnFinalEmptyRootListItem,
         exitListOnEmptyFirstListItemWithSiblings,
