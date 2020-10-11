@@ -2,6 +2,7 @@ import { Editor, Range } from 'slate';
 import { ChoicesType } from 'components/elements/Choices/ChoicesType';
 import runEditorBehaviors from 'components/editor/runEditorBehaviors';
 import clearGeneratedTextWhenEmpty from 'components/editor/behaviors/clearGeneratedTextWhenEmpty';
+import clearGeneratedTextWhenIntersects from 'components/editor/behaviors/clearGeneratedTextWhenIntersects';
 import unindentNestedListItemOnStart from 'components/editor/behaviors/unindentNestedListItemOnStart';
 import mergeFromRootToPreviousLastListItem from 'components/editor/behaviors/mergeFromRootToPreviousLastListItem';
 import mergeStartOfListItemWithSublistToPrevItem from 'components/editor/behaviors/mergeStartOfListItemWithSublistToPrevItem';
@@ -21,6 +22,11 @@ export default function handleChoicesBackspaceKey(
   }
 
   if (!Range.isCollapsed(selection)) {
+    runEditorBehaviors(
+      editor,
+      [ChoicesType.Wrapper],
+      [clearGeneratedTextWhenIntersects]
+    );
     return false;
   }
 
