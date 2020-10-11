@@ -7,6 +7,7 @@ import onKeyDownData from 'components/elements/Data/onKeyDownData';
 import onKeyDownConclusion from 'components/elements/Conclusion/onKeyDownConclusion';
 import onKeyDownGoals from 'components/elements/Goals/onKeyDownGoals';
 import onKeyDownInversion from 'components/elements/Inversion/onKeyDownInversion';
+import onKeyDownIssueTree from 'components/elements/IssueTree/onKeyDownIssueTree';
 import onKeyDownPeople from 'components/elements/People/onKeyDownPeople';
 import onKeyDownSimulation from 'components/elements/Simulation/onKeyDownSimulation';
 
@@ -31,6 +32,9 @@ export default function onElementKeyDown(
     return;
   }
   if (onKeyDownInversion(editor, event)) {
+    return;
+  }
+  if (onKeyDownIssueTree(editor, event)) {
     return;
   }
   if (onKeyDownPeople(editor, event)) {

@@ -43,6 +43,12 @@ import {
   InversionSublistItemParagraphElement,
 } from 'components/elements/Inversion/InversionElement';
 import {
+  IssueTreeElement,
+  IssueTreeToolElement,
+  IssueTreeTeamElement,
+  IssueTreeItemElement,
+} from 'components/elements/IssueTree/IssueTreeElement';
+import {
   PeopleElement,
   PeopleToolElement,
   PeopleTeamElement,
@@ -141,6 +147,12 @@ export default function Element(props: RenderElementProps): JSX.Element {
       return <InversionSublistItemElement {...props} />;
     case InversionElement.ItemSublistItemParagraph:
       return <InversionSublistItemParagraphElement {...props} />;
+    case IssueTreeElement.Tool:
+      return <IssueTreeToolElement {...props} />;
+    case IssueTreeElement.Team:
+      return <IssueTreeTeamElement {...props} />;
+    case IssueTreeElement.Item:
+      return <IssueTreeItemElement {...props} />;
     case PeopleElement.Tool:
       return <PeopleToolElement {...props} />;
     case PeopleElement.Team:

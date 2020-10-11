@@ -14,6 +14,7 @@ import { Node, Editor, Transforms, Range } from 'slate';
 import { CategorizerElement } from 'components/elements/Categorizer/CategorizerElement';
 import { EmotionElement } from 'components/elements/Emotion/EmotionElement';
 import { InversionElement } from 'components/elements/Inversion/InversionElement';
+import { IssueTreeElement } from 'components/elements/IssueTree/IssueTreeElement';
 import { PeopleElement } from 'components/elements/People/PeopleElement';
 import { SimulationElement } from 'components/elements/Simulation/SimulationElement';
 import { BasicElement } from 'components/elements/Element';
@@ -24,6 +25,7 @@ import insertCategorizerTool from 'components/elements/Categorizer/insertCategor
 import insertEmotionTool from 'components/elements/Emotion/insertEmotionTool';
 import insertGoalsTool from 'components/elements/Goals/insertGoalsTool';
 import insertInversionTool from 'components/elements/Inversion/insertInversionTool';
+import insertIssueTreeTool from 'components/elements/IssueTree/insertIssueTreeTool';
 import insertPeopleTool from 'components/elements/People/insertPeopleTool';
 import insertSimulationTool from 'components/elements/Simulation/insertSimulationTool';
 import { WidgetContext, WidgetType } from 'components/widgets/WidgetContext';
@@ -42,6 +44,7 @@ export enum CardId {
   ToolGoalsTimer,
   ToolInversion,
   ToolInversionTimer,
+  ToolIssueTree,
   ToolPeople,
   ToolSimulation,
   ToolSimulationTimer,
@@ -123,6 +126,12 @@ const cardData = {
     title: 'Spend 5 min on the Inversion Tool',
     description: 'Grow your mental model with new perspectives',
   },
+  [CardId.ToolIssueTree]: {
+    id: CardId.ToolIssueTree,
+    icon: '🌳',
+    title: 'Add the Issue Tree Tool',
+    description: 'Figure out your problems & solutions',
+  },
   [CardId.ToolPeople]: {
     id: CardId.ToolPeople,
     icon: '🧑🏾‍🚀',
@@ -199,7 +208,15 @@ function genHand(nodes: Node[], usedCardIds: Set<CardId>): Card[] {
     pool.push([cardData[CardId.ToolSimulation], 0.5]);
   }
 
-  // Insert: Data Tool
+  // Insert: Issue Tree Tool
+  const issueTreeTool = nodes.find(
+    (node) => node.type === IssueTreeElement.Tool
+  );
+  if (issueTreeTool == null) {
+    pool.push([cardData[CardId.ToolIssueTree], 0.5]);
+  }
+
+  // Insert: People Tool
   const peopleTool = nodes.find((node) => node.type === PeopleElement.Tool);
   if (peopleTool == null) {
     pool.push([cardData[CardId.ToolPeople], 0.5]);
@@ -431,6 +448,11 @@ export default function CardHandler(props: Props): JSX.Element {
         case CardId.ToolInversion:
           prepareForAddTool(editor);
           insertInversionTool(editor);
+          ReactEditor.focus(editor);
+          break;
+        case CardId.ToolIssueTree:
+          prepareForAddTool(editor);
+          insertIssueTreeTool(editor);
           ReactEditor.focus(editor);
           break;
         case CardId.ToolPeople:

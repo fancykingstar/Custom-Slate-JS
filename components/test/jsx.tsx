@@ -6,6 +6,7 @@ import { DataElement } from 'components/elements/Data/DataElement';
 import { ConclusionElement } from 'components/elements/Conclusion/ConclusionElement';
 import { GoalsElementType } from 'components/elements/Goals/GoalsElementType';
 import { InversionElement } from 'components/elements/Inversion/InversionElement';
+import { IssueTreeElement } from 'components/elements/IssueTree/IssueTreeElement';
 import { PeopleElement } from 'components/elements/People/PeopleElement';
 import { SimulationElement } from 'components/elements/Simulation/SimulationElement';
 
@@ -38,6 +39,9 @@ export default createHyperscript({
     inversionSublistItemParagraph: {
       type: InversionElement.ItemSublistItemParagraph,
     },
+    issueTree: { type: IssueTreeElement.Tool },
+    issueTreeTeam: { type: IssueTreeElement.Team },
+    issueTreeItem: { type: IssueTreeElement.Item },
     people: { type: PeopleElement.Tool },
     peopleTeam: { type: PeopleElement.Team },
     peopleItem: { type: PeopleElement.Item },

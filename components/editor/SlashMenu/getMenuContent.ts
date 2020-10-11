@@ -26,6 +26,7 @@ export enum ToolName {
   Emotion = 'Emotion',
   Goals = 'Goals',
   Inversion = 'Inversion',
+  IssueTree = 'Issue Tree',
   People = 'People',
   ProsCons = 'Pros / Cons',
   Simulation = 'Simulation Thinking',
@@ -98,6 +99,13 @@ const slashMenuItems: MenuItem[] = [
     description: 'Predict the future you want',
     icon: '🧠',
     keywords: ['2nd Order Thinking'],
+  },
+  {
+    category: Category.Thinking,
+    title: ToolName.IssueTree,
+    description: 'Organize problems & solutions',
+    icon: '🌳',
+    keywords: ['how issue mckinsey why'],
   },
   {
     category: Category.Context,

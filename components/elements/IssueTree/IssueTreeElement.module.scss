@@ -1,0 +1,392 @@
+.team {
+  font-size: 1.6rem;
+  font-weight: 500;
+  line-height: 2.4rem;
+  margin: 0.4rem 0 0;
+  padding: 0.6rem 0 0.6rem;
+  position: relative;
+}
+
+.team:first-of-type {
+  margin-top: 0;
+}
+
+.itemWrapper {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.placeholder {
+  color: var(--color-bg-gray-primary);
+  font-weight: 400;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.itemContent {
+  border-radius: var(--deca-border-radius);
+  font-size: 1.6rem;
+  line-height: 2.4rem;
+  overflow: hidden;
+  padding: 0.4rem 0 0.4rem 3.2rem;
+  position: relative;
+  transition: background-color 200ms ease;
+}
+
+@for $i from 0 through 10 {
+  .indent-#{$i} .itemContent {
+    margin-left: #{($i + 1) * 1.5}em;
+  }
+}
+
+.itemWrapper.role-high .itemContent {
+}
+
+.itemWrapper.role-med .itemContent {
+}
+
+.itemWrapper.role-low .itemContent {
+}
+
+.roleDot {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0;
+  height: 3rem;
+  left: 0.1rem;
+  outline: 0;
+  position: absolute;
+  top: calc(50% - 1.5rem);
+  user-select: none;
+  width: 3rem;
+}
+
+.roleDot::before {
+  background: var(--color-white);
+  border: dashed 0.1rem transparent;
+  border-radius: 50%;
+  content: '';
+  display: block;
+  height: 1.2rem;
+  position: absolute;
+  left: calc(50% - 0.6rem);
+  top: calc(50% - 0.6rem);
+  transform-origin: center;
+  transition: transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  width: 1.2rem;
+}
+
+.roleDot.role-high::before {
+  background: var(--color-blue);
+  transform: rotate(90deg);
+}
+
+.roleDot.role-high:hover::before {
+  transform: scale(1.5) rotate(90deg);
+}
+
+.roleDot.role-high:active::before {
+  transform: scale(1.4) rotate(90deg);
+  transition: none;
+}
+
+.roleDot.role-med::before {
+  background: var(--color-blue);
+  opacity: 60%;
+  transform: scale(0.7) rotate(60deg);
+}
+
+.roleDot.role-med:hover::before {
+  transform: scale(1.4) rotate(60deg);
+}
+
+.roleDot.role-med:active::before {
+  transform: scale(1.3) rotate(60deg);
+  transition: none;
+}
+
+.roleDot.role-low::before {
+  background: var(--color-blue);
+  opacity: 20%;
+  transform: scale(0.4) rotate(30deg);
+}
+
+.roleDot.role-low:hover::before {
+  transform: scale(1.3) rotate(30deg);
+}
+
+.roleDot.role-low:active::before {
+  transform: scale(1.2) rotate(30deg);
+  transition: none;
+}
+
+.roleDot.role-none::before {
+  background: var(--color-white);
+  border-color: var(--color-blue);
+  transform: scale(0.7);
+}
+
+.roleDot.role-none:hover::before {
+  transform: scale(1.2);
+}
+
+.roleDot.role-none:active::before {
+  transform: scale(1.1);
+  transition: none;
+}
+
+.menu {
+  align-items: center;
+  background: var(--color-white-overlay);
+  backdrop-filter: blur(0.4rem);
+  border-radius: var(--deca-border-radius);
+  box-shadow: 0 0.1rem 1rem var(--color-shadow-large),
+    0 0.1rem 0.3rem var(--color-shadow-small),
+    0 0 0 0.1rem var(--color-bg-gray-secondary);
+  display: flex;
+  height: 3.2rem;
+  list-style: none;
+  padding: 0;
+  position: absolute;
+  right: -0.8rem;
+  top: 0;
+  transform: translateX(100%);
+  user-select: none;
+  z-index: 10;
+}
+
+.menu li {
+  height: 100%;
+  position: relative;
+}
+
+.menu li::after {
+  background: var(--color-bg-gray-tertiary);
+  content: '';
+  display: block;
+  height: 3.2rem;
+  right: 0;
+  position: absolute;
+  top: 0;
+  width: 0.1rem;
+}
+
+.menu li:last-child::after {
+  display: none;
+}
+
+.menu button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 0;
+  height: 100%;
+  outline: 0;
+  position: relative;
+  width: 3.6rem;
+}
+
+.menu button:hover {
+  background: rgba(20, 20, 20, 0.08);
+}
+
+.menu .menuDelete {
+  background: url(/img/icons/16x16/trash.svg) no-repeat center;
+}
+
+.roleMenu {
+  align-items: center;
+  display: flex;
+  padding: 0;
+}
+
+.roleMenu input[type='radio'] {
+  display: none;
+}
+
+.roleMenu label {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  font-size: 0;
+  height: 3.2rem;
+  justify-content: center;
+  width: 3.2rem;
+}
+
+.roleMenuItem {
+  position: relative;
+}
+
+.roleMenuItem:first-of-type {
+  padding-left: 0.6rem;
+  width: 3.8rem;
+}
+
+.roleMenuItem:last-of-type {
+  padding-right: 0.6rem;
+  width: 3.8rem;
+}
+
+.roleMenuIcon {
+  position: relative;
+  transition: transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.roleMenuItem:hover .roleMenuIcon {
+  transform: scale(1.5);
+}
+
+.roleMenuItem:active .roleMenuIcon {
+  transform: scale(1.4);
+}
+
+.noneCircle {
+  transition: stroke 100ms ease;
+}
+
+input[type='radio']:checked + .roleMenuItem .noneCircle {
+  stroke: var(--color-white);
+}
+
+.noneCircleBG {
+  opacity: 0;
+  transition: opacity 100ms ease;
+}
+
+.lowCircle,
+.medCircle,
+.highCircle {
+  transition: stroke 100ms ease, fill 100ms ease;
+}
+
+input[type='radio']:checked + .roleMenuItem .noneCircleBG {
+  opacity: 1;
+}
+
+input[type='radio']:checked + .roleMenuItem .lowCircle {
+  stroke: none;
+  fill: var(--color-blue);
+  opacity: 20%;
+}
+
+input[type='radio']:checked + .roleMenuItem .medCircle {
+  stroke: none;
+  fill: var(--color-blue);
+  opacity: 60%;
+}
+
+input[type='radio']:checked + .roleMenuItem .highCircle {
+  stroke: none;
+  fill: var(--color-blue);
+}
+
+.tooltip {
+  background: var(--color-black-overlay);
+  backdrop-filter: blur(1rem);
+  border-radius: var(--deca-border-radius);
+  bottom: -100%;
+  color: var(--color-white);
+  display: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+  padding: 0.4rem 0.6rem;
+  pointer-events: none;
+  position: absolute;
+  text-align: center;
+  z-index: 10;
+}
+
+.tooltip::before {
+  background: var(--color-black-overlay);
+  border-top-left-radius: 0.6rem;
+  border-top-right-radius: 0.6rem;
+  content: '';
+  display: block;
+  height: 0.3rem;
+  left: 50%;
+  position: absolute;
+  top: -0.3rem;
+  transform: translateX(-50%);
+  width: 0.6rem;
+}
+
+.roleMenuItem:hover .tooltip {
+  display: block;
+}
+
+.legend {
+  align-items: center;
+  border-top: solid 0.1rem var(--color-bg-gray-tertiary);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 1.3rem 0 0 0;
+  position: relative;
+  user-select: none;
+}
+
+.legendItem {
+  border-radius: var(--deca-border-radius);
+  color: var(--color-bg-gray-primary);
+  font-size: 1.2rem;
+  overflow: hidden;
+  padding: 0.4rem 3.2rem 0.4rem 3.2rem;
+  position: relative;
+}
+
+.legendDot {
+  background: none;
+  border: none;
+  font-size: 0;
+  height: 3rem;
+  left: 0.1rem;
+  outline: 0;
+  position: absolute;
+  top: calc(50% - 1.5rem);
+  user-select: none;
+  width: 3rem;
+}
+
+.legendDot::before {
+  background: var(--color-white);
+  border: dashed 0.1rem transparent;
+  border-radius: 50%;
+  content: '';
+  display: block;
+  height: 1.2rem;
+  position: absolute;
+  left: calc(50% - 0.6rem);
+  top: calc(50% - 0.6rem);
+  transform-origin: center;
+  transition: transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  width: 1.2rem;
+}
+
+.legendDot.role-high::before {
+  background: var(--color-blue);
+  transform: rotate(90deg);
+}
+
+.legendDot.role-med::before {
+  background: var(--color-blue);
+  opacity: 60%;
+  transform: scale(0.7) rotate(60deg);
+}
+
+.legendDot.role-low::before {
+  background: var(--color-blue);
+  opacity: 20%;
+  transform: scale(0.4) rotate(30deg);
+}
+
+.legendDot.role-none::before {
+  background: var(--color-white);
+  border-color: var(--color-blue);
+  transform: scale(0.7);
+}
