@@ -1,6 +1,7 @@
 import { Editor, Transforms, Node } from 'slate';
 import {
   IssueTreeElement,
+  IssueTreeKind,
   IssueTreeRole,
 } from 'components/elements/IssueTree/IssueTreeElement';
 
@@ -44,6 +45,7 @@ export default function insertIssueTreeTool(editor: Editor): void {
       timestamp: Date.now(),
       type: IssueTreeElement.Tool,
       children: nodes,
+      kind: IssueTreeKind.Problem,
     },
     {
       at: paragraphPath,

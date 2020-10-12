@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { Range, Element, Editor, Transforms, Path, Node } from 'slate';
 import {
   RenderElementProps,
   useSelected,
@@ -6,7 +7,7 @@ import {
   ReactEditor,
   useFocused,
 } from 'slate-react';
-import { Range, Element, Editor, Transforms, Path, Node } from 'slate';
+
 import ToolWrapper from 'components/editor/ToolWrapper';
 import { IconToolIssueTree } from 'components/icons/IconTool';
 import InlinePlaceholder from 'components/editor/InlinePlaceholder';
@@ -16,6 +17,11 @@ export enum IssueTreeElement {
   Tool = 'issueTree',
   Team = 'issueTree-team',
   Item = 'issueTree-item',
+}
+
+export enum IssueTreeKind {
+  Problem = 'problem',
+  Solution = 'solution',
 }
 
 export enum IssueTreeRole {
@@ -51,16 +57,73 @@ function renderLegend(): JSX.Element {
 }
 
 export function IssueTreeToolElement(props: RenderElementProps): JSX.Element {
-  const { attributes, children } = props;
+  const { attributes, children, element } = props;
+
+  const editor = useEditor();
+  const toolPath = ReactEditor.findPath(editor, element);
+
   return (
     <ToolWrapper
       attributes={attributes}
       name="Issue Tree"
       icon={<IconToolIssueTree />}
     >
+      <KindSelector
+        kind={IssueTreeKind[element.kind as keyof typeof IssueTreeKind]}
+        toolPath={toolPath}
+      />
       {children}
       {renderLegend()}
     </ToolWrapper>
+  );
+}
+
+function setKind(editor: Editor, kind: IssueTreeKind, path: Path): void {
+  Transforms.setNodes(editor, { kind }, { at: path });
+}
+
+interface KindSelectorProps {
+  kind: IssueTreeKind;
+  toolPath: Path;
+}
+
+function KindSelector(props: KindSelectorProps): JSX.Element {
+  const { kind, toolPath } = props;
+  const editor = useEditor();
+
+  return (
+    <h3 className={styles.kind} contentEditable={false}>
+      <div className={styles.sectionWrapper}>
+        <div className={styles.section}>
+          <div className={styles.buttons}>
+            <label className={styles.button}>
+              <input
+                type="radio"
+                name="kind"
+                value={IssueTreeKind.Problem}
+                checked={kind === IssueTreeKind.Problem}
+                onChange={() =>
+                  setKind(editor, IssueTreeKind.Problem, toolPath)
+                }
+              />
+              <span>Problems</span>
+            </label>
+            <label className={styles.button}>
+              <input
+                type="radio"
+                name="kind"
+                value={IssueTreeKind.Solution}
+                checked={kind === IssueTreeKind.Solution}
+                onChange={() =>
+                  setKind(editor, IssueTreeKind.Solution, toolPath)
+                }
+              />
+              <span>Solutions</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </h3>
   );
 }
 
