@@ -68,10 +68,7 @@ export function IssueTreeToolElement(props: RenderElementProps): JSX.Element {
       name="Issue Tree"
       icon={<IconToolIssueTree />}
     >
-      <KindSelector
-        kind={IssueTreeKind[element.kind as keyof typeof IssueTreeKind]}
-        toolPath={toolPath}
-      />
+      <KindSelector kind={element.kind as string} toolPath={toolPath} />
       {children}
       {renderLegend()}
     </ToolWrapper>
@@ -83,7 +80,7 @@ function setKind(editor: Editor, kind: IssueTreeKind, path: Path): void {
 }
 
 interface KindSelectorProps {
-  kind: IssueTreeKind;
+  kind: string;
   toolPath: Path;
 }
 
