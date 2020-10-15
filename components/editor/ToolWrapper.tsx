@@ -25,6 +25,7 @@ export default function ToolWrapper(props: Props): JSX.Element {
           {...dragHandleProps}
           contentEditable={false}
           className={`${styles.dragHandle} ${selected ? styles.active : ''}`}
+          tabIndex={-1}
         >
           <Drag />
         </div>
