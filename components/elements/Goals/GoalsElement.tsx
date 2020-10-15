@@ -2,6 +2,7 @@ import { Element, NodeEntry, Path } from 'slate';
 import { RenderElementProps, useEditor, ReactEditor } from 'slate-react';
 
 import ToolWrapper from 'components/editor/ToolWrapper';
+import { dragHandleProps } from 'components/editor/drag';
 import { Magic, isMagical } from 'components/editor/Magic';
 import InlinePlaceholder from 'components/editor/InlinePlaceholder';
 import { reduceDisabled } from 'components/editor/Sensitivity';
@@ -16,11 +17,18 @@ import { readyToGenerateGoal } from 'components/intelligence/generator';
 
 import styles from './GoalsElement.module.scss';
 
-export function GoalsWrapperElement(props: RenderElementProps): JSX.Element {
+export function GoalsWrapperElement(
+  props: RenderElementProps & dragHandleProps
+): JSX.Element {
   const { attributes, children } = props;
 
   return (
-    <ToolWrapper attributes={attributes} name="Goals" icon={<IconToolGoals />}>
+    <ToolWrapper
+      {...props}
+      attributes={attributes}
+      name="Goals"
+      icon={<IconToolGoals />}
+    >
       <ul className={styles.list}>{children}</ul>
     </ToolWrapper>
   );

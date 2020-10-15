@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import { Editor, Node, Path } from 'slate';
 import { RenderElementProps, useEditor, ReactEditor } from 'slate-react';
+import { dragHandleProps } from 'components/editor/drag';
 import ToolWrapper from 'components/editor/ToolWrapper';
 import { IconToolConclusion } from 'components/icons/IconTool';
 import InlinePlaceholder from 'components/editor/InlinePlaceholder';
@@ -17,11 +18,12 @@ export enum ConclusionElement {
 }
 
 export function ConclusionWrapperElement(
-  props: RenderElementProps
+  props: RenderElementProps & dragHandleProps
 ): JSX.Element {
   const { attributes, children } = props;
   return (
     <ToolWrapper
+      {...props}
       attributes={attributes}
       name="Conclusion"
       icon={<IconToolConclusion />}

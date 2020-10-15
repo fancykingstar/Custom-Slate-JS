@@ -4,6 +4,7 @@ import { RenderElementProps, useEditor, ReactEditor } from 'slate-react';
 import InlinePlaceholder from 'components/editor/InlinePlaceholder';
 import { Magic, isMagical } from 'components/editor/Magic';
 import ToolWrapper from 'components/editor/ToolWrapper';
+import { dragHandleProps } from 'components/editor/drag';
 import {
   getFirstTextString,
   getTitleEntry,
@@ -16,11 +17,14 @@ import { readyToGenerateChoice } from 'components/intelligence/generator';
 
 import styles from './ChoicesElement.module.scss';
 
-export function ChoicesWrapperElement(props: RenderElementProps): JSX.Element {
+export function ChoicesWrapperElement(
+  props: RenderElementProps & dragHandleProps
+): JSX.Element {
   const { attributes, children } = props;
 
   return (
     <ToolWrapper
+      {...props}
       attributes={attributes}
       name="Choices"
       icon={<IconToolChoices />}

@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect } from 'react';
 import { RenderElementProps } from 'slate-react';
+import { dragHandleProps } from 'components/editor/drag';
 import { Context, DecisionCategory } from 'components/context';
 import ToolWrapper from 'components/editor/ToolWrapper';
 import { IconToolCategorizer } from 'components/icons/IconTool';
@@ -20,7 +21,7 @@ export enum CategorizerComplexity {
 }
 
 export function CategorizerWrapperElement(
-  props: RenderElementProps
+  props: RenderElementProps & dragHandleProps
 ): JSX.Element {
   const { attributes, children } = props;
   // TODO: Move categorizer state to slate doc structure to preserve data on undo
@@ -66,6 +67,7 @@ export function CategorizerWrapperElement(
 
   return (
     <ToolWrapper
+      {...props}
       attributes={attributes}
       name="Categorizer"
       icon={<IconToolCategorizer />}

@@ -2,9 +2,16 @@
 
 import { useMemo, useState, useCallback, useRef, useContext } from 'react';
 import { withHistory } from 'slate-history';
-import { Slate, Editable, withReact, RenderLeafProps } from 'slate-react';
+import {
+  Slate,
+  Editable,
+  withReact,
+  RenderLeafProps,
+  ReactEditor,
+} from 'slate-react';
 import { createEditor, Editor, Node, Range, Transforms, Path } from 'slate';
 import { isKeyHotkey } from 'is-hotkey';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import { Context } from 'components/context';
 import Element from 'components/elements/Element';
@@ -83,8 +90,64 @@ export default function DecaEditor(props: Props): JSX.Element {
   ] = useSlashMenu(editor);
 
   const renderElement = useCallback(
-    (elementProps) => <Element {...elementProps} />,
-    []
+    (elementProps) => {
+      const { type } = elementProps.element;
+      const makeDraggable =
+        type.includes('-wrapper') ||
+        type === 'people' ||
+        type === 'simulation' ||
+        type === 'data';
+      if (makeDraggable) {
+        const slateIndexArray = ReactEditor.findPath(
+          editor,
+          elementProps.element
+        );
+        // if ReactEditor.findPath fails to produce a valid array here, drag / drog will not work
+        const slateIndex =
+          (slateIndexArray.length && slateIndexArray[0]) ||
+          elementProps.element.id;
+        return (
+          <Draggable
+            key={elementProps.element.id}
+            draggableId={String(slateIndex)}
+            index={slateIndex}
+          >
+            {(provided) => {
+              return (
+                <div ref={provided.innerRef} {...provided.draggableProps}>
+                  <Element
+                    {...elementProps}
+                    dragHandleProps={provided.dragHandleProps}
+                  />
+                </div>
+              );
+            }}
+          </Draggable>
+        );
+      }
+      return <Element {...elementProps} />;
+    },
+    [value]
+  );
+
+  const onDragEnd = useCallback(
+    (result) => {
+      const { destination, source } = result;
+      const outOfBounds = !destination;
+      const draggedToSameLocation =
+        destination.droppableId === source.droppableId &&
+        destination.index === source.index;
+
+      if (outOfBounds || draggedToSameLocation) {
+        return;
+      }
+
+      Transforms.moveNodes(editor, {
+        at: [source.index],
+        to: [destination.index],
+      });
+    },
+    [editor]
   );
 
   // NOTE: This is not memoized due to a Slate bug
@@ -211,26 +274,35 @@ export default function DecaEditor(props: Props): JSX.Element {
         <Slate editor={editor} value={value} onChange={onChange}>
           <WidgetHandler>
             <CardHandler>
-              <Editable
-                id="editor"
-                autoFocus
-                className={styles.editor}
-                decorate={decorate}
-                onKeyDown={onKeyDown}
-                onSelect={onSelect}
-                renderElement={renderElement}
-                renderLeaf={renderLeaf}
-              />
-              <SlashMenu
-                activeIndex={slashMenuIndex}
-                content={slashMenuContent}
-                pos={slashMenuPos}
-                onAddTool={onAddTool}
-              />
-              <SlashPromptPlaceholder wrapperRef={wrapperRef} />
-              <Placeholder />
-              <CardHand />
-              <WidgetSidebar />
+              <DragDropContext onDragEnd={onDragEnd}>
+                <Droppable droppableId="droppable">
+                  {(provided) => (
+                    <div {...provided.droppableProps} ref={provided.innerRef}>
+                      <Editable
+                        id="editor"
+                        autoFocus
+                        className={styles.editor}
+                        decorate={decorate}
+                        onKeyDown={onKeyDown}
+                        onSelect={onSelect}
+                        renderElement={renderElement}
+                        renderLeaf={renderLeaf}
+                      />
+                      <SlashMenu
+                        activeIndex={slashMenuIndex}
+                        content={slashMenuContent}
+                        pos={slashMenuPos}
+                        onAddTool={onAddTool}
+                      />
+                      <SlashPromptPlaceholder wrapperRef={wrapperRef} />
+                      <Placeholder />
+                      <CardHand />
+                      <WidgetSidebar />
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </DragDropContext>
             </CardHandler>
           </WidgetHandler>
           <Indexer />

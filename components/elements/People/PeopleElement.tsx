@@ -7,6 +7,7 @@ import {
   useFocused,
 } from 'slate-react';
 import { Range, Element, Editor, Transforms, Path, Node } from 'slate';
+import { dragHandleProps } from 'components/editor/drag';
 import ToolWrapper from 'components/editor/ToolWrapper';
 import { IconToolPeople } from 'components/icons/IconTool';
 import InlinePlaceholder from 'components/editor/InlinePlaceholder';
@@ -50,10 +51,13 @@ function renderLegend(): JSX.Element {
   );
 }
 
-export function PeopleToolElement(props: RenderElementProps): JSX.Element {
+export function PeopleToolElement(
+  props: RenderElementProps & dragHandleProps
+): JSX.Element {
   const { attributes, children } = props;
   return (
     <ToolWrapper
+      {...props}
       attributes={attributes}
       name="People"
       icon={<IconToolPeople />}

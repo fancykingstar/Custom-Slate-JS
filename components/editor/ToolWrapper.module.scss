@@ -1,5 +1,5 @@
 .wrapper {
-  margin: 4rem 0;
+  margin: 4rem 0 8rem 0;
   position: relative;
 }
 
@@ -25,6 +25,13 @@
     inset 0 0 0 0.1rem var(--color-bg-gray-tertiary);
 }
 
+.wrapper.active h2 {
+  color: var(--color-fg-gray-primary);
+  path {
+    stroke: var(--color-fg-gray-primary);
+  }
+}
+
 .toolName {
   align-items: center;
   color: var(--color-bg-gray-primary);
@@ -32,16 +39,42 @@
   font-size: 1.1rem;
   font-weight: 500;
   justify-content: flex-end;
-  left: -4rem;
+  left: -1.7rem;
   line-height: 1.3rem;
   pointer-events: none;
   position: absolute;
   text-align: right;
-  top: 0;
-  transform: translateX(-100%);
+  top: -4.6rem;
   user-select: none;
 }
 
 .toolName svg {
   margin-right: 0.8rem;
+}
+
+.dragHandle {
+  position: absolute;
+  z-index: 1;
+  left: -40px;
+  top: -16px;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.2s linear;
+  cursor: drag;
+
+  circle {
+    fill: var(--color-bg-gray-primary);
+  }
+}
+
+.dragHandle.active circle {
+  fill: var(--color-fg-gray-primary);
+}
+
+.dragHandle.active,
+.dragHandle:active,
+.dragHandle:hover,
+.wrapper:hover .dragHandle {
+  opacity: 1;
+  visibility: visible;
 }

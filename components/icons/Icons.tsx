@@ -141,3 +141,20 @@ export function ZapOff(): JSX.Element {
     </svg>
   );
 }
+
+export function Drag(): JSX.Element {
+  return (
+    <svg viewBox="-1 -0.5 3 3" height="24px" width="24px">
+      <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+        <g fill="#000000">
+          <circle cx="0" cy="0" r="0.2" />
+          <circle cx="0" cy="1" r="0.2" />
+          <circle cx="0" cy="2" r="0.2" />
+          <circle cx="1" cy="0" r="0.2" />
+          <circle cx="1" cy="1" r="0.2" />
+          <circle cx="1" cy="2" r="0.2" />
+        </g>
+      </g>
+    </svg>
+  );
+}

@@ -8,6 +8,7 @@ import {
 } from 'slate-react';
 import { Range, Element, Editor, Transforms, Path, Node } from 'slate';
 import ToolWrapper from 'components/editor/ToolWrapper';
+import { dragHandleProps } from 'components/editor/drag';
 import { IconToolSimulation } from 'components/icons/IconTool';
 import InlinePlaceholder from 'components/editor/InlinePlaceholder';
 import styles from './SimulationElement.module.scss';
@@ -52,10 +53,13 @@ function renderLegend(): JSX.Element {
   );
 }
 
-export function SimulationToolElement(props: RenderElementProps): JSX.Element {
+export function SimulationToolElement(
+  props: RenderElementProps & dragHandleProps
+): JSX.Element {
   const { attributes, children } = props;
   return (
     <ToolWrapper
+      {...props}
       attributes={attributes}
       name="Simulation"
       icon={<IconToolSimulation />}

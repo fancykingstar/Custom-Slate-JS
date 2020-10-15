@@ -1,6 +1,7 @@
 import { RenderElementProps, useEditor, ReactEditor } from 'slate-react';
 import { Path } from 'slate';
 import ToolWrapper from 'components/editor/ToolWrapper';
+import { dragHandleProps } from 'components/editor/drag';
 import { IconToolInversion } from 'components/icons/IconTool';
 import InlinePlaceholder from 'components/editor/InlinePlaceholder';
 import styles from './InversionElement.module.scss';
@@ -15,12 +16,13 @@ export enum InversionElement {
 }
 
 export function InversionWrapperElement(
-  props: RenderElementProps
+  props: RenderElementProps & dragHandleProps
 ): JSX.Element {
   const { attributes, children } = props;
 
   return (
     <ToolWrapper
+      {...props}
       attributes={attributes}
       name="Inversion"
       icon={<IconToolInversion />}

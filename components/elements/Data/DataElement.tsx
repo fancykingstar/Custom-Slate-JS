@@ -9,6 +9,7 @@ import {
 import { Range, Element, Editor, Transforms, Path, Node } from 'slate';
 import ToolWrapper from 'components/editor/ToolWrapper';
 import { IconToolData } from 'components/icons/IconTool';
+import { dragHandleProps } from 'components/editor/drag';
 import InlinePlaceholder from 'components/editor/InlinePlaceholder';
 import styles from './DataElement.module.scss';
 
@@ -52,10 +53,17 @@ function renderLegend(): JSX.Element {
   );
 }
 
-export function DataToolElement(props: RenderElementProps): JSX.Element {
+export function DataToolElement(
+  props: RenderElementProps & dragHandleProps
+): JSX.Element {
   const { attributes, children } = props;
   return (
-    <ToolWrapper attributes={attributes} name="Data" icon={<IconToolData />}>
+    <ToolWrapper
+      {...props}
+      attributes={attributes}
+      name="Data"
+      icon={<IconToolData />}
+    >
       {children}
       {renderLegend()}
     </ToolWrapper>

@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 import { RenderElementProps } from 'slate-react';
+import { dragHandleProps } from 'components/editor/drag';
 import ToolWrapper from 'components/editor/ToolWrapper';
 import { IconToolEmotion } from 'components/icons/IconTool';
 import styles from './EmotionElement.module.scss';
@@ -247,7 +248,9 @@ function getRemoveTer(
   };
 }
 
-export function EmotionWrapperElement(props: RenderElementProps): JSX.Element {
+export function EmotionWrapperElement(
+  props: RenderElementProps & dragHandleProps
+): JSX.Element {
   const { attributes, children } = props;
 
   const [bag, setBag] = useState<string[]>([]);
@@ -348,6 +351,7 @@ export function EmotionWrapperElement(props: RenderElementProps): JSX.Element {
 
   return (
     <ToolWrapper
+      {...props}
       attributes={attributes}
       name="Emotion"
       icon={<IconToolEmotion />}
