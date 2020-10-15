@@ -108,7 +108,7 @@ export default function DecaEditor(props: Props): JSX.Element {
           elementProps.element.id;
         return (
           <Draggable
-            key={elementProps.element.id}
+            key={String(slateIndexArray)}
             draggableId={String(slateIndex)}
             index={slateIndex}
           >
