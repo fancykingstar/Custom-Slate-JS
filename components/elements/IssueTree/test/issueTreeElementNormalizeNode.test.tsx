@@ -19,9 +19,9 @@ describe('IssueTree Tool: Normalizer', () => {
       {
         input: (
           <editor>
-            <issueTreeTeam>
+            <issueTreeQuestion>
               <cursor />
-            </issueTreeTeam>
+            </issueTreeQuestion>
           </editor>
         ),
         output: (
@@ -39,9 +39,9 @@ describe('IssueTree Tool: Normalizer', () => {
         input: (
           <editor>
             <p>
-              <issueTreeTeam>
+              <issueTreeQuestion>
                 <cursor />
-              </issueTreeTeam>
+              </issueTreeQuestion>
             </p>
           </editor>
         ),
@@ -92,9 +92,9 @@ describe('IssueTree Tool: Normalizer', () => {
           <editor>
             <title>Title</title>
             <issueTree>
-              <issueTreeTeam>
+              <issueTreeQuestion>
                 <cursor />
-              </issueTreeTeam>
+              </issueTreeQuestion>
             </issueTree>
           </editor>
         ),

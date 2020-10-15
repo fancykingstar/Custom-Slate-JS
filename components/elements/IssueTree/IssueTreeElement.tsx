@@ -15,7 +15,7 @@ import styles from './IssueTreeElement.module.scss';
 
 export enum IssueTreeElement {
   Tool = 'issueTree',
-  Team = 'issueTree-team',
+  Question = 'issueTree-question',
   Item = 'issueTree-item',
 }
 
@@ -68,7 +68,7 @@ export function IssueTreeToolElement(props: RenderElementProps): JSX.Element {
       name="Issue Tree"
       icon={<IconToolIssueTree />}
     >
-      <KindSelector kind={element.kind as string} toolPath={toolPath} />
+      <KindSelector kind={element.kind as IssueTreeKind} toolPath={toolPath} />
       {children}
       {renderLegend()}
     </ToolWrapper>
@@ -80,7 +80,7 @@ function setKind(editor: Editor, kind: IssueTreeKind, path: Path): void {
 }
 
 interface KindSelectorProps {
-  kind: string;
+  kind: IssueTreeKind;
   toolPath: Path;
 }
 
@@ -124,14 +124,40 @@ function KindSelector(props: KindSelectorProps): JSX.Element {
   );
 }
 
-export function IssueTreeTeamElement(props: RenderElementProps): JSX.Element {
+function getKind(editor: ReactEditor, here: Node): IssueTreeKind {
+  const path = ReactEditor.findPath(editor, here);
+  if (path.length === 0) {
+    return IssueTreeKind.Problem;
+  }
+
+  const toolPath = path.slice(0, 1);
+  const [tool] = Editor.node(editor, toolPath);
+  return tool.kind as IssueTreeKind;
+}
+
+export function IssueTreeQuestionElement(
+  props: RenderElementProps
+): JSX.Element {
   const { attributes, children, element } = props;
 
+  const editor = useEditor();
+  const kind = getKind(editor, element);
+
+  let prefix = 'Why ';
+  let placeholder = 'does…';
+  if (kind === IssueTreeKind.Solution) {
+    prefix = 'How ';
+    placeholder = 'can…';
+  }
+
   return (
-    <h3 {...attributes} className={styles.team}>
+    <h3 {...attributes} className={styles.question}>
+      <span className={styles.questionPrefix} contentEditable={false}>
+        {prefix}
+      </span>
       {children}
-      <InlinePlaceholder element={element} blurChildren="Team">
-        What team or group of issueTree should be involved?
+      <InlinePlaceholder element={element} blurChildren="…">
+        {placeholder}
       </InlinePlaceholder>
     </h3>
   );
@@ -182,11 +208,14 @@ export function IssueTreeItemElement(props: RenderElementProps): JSX.Element {
     const parentPath = nodePath.slice(0, nodePath.length - 1);
 
     // Find the first previous node which is has lower indent or
-    // is a team element
+    // is a question element
     let parentNode: Node | null = null;
     for (let i = nodeIndex - 1; i >= 0; i -= 1) {
       const [node] = Editor.node(editor, parentPath.concat(i));
-      if (node.type === IssueTreeElement.Team || node.indent === indent - 1) {
+      if (
+        node.type === IssueTreeElement.Question ||
+        node.indent === indent - 1
+      ) {
         parentNode = node;
         break;
       }

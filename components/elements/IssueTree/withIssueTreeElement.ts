@@ -38,7 +38,7 @@ function convertItemToTeam(editor: Editor, at: Path): void {
   Transforms.setNodes(
     editor,
     {
-      type: IssueTreeElement.Team,
+      type: IssueTreeElement.Question,
       children: [],
     },
     {
@@ -92,12 +92,12 @@ const withIssueTreeElement = (editor: ReactEditor): ReactEditor => {
       parentPath.concat(parentNode.children.length - 1)
     );
 
-    if (node.type === IssueTreeElement.Team) {
+    if (node.type === IssueTreeElement.Question) {
       const nextNode = Editor.next(editor, {
         at: nodePath,
       });
       const nextNodeIsTeam =
-        nextNode != null && nextNode[0].type === IssueTreeElement.Team;
+        nextNode != null && nextNode[0].type === IssueTreeElement.Question;
 
       // Create new sibling list item if there's nothing after, or no list items after
       if (!nodeIsEmpty && (nodeIsLastChild || nextNodeIsTeam)) {
@@ -237,7 +237,7 @@ const withIssueTreeElement = (editor: ReactEditor): ReactEditor => {
     if (
       Editor.isBlock(editor, node) &&
       path.length > 0 &&
-      (node.type === IssueTreeElement.Team ||
+      (node.type === IssueTreeElement.Question ||
         node.type === IssueTreeElement.Item)
     ) {
       const parentPath = Path.parent(path);
@@ -284,12 +284,12 @@ const withIssueTreeElement = (editor: ReactEditor): ReactEditor => {
     ) {
       // Rule: Tool must always have a first-child choice element
       const firstChild = children[0];
-      if (firstChild.type !== IssueTreeElement.Team) {
+      if (firstChild.type !== IssueTreeElement.Question) {
         if (Editor.isBlock(editor, firstChild)) {
           Transforms.setNodes(
             editor,
             {
-              type: IssueTreeElement.Team,
+              type: IssueTreeElement.Question,
             },
             {
               at: path.concat(0),
@@ -299,7 +299,7 @@ const withIssueTreeElement = (editor: ReactEditor): ReactEditor => {
           Transforms.wrapNodes(
             editor,
             {
-              type: IssueTreeElement.Team,
+              type: IssueTreeElement.Question,
               children: [],
             },
             {
@@ -315,14 +315,14 @@ const withIssueTreeElement = (editor: ReactEditor): ReactEditor => {
       // Rule: Tool can only have choice, item children
       children.forEach((childNode, index) => {
         if (
-          childNode.type !== IssueTreeElement.Team &&
+          childNode.type !== IssueTreeElement.Question &&
           childNode.type !== IssueTreeElement.Item
         ) {
           if (Editor.isBlock(editor, childNode)) {
             Transforms.setNodes(
               editor,
               {
-                type: IssueTreeElement.Team,
+                type: IssueTreeElement.Question,
               },
               {
                 at: path.concat(index),
@@ -332,7 +332,7 @@ const withIssueTreeElement = (editor: ReactEditor): ReactEditor => {
             Transforms.wrapNodes(
               editor,
               {
-                type: IssueTreeElement.Team,
+                type: IssueTreeElement.Question,
                 children: [],
               },
               {

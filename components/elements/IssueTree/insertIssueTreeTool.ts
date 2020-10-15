@@ -26,7 +26,7 @@ export default function insertIssueTreeTool(editor: Editor): void {
 
   const nodes: Node[] = [];
   nodes.push({
-    type: IssueTreeElement.Team,
+    type: IssueTreeElement.Question,
     children: [{ text: '' }],
   });
   nodes.push({
@@ -37,7 +37,7 @@ export default function insertIssueTreeTool(editor: Editor): void {
   });
 
   let newSelection = paragraphPath;
-  newSelection = newSelection.concat([1, 0]);
+  newSelection = newSelection.concat([0, 0]);
 
   Transforms.insertNodes(
     editor,

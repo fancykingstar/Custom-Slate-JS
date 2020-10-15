@@ -40,7 +40,7 @@ export default createHyperscript({
       type: InversionElement.ItemSublistItemParagraph,
     },
     issueTree: { type: IssueTreeElement.Tool },
-    issueTreeTeam: { type: IssueTreeElement.Team },
+    issueTreeQuestion: { type: IssueTreeElement.Question },
     issueTreeItem: { type: IssueTreeElement.Item },
     people: { type: PeopleElement.Tool },
     peopleTeam: { type: PeopleElement.Team },

@@ -22,9 +22,9 @@ describe('IssueTree Tool: Delete Backward', () => {
           <editor>
             <title>Title</title>
             <issueTree>
-              <issueTreeTeam>
+              <issueTreeQuestion>
                 <cursor />
-              </issueTreeTeam>
+              </issueTreeQuestion>
             </issueTree>
           </editor>
         ),
@@ -45,9 +45,9 @@ describe('IssueTree Tool: Delete Backward', () => {
           <editor>
             <title>Title</title>
             <issueTree>
-              <issueTreeTeam>
+              <issueTreeQuestion>
                 <cursor />
-              </issueTreeTeam>
+              </issueTreeQuestion>
               <issueTreeItem>Item 1</issueTreeItem>
             </issueTree>
           </editor>
@@ -56,9 +56,9 @@ describe('IssueTree Tool: Delete Backward', () => {
           <editor>
             <title>Title</title>
             <issueTree>
-              <issueTreeTeam>
+              <issueTreeQuestion>
                 <cursor />
-              </issueTreeTeam>
+              </issueTreeQuestion>
               <issueTreeItem>Item 1</issueTreeItem>
             </issueTree>
           </editor>
@@ -71,7 +71,7 @@ describe('IssueTree Tool: Delete Backward', () => {
         input: (
           <editor>
             <issueTree>
-              <issueTreeTeam>Team 1</issueTreeTeam>
+              <issueTreeQuestion>Team 1</issueTreeQuestion>
               <issueTreeItem>
                 <cursor />
                 Item 1
@@ -82,10 +82,10 @@ describe('IssueTree Tool: Delete Backward', () => {
         output: (
           <editor>
             <issueTree>
-              <issueTreeTeam>
+              <issueTreeQuestion>
                 Team 1<cursor />
                 Item 1
-              </issueTreeTeam>
+              </issueTreeQuestion>
             </issueTree>
           </editor>
         ),
@@ -97,21 +97,21 @@ describe('IssueTree Tool: Delete Backward', () => {
         input: (
           <editor>
             <issueTree>
-              <issueTreeTeam>Team 1</issueTreeTeam>
-              <issueTreeTeam>
+              <issueTreeQuestion>Team 1</issueTreeQuestion>
+              <issueTreeQuestion>
                 <cursor />
                 Team 2
-              </issueTreeTeam>
+              </issueTreeQuestion>
             </issueTree>
           </editor>
         ),
         output: (
           <editor>
             <issueTree>
-              <issueTreeTeam>
+              <issueTreeQuestion>
                 Team 1<cursor />
                 Team 2
-              </issueTreeTeam>
+              </issueTreeQuestion>
             </issueTree>
           </editor>
         ),
@@ -123,7 +123,7 @@ describe('IssueTree Tool: Delete Backward', () => {
         input: (
           <editor>
             <issueTree>
-              <issueTreeTeam>Team 1</issueTreeTeam>
+              <issueTreeQuestion>Team 1</issueTreeQuestion>
               <issueTreeItem>Item 1</issueTreeItem>
               <issueTreeItem>
                 <cursor />
@@ -135,7 +135,7 @@ describe('IssueTree Tool: Delete Backward', () => {
         output: (
           <editor>
             <issueTree>
-              <issueTreeTeam>Team 1</issueTreeTeam>
+              <issueTreeQuestion>Team 1</issueTreeQuestion>
               <issueTreeItem>
                 Item 1<cursor />
                 Item 2
@@ -151,19 +151,19 @@ describe('IssueTree Tool: Delete Backward', () => {
         input: (
           <editor>
             <issueTree>
-              <issueTreeTeam>Team 1</issueTreeTeam>
+              <issueTreeQuestion>Team 1</issueTreeQuestion>
               <issueTreeItem>Item 1</issueTreeItem>
-              <issueTreeTeam>
+              <issueTreeQuestion>
                 <cursor />
                 Team 2
-              </issueTreeTeam>
+              </issueTreeQuestion>
             </issueTree>
           </editor>
         ),
         output: (
           <editor>
             <issueTree>
-              <issueTreeTeam>Team 1</issueTreeTeam>
+              <issueTreeQuestion>Team 1</issueTreeQuestion>
               <issueTreeItem>
                 Item 1<cursor />
                 Team 2
@@ -179,7 +179,7 @@ describe('IssueTree Tool: Delete Backward', () => {
         input: (
           <editor>
             <issueTree>
-              <issueTreeTeam>Team 1</issueTreeTeam>
+              <issueTreeQuestion>Team 1</issueTreeQuestion>
             </issueTree>
             <p>
               <cursor />
@@ -189,9 +189,9 @@ describe('IssueTree Tool: Delete Backward', () => {
         output: (
           <editor>
             <issueTree>
-              <issueTreeTeam>
+              <issueTreeQuestion>
                 Team 1<cursor />
-              </issueTreeTeam>
+              </issueTreeQuestion>
             </issueTree>
             <p>
               <text />
@@ -206,7 +206,7 @@ describe('IssueTree Tool: Delete Backward', () => {
         input: (
           <editor>
             <issueTree>
-              <issueTreeTeam>Team 1</issueTreeTeam>
+              <issueTreeQuestion>Team 1</issueTreeQuestion>
               <issueTreeItem>Item 1</issueTreeItem>
             </issueTree>
             <p>
@@ -217,7 +217,7 @@ describe('IssueTree Tool: Delete Backward', () => {
         output: (
           <editor>
             <issueTree>
-              <issueTreeTeam>Team 1</issueTreeTeam>
+              <issueTreeQuestion>Team 1</issueTreeQuestion>
               <issueTreeItem>
                 Item 1<cursor />
               </issueTreeItem>
@@ -235,7 +235,7 @@ describe('IssueTree Tool: Delete Backward', () => {
         input: (
           <editor>
             <issueTree>
-              <issueTreeTeam>Team 1</issueTreeTeam>
+              <issueTreeQuestion>Team 1</issueTreeQuestion>
               <issueTreeItem>
                 <cursor />
                 Item 1
@@ -246,10 +246,10 @@ describe('IssueTree Tool: Delete Backward', () => {
         output: (
           <editor>
             <issueTree>
-              <issueTreeTeam>
+              <issueTreeQuestion>
                 Team 1<cursor />
                 Item 1
-              </issueTreeTeam>
+              </issueTreeQuestion>
             </issueTree>
           </editor>
         ),
@@ -261,7 +261,7 @@ describe('IssueTree Tool: Delete Backward', () => {
         input: (
           <editor>
             <issueTree>
-              <issueTreeTeam>Team 1</issueTreeTeam>
+              <issueTreeQuestion>Team 1</issueTreeQuestion>
               <issueTreeItem indent={5} probability={IssueTreeRole.Responsible}>
                 <text />
               </issueTreeItem>
@@ -275,7 +275,7 @@ describe('IssueTree Tool: Delete Backward', () => {
         output: (
           <editor>
             <issueTree>
-              <issueTreeTeam>Team 1</issueTreeTeam>
+              <issueTreeQuestion>Team 1</issueTreeQuestion>
               <issueTreeItem indent={5} probability={IssueTreeRole.Responsible}>
                 <cursor />
                 Item 1

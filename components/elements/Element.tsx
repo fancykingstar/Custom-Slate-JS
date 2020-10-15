@@ -45,7 +45,7 @@ import {
 import {
   IssueTreeElement,
   IssueTreeToolElement,
-  IssueTreeTeamElement,
+  IssueTreeQuestionElement,
   IssueTreeItemElement,
 } from 'components/elements/IssueTree/IssueTreeElement';
 import {
@@ -149,8 +149,8 @@ export default function Element(props: RenderElementProps): JSX.Element {
       return <InversionSublistItemParagraphElement {...props} />;
     case IssueTreeElement.Tool:
       return <IssueTreeToolElement {...props} />;
-    case IssueTreeElement.Team:
-      return <IssueTreeTeamElement {...props} />;
+    case IssueTreeElement.Question:
+      return <IssueTreeQuestionElement {...props} />;
     case IssueTreeElement.Item:
       return <IssueTreeItemElement {...props} />;
     case PeopleElement.Tool:

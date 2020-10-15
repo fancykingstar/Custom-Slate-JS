@@ -103,7 +103,7 @@
   display: block;
 }
 
-.team {
+.question {
   font-size: 1.6rem;
   font-weight: 500;
   line-height: 2.4rem;
@@ -112,8 +112,12 @@
   position: relative;
 }
 
-.team:first-of-type {
+.question:first-of-type {
   margin-top: 0;
+}
+
+.questionPrefix {
+  user-select: none;
 }
 
 .itemWrapper {
