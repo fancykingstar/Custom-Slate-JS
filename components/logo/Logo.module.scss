@@ -1,0 +1,25 @@
+.logo {
+  align-items: center;
+  cursor: default;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.symbol {
+  color: var(--color-black);
+  cursor: default;
+  font-family: var(--font-symbol);
+  font-size: 3.6rem;
+  line-height: 3.6rem;
+  text-decoration: none;
+}
+
+.wordmark {
+  color: var(--color-black);
+  font-family: var(--font-wordmark);
+  font-size: 2rem;
+  line-height: 2rem;
+  letter-spacing: -0.04em;
+  margin: 0.8rem 0 0 1rem;
+}

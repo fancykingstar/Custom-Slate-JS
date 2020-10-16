@@ -1,18 +1,15 @@
-import Link from 'next/link';
 import SidebarToggle from 'components/sidebar/SidebarToggle';
 import { useContext } from 'react';
 import { Context } from 'components/context';
 import styles from './Header.module.scss';
+import Logo from './logo/Logo';
 
 export default function Header(): JSX.Element {
   return (
     <header className={styles.header}>
       <div className={styles.left}>
         <SidebarToggle />
-        <div className={styles.logo}>
-          <span className={styles.symbol}>D</span>
-          <span className={styles.wordmark}>Deca</span>
-        </div>
+        <Logo />
       </div>
       <div className={styles.right}>
         <Category />

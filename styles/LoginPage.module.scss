@@ -1,0 +1,43 @@
+.loginPage {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // background: url(/img/login-background.jpg) no-repeat fixed;
+  background-color: #edeffe;
+};
+
+.loginFormWrapper {
+  max-width: 23rem;
+  background-color:rgba(18, 173, 175, 0.5);
+  padding: 1.5rem;
+  border-radius: var(--deca-border-radius);
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.5rem;
+
+  & input {
+    height: 2.5rem;
+    padding: 0 1rem;
+    margin-bottom: 1rem;
+    border: none;
+
+    &:active, &:focus {
+      outline: none;
+    }
+  }
+}
+
+.loginSubmit {
+  background-color: transparent;
+  border: none;
+
+  &:active, &:focus {
+    outline: none;
+  }
+}
