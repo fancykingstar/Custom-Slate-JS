@@ -1,5 +1,5 @@
 .wrapper {
-  margin: 4rem 0 8rem 0;
+  margin: 7rem 0 10rem 0;
   position: relative;
 }
 
@@ -39,12 +39,12 @@
   font-size: 1.1rem;
   font-weight: 500;
   justify-content: flex-end;
-  left: -1.7rem;
+  left: 0;
   line-height: 1.3rem;
   pointer-events: none;
   position: absolute;
   text-align: right;
-  top: -4.6rem;
+  top: -5.6rem;
   user-select: none;
 }
 
@@ -55,15 +55,16 @@
 .dragHandle {
   position: absolute;
   z-index: 1;
-  left: -40px;
-  top: -16px;
-  visibility: hidden;
-  opacity: 0;
-  transition: visibility 0s, opacity 0.2s linear;
+  left: -45px;
+  width: 35px;
+  top: 0;
   cursor: drag;
 
   circle {
     fill: var(--color-bg-gray-primary);
+    opacity: 0;
+    transition: visibility 0s, opacity 0.2s linear;
+    visibility: hidden;
   }
 }
 
@@ -75,6 +76,8 @@
 .dragHandle:active,
 .dragHandle:hover,
 .wrapper:hover .dragHandle {
-  opacity: 1;
-  visibility: visible;
+  circle {
+    opacity: 1;
+    visibility: visible;
+  }
 }

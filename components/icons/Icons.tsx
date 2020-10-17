@@ -144,7 +144,7 @@ export function ZapOff(): JSX.Element {
 
 export function Drag(): JSX.Element {
   return (
-    <svg viewBox="-1 -0.5 3 3" height="24px" width="24px">
+    <svg viewBox="-1 -0.5 3 3" height="16px" width="16px">
       <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
         <g fill="#000000">
           <circle cx="0" cy="0" r="0.2" />
