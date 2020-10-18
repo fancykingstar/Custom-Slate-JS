@@ -103,6 +103,153 @@
   display: block;
 }
 
+.line {
+  align-items: center;
+  display: flex;
+  position: relative;
+  width: 100%;
+}
+
+.line:hover > .pinButton {
+  opacity: 1;
+}
+
+.pinQuestion {
+  margin: 0 2.4rem 0 0;
+}
+
+.pinButton {
+  align-items: center;
+  color: var(--color-bg-gray-secondary);
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-start;
+  opacity: 0;
+  padding: 0.4rem 0.4rem 0.4rem 0.4rem;
+  position: relative;
+}
+
+.pinButton::before {
+  background: var(--color-shadow-large);
+  border-radius: var(--deca-border-radius);
+  content: '';
+  display: block;
+  height: 100%;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  transition: opacity 100ms ease;
+  width: 100%;
+}
+
+.pinButton:hover {
+  color: var(--color-blue);
+  opacity: 1;
+}
+
+.pinButton:hover::before {
+  opacity: 1;
+}
+
+.pinButton input {
+  display: none;
+}
+
+.pinButton span {
+  position: relative;
+}
+
+.pinButton span::before {
+  border: solid 0.2rem var(--color-fg-gray-primary);
+  border-radius: var(--deca-border-radius);
+  content: '';
+  display: block;
+  height: 1.6rem;
+  left: -2.4rem;
+  position: absolute;
+  top: 0.1rem;
+  width: 1.6rem;
+}
+
+.pinButton span::after {
+  background: var(--color-fg-gray-primary);
+  border-radius: var(--deca-border-radius);
+  content: '';
+  display: none;
+  height: 0.8rem;
+  left: -2rem;
+  position: absolute;
+  top: 0.5rem;
+  width: 0.8rem;
+}
+
+.pinnedButton {
+  align-items: center;
+  color: var(--color-black);
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-start;
+  opacity: 1;
+  padding: 0.4rem 0.4rem 0.4rem 0.4rem;
+  position: relative;
+}
+
+.pinnedButton::before {
+  background: var(--color-shadow-large);
+  border-radius: var(--deca-border-radius);
+  content: '';
+  display: block;
+  height: 100%;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  transition: opacity 100ms ease;
+  width: 100%;
+}
+
+.pinnedButton:hover {
+  color: var(--color-blue);
+  opacity: 1;
+}
+
+.pinnedButton:hover::before {
+  opacity: 1;
+}
+
+.pinnedButton input {
+  display: none;
+}
+
+.pinnedButton span {
+  position: relative;
+}
+
+.pinnedButton span::before {
+  border: solid 0.2rem var(--color-fg-gray-primary);
+  border-radius: var(--deca-border-radius);
+  content: '';
+  display: block;
+  height: 1.6rem;
+  left: -2.4rem;
+  position: absolute;
+  top: 0.1rem;
+  width: 1.6rem;
+}
+
+.pinnedButton span::after {
+  background: var(--color-fg-gray-primary);
+  border-radius: var(--deca-border-radius);
+  content: '';
+  display: none;
+  height: 0.8rem;
+  left: -2rem;
+  position: absolute;
+  top: 0.5rem;
+  width: 0.8rem;
+}
+
 .question {
   font-size: 1.6rem;
   font-weight: 500;
@@ -498,4 +645,8 @@ input[type='radio']:checked + .roleMenuItem .highCircle {
   background: var(--color-white);
   border-color: var(--color-blue);
   transform: scale(0.7);
+}
+
+.boldText {
+  font-weight: 700;
 }

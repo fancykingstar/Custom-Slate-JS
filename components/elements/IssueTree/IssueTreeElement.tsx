@@ -8,7 +8,11 @@ import {
   useFocused,
 } from 'slate-react';
 
+import { DrawingPinIcon } from '@modulz/radix-icons';
+
 import ToolWrapper from 'components/editor/ToolWrapper';
+import { dragHandleProps } from 'components/editor/drag';
+import { Target } from 'components/icons/Icons';
 import { IconToolIssueTree } from 'components/icons/IconTool';
 import InlinePlaceholder from 'components/editor/InlinePlaceholder';
 import styles from './IssueTreeElement.module.scss';
@@ -56,7 +60,9 @@ function renderLegend(): JSX.Element {
   );
 }
 
-export function IssueTreeToolElement(props: RenderElementProps): JSX.Element {
+export function IssueTreeToolElement(
+  props: RenderElementProps & dragHandleProps
+): JSX.Element {
   const { attributes, children, element } = props;
 
   const editor = useEditor();
@@ -64,13 +70,14 @@ export function IssueTreeToolElement(props: RenderElementProps): JSX.Element {
 
   return (
     <ToolWrapper
+      {...props}
       attributes={attributes}
       name="Issue Tree"
       icon={<IconToolIssueTree />}
     >
       <KindSelector kind={element.kind as IssueTreeKind} toolPath={toolPath} />
       {children}
-      {renderLegend()}
+      {/* renderLegend() */}
     </ToolWrapper>
   );
 }
@@ -124,15 +131,71 @@ function KindSelector(props: KindSelectorProps): JSX.Element {
   );
 }
 
-function getKind(editor: ReactEditor, here: Node): IssueTreeKind {
-  const path = ReactEditor.findPath(editor, here);
-  if (path.length === 0) {
+function getKind(editor: ReactEditor, here: Path): IssueTreeKind {
+  if (here.length === 0) {
     return IssueTreeKind.Problem;
   }
 
-  const toolPath = path.slice(0, 1);
+  const toolPath = here.slice(0, 1);
   const [tool] = Editor.node(editor, toolPath);
   return tool.kind as IssueTreeKind;
+}
+
+function toPinPath(pin: Path): Path {
+  return pin.slice(1, pin.length);
+}
+
+function getPin(editor: ReactEditor, here: Path): Path | null {
+  if (here.length === 0) {
+    return null;
+  }
+
+  const toolPath = here.slice(0, 1);
+  const [tool] = Editor.node(editor, toolPath);
+
+  if (!tool.pin) {
+    return null;
+  }
+
+  return tool.pin as Path;
+}
+
+function parentIsPin(
+  editor: ReactEditor,
+  pin: Path,
+  here: Path,
+  current: Node
+): boolean {
+  const toolPath = here.slice(0, 1);
+  const [pinElement] = Editor.node(editor, [...toolPath, ...pin]);
+
+  if (current.indent === 0) {
+    return pinElement.type === IssueTreeElement.Question;
+  }
+  return current.indent === (pinElement.indent as number) + 1;
+}
+
+function togglePin(editor: ReactEditor, here: Path): void {
+  if (here.length <= 1) {
+    return;
+  }
+
+  const pin = getPin(editor, here);
+  let newPin: Path | null = toPinPath(here);
+  if (pin != null && Path.equals(pin, toPinPath(here))) {
+    newPin = null;
+  }
+
+  const toolPath = here.slice(0, 1);
+  Transforms.setNodes(
+    editor,
+    {
+      pin: newPin,
+    },
+    {
+      at: toolPath,
+    }
+  );
 }
 
 export function IssueTreeQuestionElement(
@@ -141,7 +204,8 @@ export function IssueTreeQuestionElement(
   const { attributes, children, element } = props;
 
   const editor = useEditor();
-  const kind = getKind(editor, element);
+  const path = ReactEditor.findPath(editor, element);
+  const kind = getKind(editor, path);
 
   let prefix = 'Why ';
   let placeholder = 'does…';
@@ -150,16 +214,40 @@ export function IssueTreeQuestionElement(
     placeholder = 'can…';
   }
 
+  const pin = getPin(editor, path);
+  const pinned = pin != null && Path.equals(pin, toPinPath(path));
+
+  let pinStyles = [styles.pinQuestion, styles.pinButton];
+  if (pinned) {
+    pinStyles = [styles.pinQuestion, styles.pinnedButton];
+  }
+
+  const textStyles = [styles.question];
+  if (pinned) {
+    textStyles.push(styles.boldText);
+  }
+
   return (
-    <h3 {...attributes} className={styles.question}>
-      <span className={styles.questionPrefix} contentEditable={false}>
-        {prefix}
-      </span>
-      {children}
-      <InlinePlaceholder element={element} blurChildren="…">
-        {placeholder}
-      </InlinePlaceholder>
-    </h3>
+    <div className={styles.line}>
+      <label className={pinStyles.join(' ')} contentEditable={false}>
+        <input
+          type="button"
+          name="pin"
+          value={path.toString()}
+          onClick={togglePin.bind(null, editor, path)}
+        />
+        <DrawingPinIcon />
+      </label>
+      <h3 {...attributes} className={textStyles.join(' ')}>
+        <span className={styles.questionPrefix} contentEditable={false}>
+          {prefix}
+        </span>
+        <InlinePlaceholder element={element} blurChildren="…">
+          {placeholder}
+        </InlinePlaceholder>
+        {children}
+      </h3>
+    </div>
   );
 }
 
@@ -238,17 +326,41 @@ export function IssueTreeItemElement(props: RenderElementProps): JSX.Element {
     }
   }
 
+  const pin = getPin(editor, nodePath);
+  const pinned = pin != null && Path.equals(pin, toPinPath(nodePath));
+
+  let pinStyles = [styles.pinQuestion, styles.pinButton];
+  if (pinned) {
+    pinStyles = [styles.pinQuestion, styles.pinnedButton];
+  }
+
+  const textStyles = [styles.itemContent];
+  if (pinned || (pin != null && parentIsPin(editor, pin, nodePath, element))) {
+    textStyles.push(styles.boldText);
+  }
+
   return (
-    <ul {...attributes} className={classNames.join(' ')}>
-      <li className={styles.itemContent}>
-        {children}
-        <RoleDot element={element} setRole={setRole} />
-        <InlinePlaceholder element={element}>
-          {placeholderText}
-        </InlinePlaceholder>
-      </li>
-      {isNodeFocused ? <Menu element={element} setRole={setRole} /> : null}
-    </ul>
+    <div className={styles.line}>
+      <label className={pinStyles.join(' ')} contentEditable={false}>
+        <input
+          type="button"
+          name="pin"
+          value={nodePath.toString()}
+          onClick={togglePin.bind(null, editor, nodePath)}
+        />
+        <DrawingPinIcon />
+      </label>
+      <ul {...attributes} className={classNames.join(' ')}>
+        <li className={textStyles.join(' ')}>
+          {children}
+          <RoleDot element={element} setRole={setRole} />
+          <InlinePlaceholder element={element}>
+            {placeholderText}
+          </InlinePlaceholder>
+        </li>
+        {/* isNodeFocused ? <Menu element={element} setRole={setRole} /> : null */}
+      </ul>
+    </div>
   );
 }
 

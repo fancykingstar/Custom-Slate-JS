@@ -94,9 +94,10 @@ export default function DecaEditor(props: Props): JSX.Element {
       const { type } = elementProps.element;
       const makeDraggable =
         type.includes('-wrapper') ||
+        type === 'data' ||
+        type === 'issueTree' ||
         type === 'people' ||
-        type === 'simulation' ||
-        type === 'data';
+        type === 'simulation';
       if (makeDraggable) {
         const slateIndexArray = ReactEditor.findPath(
           editor,

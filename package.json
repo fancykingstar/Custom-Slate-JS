@@ -23,6 +23,7 @@
     ]
   },
   "dependencies": {
+    "@modulz/radix-icons": "^3.1.0",
     "@types/fast-levenshtein": "^0.0.1",
     "@types/react-beautiful-dnd": "^13.0.0",
     "axios": "^0.20.0",

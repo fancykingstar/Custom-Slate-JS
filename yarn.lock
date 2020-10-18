@@ -1366,6 +1366,11 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
+"@modulz/radix-icons@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@modulz/radix-icons/-/radix-icons-3.1.0.tgz#c8f0b3457fd4e0cc47dafea436d525eeb72e6993"
+  integrity sha512-excH405b7GDP5qm6vbwNpBQ+CAqSvcN4uLD6TUp5eIHWrxljEfwE56QusQf3NYAIcc/ec914ZS+HLlq1Rx2D2Q==
+
 "@next/env@9.5.5":
   version "9.5.5"
   resolved "https://registry.yarnpkg.com/@next/env/-/env-9.5.5.tgz#db993649ec6e619e34a36de90dc2baa52fc5280f"
