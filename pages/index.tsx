@@ -5,9 +5,10 @@ import DecaEditor from 'components/DecaEditor';
 import { Env, EnvProps } from 'components/env';
 import { Context, DecisionCategory } from 'components/context';
 import Sidebar from 'components/sidebar/Sidebar';
-import Header from 'components/Header';
+import Header from 'components/header/Header';
 import { reducer, Store, Action } from 'store/store';
 import styles from 'styles/Home.module.scss';
+import { HeaderContext } from 'components/header/HeaderContext';
 
 export async function getServerSideProps(): Promise<EnvProps> {
   const openaiKey: string = process.env.OPENAI_KEY
@@ -30,6 +31,8 @@ export default function Home(env: Env): JSX.Element {
     decisionCategory,
     setDecisionCategory,
   ] = useState<DecisionCategory | null>(null);
+  const [viewMode, setViewMode] = useState('private');
+  const [viewableElements, setViewableElements] = useState([] as Array<string>);
 
   const [state, dispatch] = useReducer(reducer, {
     sidebarVisible: false,
@@ -56,6 +59,12 @@ export default function Home(env: Env): JSX.Element {
 
   const { activeDocId: activeDoc, docs } = state;
   const currentDoc = docs.find((doc) => doc.id === activeDoc) ?? null;
+  const headerContextValue = {
+    setViewMode,
+    setViewableElements,
+    viewMode,
+    viewableElements,
+  };
 
   return (
     <>
@@ -97,15 +106,17 @@ export default function Home(env: Env): JSX.Element {
         }}
       >
         <Store.Provider value={value}>
-          <Header />
-          <div className={styles.wrapper}>
-            <Sidebar />
-            <main className={styles.main}>
-              {activeDoc != null && currentDoc != null ? (
-                <DecaEditor key={activeDoc} doc={currentDoc} />
-              ) : null}
-            </main>
-          </div>
+          <HeaderContext.Provider value={headerContextValue}>
+            <Header />
+            <div className={styles.wrapper}>
+              <Sidebar />
+              <main className={styles.main}>
+                {activeDoc != null && currentDoc != null ? (
+                  <DecaEditor key={activeDoc} doc={currentDoc} />
+                ) : null}
+              </main>
+            </div>
+          </HeaderContext.Provider>
         </Store.Provider>
       </Context.Provider>
     </>

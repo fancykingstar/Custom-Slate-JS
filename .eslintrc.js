@@ -42,6 +42,8 @@ module.exports = {
     "@typescript-eslint/ban-ts-comment": "off",
     // https://stackoverflow.com/questions/55807329/why-eslint-throws-no-unused-vars-for-typescript-interface
     "@typescript-eslint/no-unused-vars": "off",
+    // empty functions are rountinely used as default prop types
+    "@typescript-eslint/no-empty-function": "off",
   },
   settings: {
     react: {

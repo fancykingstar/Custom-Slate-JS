@@ -1,0 +1,51 @@
+.toggleLabel {
+  display: inline-block;
+  height: 2rem;
+  position: relative;
+  width: 4rem;
+}
+
+.toggleLabel input {
+  height: 0;
+  opacity: 0;
+  width: 0;
+}
+
+.toggleSpan {
+  background-color: var(--color-bg-gray-secondary);
+  bottom: 0;
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: .4s;
+}
+
+.toggleSpan:before {
+  background-color: white;
+  bottom: .4rem;
+  border-radius: 50%;
+  content: "";
+  height: 1.3rem;
+  left: .4rem;
+  position: absolute;
+  transition: .4s;
+  width: 1.3rem;
+}
+
+input:checked + .toggleSpan {
+  background-color: var(--color-blue);
+}
+
+input:checked + .toggleSpan:before {
+  transform: translateX(1.8rem);
+}
+
+.toggleSpan.toggleSpanContainer {
+  border-radius: .4rem;
+}
+
+.toggleSpan.toggleSpanContainer:before {
+  border-radius: .2rem;
+}

@@ -32,6 +32,10 @@
   }
 }
 
+.wrapper.muteBorder::before {
+  opacity: 0.2;
+}
+
 .toolName {
   align-items: center;
   color: var(--color-bg-gray-primary);
@@ -81,3 +85,16 @@
     visibility: visible;
   }
 }
+
+.elementToggle {
+  align-items: center;
+  display: flex;
+  position: absolute;
+  right: -1rem;
+  top: -5rem;
+}
+
+.lowVisibility {
+  opacity: 0.2;
+}
+
