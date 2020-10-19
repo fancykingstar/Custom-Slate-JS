@@ -2939,10 +2939,10 @@ compromise-sentences@^0.1.0:
   resolved "https://registry.yarnpkg.com/compromise-sentences/-/compromise-sentences-0.1.0.tgz#bb95ab06e05d5783ec8daed67735a171f7de47f7"
   integrity sha512-oKJBPncGoiWQnjyS0DdUWEJTAZpLzlMoHYp7mn2mcJ861/cW+DXtCbUusKYD20S2ipwGUMJgRGRNi3ccYEwRhg==
 
-compromise@^13.3.2:
-  version "13.3.2"
-  resolved "https://registry.yarnpkg.com/compromise/-/compromise-13.3.2.tgz#3be03f5798641229c69631105a612ccb62d31176"
-  integrity sha512-yBqGnwby+QcaUuS1B04+tMQxlnGZNHgzS7N/kSEJ4nggJcQllH8fCCrO2LLKeJ8DpHtStcdOlZTyLTN/p3d+kw==
+compromise@^13.6.0:
+  version "13.6.0"
+  resolved "https://registry.yarnpkg.com/compromise/-/compromise-13.6.0.tgz#eccb6c5ff9ca5012a819eafefe96393fcb238bc2"
+  integrity sha512-Bbdneeq0o+fFB/Kep1wovxBMcKTcTyHmTVGtj2ehQu15NNLDMw4nrDbsLFa7d8po4P19AuC9Hco2NDKg0AceWg==
   dependencies:
     efrt-unpack "2.2.0"
 
