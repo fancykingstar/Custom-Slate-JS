@@ -7,7 +7,11 @@ interface Props {
   containerStyle?: React.CSSProperties;
 }
 
-const Toggle = ({ containerStyle, onToggle, isActive = false }: Props) => {
+function Toggle({
+  containerStyle,
+  onToggle,
+  isActive = false,
+}: Props): JSX.Element {
   const [active, setIsActive] = useState(isActive);
   const onClick = () => {
     const newState = !active;
@@ -25,6 +29,6 @@ const Toggle = ({ containerStyle, onToggle, isActive = false }: Props) => {
       </label>
     </div>
   );
-};
+}
 
 export default Toggle;

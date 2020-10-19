@@ -4,7 +4,7 @@ import Toggle from '../atoms/toggle/Toggle';
 import { Eye, EyeSlash } from '../icons/Icons';
 import { useHeaderContext } from './HeaderContext';
 
-const HeaderViewToggle = () => {
+function HeaderViewToggle(): JSX.Element {
   const { viewMode, setViewMode } = useHeaderContext();
   const onToggle = (toggleState: boolean) => {
     if (toggleState) {
@@ -21,6 +21,6 @@ const HeaderViewToggle = () => {
       <Toggle onToggle={onToggle} />
     </div>
   );
-};
+}
 
 export default HeaderViewToggle;

@@ -14,4 +14,6 @@ export const HeaderContext = createContext<HeaderContext>({
   viewableElements: [],
 });
 
-export const useHeaderContext = () => useContext(HeaderContext);
+export function useHeaderContext(): HeaderContext {
+  return useContext<HeaderContext>(HeaderContext);
+}

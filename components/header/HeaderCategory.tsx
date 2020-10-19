@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { Context } from 'components/context';
 import styles from './Header.module.scss';
 
-const HeaderDecisionCategory = () => {
+function HeaderDecisionCategory(): JSX.Element | null {
   const { categorizer } = useContext(Context);
 
   if (categorizer.decisionCategory == null) {
@@ -19,6 +19,6 @@ const HeaderDecisionCategory = () => {
       <span>{`${categorizer.decisionCategory}`}</span>
     </div>
   );
-};
+}
 
 export default HeaderDecisionCategory;
