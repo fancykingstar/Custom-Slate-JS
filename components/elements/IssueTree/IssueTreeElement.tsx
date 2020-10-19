@@ -208,7 +208,7 @@ export function IssueTreeQuestionElement(
   const kind = getKind(editor, path);
 
   let prefix = 'Why ';
-  let placeholder = 'does…';
+  let placeholder = 'does / is …';
   if (kind === IssueTreeKind.Solution) {
     prefix = 'How ';
     placeholder = 'can…';
@@ -287,7 +287,12 @@ export function IssueTreeItemElement(props: RenderElementProps): JSX.Element {
   const isNodeFocused =
     selected && focused && selection != null && Range.isCollapsed(selection);
 
-  let placeholderText = 'Who should be involved?';
+  const path = ReactEditor.findPath(editor, element);
+  const kind = getKind(editor, path);
+  let placeholderText = 'Because…';
+  if (kind === IssueTreeKind.Solution) {
+    placeholderText = 'By…';
+  }
 
   const nodePath = ReactEditor.findPath(editor, element);
   const nodeIndex = nodePath[nodePath.length - 1];
@@ -319,10 +324,6 @@ export function IssueTreeItemElement(props: RenderElementProps): JSX.Element {
       const [prevNode] = Editor.node(editor, Path.previous(nodePath));
       const isFirstChildAtIndent =
         prevNode.indent === indent - 1 || prevNode.indent == null;
-
-      if (!isFirstChildAtIndent) {
-        placeholderText = 'Who else should be involved?';
-      }
     }
   }
 
