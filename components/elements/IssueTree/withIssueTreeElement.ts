@@ -50,7 +50,7 @@ function convertItemToTeam(editor: Editor, at: Path): void {
   });
 }
 
-function convertTeamToItem(editor: Editor, at: Path): void {
+function convertQuestionToItem(editor: Editor, at: Path): void {
   Transforms.setNodes(
     editor,
     {
@@ -93,30 +93,10 @@ const withIssueTreeElement = (editor: ReactEditor): ReactEditor => {
     );
 
     if (node.type === IssueTreeElement.Question) {
-      const nextNode = Editor.next(editor, {
-        at: nodePath,
-      });
-      const nextNodeIsTeam =
-        nextNode != null && nextNode[0].type === IssueTreeElement.Question;
-
-      // Create new sibling list item if there's nothing after, or no list items after
-      if (!nodeIsEmpty && (nodeIsLastChild || nextNodeIsTeam)) {
-        const nextNodePath = Path.next(nodePath);
-        insertBreak();
-        convertTeamToItem(editor, nextNodePath);
-        return;
-      }
-
-      // Exit the tool if list item is empty, at end, and unindented
-      if (nodeIsEmpty && nodeIsLastChild) {
-        Transforms.select(editor, Path.next(parentPath));
-
-        // Remove the node if it's not the first child
-        if (!nodeIsFirstChild) {
-          Transforms.removeNodes(editor, { at: nodePath });
-        }
-        return;
-      }
+      const nextNodePath = Path.next(nodePath);
+      insertBreak();
+      convertQuestionToItem(editor, nextNodePath);
+      return;
     }
 
     if (node.type === IssueTreeElement.Item) {
@@ -128,9 +108,19 @@ const withIssueTreeElement = (editor: ReactEditor): ReactEditor => {
         return;
       }
 
-      // Convert list item to choice if it's empty, at end, and unindented
+      // Delete item if it's empty, at end, and unindented.
       if (nodeIsEmpty && nodeIsLastChild && indent != null && indent <= 0) {
-        convertItemToTeam(editor, nodePath);
+        const insertPath = [nodePath[0] + 1];
+        Transforms.insertNodes(
+          editor,
+          {
+            type: BasicElement.Paragraph,
+            children: [{ text: '' }],
+          },
+          { at: insertPath }
+        );
+        Transforms.select(editor, insertPath);
+
         return;
       }
 

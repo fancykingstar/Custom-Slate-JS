@@ -22,7 +22,8 @@ describe('IssueTree Tool: Insert Break', () => {
           <editor>
             <issueTree>
               <issueTreeQuestion>
-                Team 1<cursor />
+                Question
+                <cursor />
               </issueTreeQuestion>
             </issueTree>
           </editor>
@@ -30,7 +31,7 @@ describe('IssueTree Tool: Insert Break', () => {
         output: (
           <editor>
             <issueTree>
-              <issueTreeQuestion>Team 1</issueTreeQuestion>
+              <issueTreeQuestion>Question</issueTreeQuestion>
               <issueTreeItem indent={0} probability={IssueTreeRole.None}>
                 <cursor />
               </issueTreeItem>
@@ -46,20 +47,20 @@ describe('IssueTree Tool: Insert Break', () => {
           <editor>
             <issueTree>
               <issueTreeQuestion>
-                Team 1<cursor />
+                Question 1<cursor />
               </issueTreeQuestion>
-              <issueTreeQuestion>Team 2</issueTreeQuestion>
+              <issueTreeQuestion>Question 2</issueTreeQuestion>
             </issueTree>
           </editor>
         ),
         output: (
           <editor>
             <issueTree>
-              <issueTreeQuestion>Team 1</issueTreeQuestion>
+              <issueTreeQuestion>Question 1</issueTreeQuestion>
               <issueTreeItem indent={0} probability={IssueTreeRole.None}>
                 <cursor />
               </issueTreeItem>
-              <issueTreeQuestion>Team 2</issueTreeQuestion>
+              <issueTreeQuestion>Question 2</issueTreeQuestion>
             </issueTree>
           </editor>
         ),
@@ -71,7 +72,7 @@ describe('IssueTree Tool: Insert Break', () => {
         input: (
           <editor>
             <issueTree>
-              <issueTreeQuestion>Team 1</issueTreeQuestion>
+              <issueTreeQuestion>Question 1</issueTreeQuestion>
               <issueTreeItem indent={0} probability={IssueTreeRole.None}>
                 Item 1<cursor />
               </issueTreeItem>
@@ -81,7 +82,7 @@ describe('IssueTree Tool: Insert Break', () => {
         output: (
           <editor>
             <issueTree>
-              <issueTreeQuestion>Team 1</issueTreeQuestion>
+              <issueTreeQuestion>Question 1</issueTreeQuestion>
               <issueTreeItem indent={0} probability={IssueTreeRole.None}>
                 Item 1
               </issueTreeItem>
@@ -100,7 +101,8 @@ describe('IssueTree Tool: Insert Break', () => {
           <editor>
             <issueTree>
               <issueTreeQuestion>
-                Team 1<cursor />
+                Question
+                <cursor />
               </issueTreeQuestion>
               <issueTreeItem indent={0} probability={IssueTreeRole.None}>
                 Item 1
@@ -111,10 +113,10 @@ describe('IssueTree Tool: Insert Break', () => {
         output: (
           <editor>
             <issueTree>
-              <issueTreeQuestion>Team 1</issueTreeQuestion>
-              <issueTreeQuestion>
+              <issueTreeQuestion>Question</issueTreeQuestion>
+              <issueTreeItem indent={0} probability={IssueTreeRole.None}>
                 <cursor />
-              </issueTreeQuestion>
+              </issueTreeItem>
               <issueTreeItem indent={0} probability={IssueTreeRole.None}>
                 Item 1
               </issueTreeItem>
@@ -124,7 +126,7 @@ describe('IssueTree Tool: Insert Break', () => {
       },
     ],
     [
-      'Exit issueTree tool if at end of last, empty choice',
+      'Create a new item if there is nothing but the empty question',
       {
         input: (
           <editor>
@@ -133,10 +135,6 @@ describe('IssueTree Tool: Insert Break', () => {
                 <cursor />
               </issueTreeQuestion>
             </issueTree>
-            {/* NOTE: Assume the existence of a trailing paragraph node */}
-            <p>
-              <text />
-            </p>
           </editor>
         ),
         output: (
@@ -145,10 +143,10 @@ describe('IssueTree Tool: Insert Break', () => {
               <issueTreeQuestion>
                 <text />
               </issueTreeQuestion>
+              <issueTreeItem indent={0} probability={IssueTreeRole.None}>
+                <cursor />
+              </issueTreeItem>
             </issueTree>
-            <p>
-              <cursor />
-            </p>
           </editor>
         ),
       },
@@ -159,7 +157,7 @@ describe('IssueTree Tool: Insert Break', () => {
         input: (
           <editor>
             <issueTree>
-              <issueTreeQuestion>Team 1</issueTreeQuestion>
+              <issueTreeQuestion>Question 1</issueTreeQuestion>
               <issueTreeItem indent={1} probability={IssueTreeRole.None}>
                 <cursor />
               </issueTreeItem>
@@ -169,7 +167,7 @@ describe('IssueTree Tool: Insert Break', () => {
         output: (
           <editor>
             <issueTree>
-              <issueTreeQuestion>Team 1</issueTreeQuestion>
+              <issueTreeQuestion>Question 1</issueTreeQuestion>
               <issueTreeItem indent={0} probability={IssueTreeRole.None}>
                 <cursor />
               </issueTreeItem>
@@ -184,7 +182,7 @@ describe('IssueTree Tool: Insert Break', () => {
         input: (
           <editor>
             <issueTree>
-              <issueTreeQuestion>Team 1</issueTreeQuestion>
+              <issueTreeQuestion>Question</issueTreeQuestion>
               <issueTreeItem indent={0} probability={IssueTreeRole.None}>
                 <cursor />
               </issueTreeItem>
@@ -194,11 +192,14 @@ describe('IssueTree Tool: Insert Break', () => {
         output: (
           <editor>
             <issueTree>
-              <issueTreeQuestion>Team 1</issueTreeQuestion>
-              <issueTreeQuestion>
-                <cursor />
-              </issueTreeQuestion>
+              <issueTreeQuestion>Question</issueTreeQuestion>
+              <issueTreeItem indent={0} probability={IssueTreeRole.None}>
+                <text />
+              </issueTreeItem>
             </issueTree>
+            <p>
+              <cursor />
+            </p>
           </editor>
         ),
       },
@@ -209,7 +210,7 @@ describe('IssueTree Tool: Insert Break', () => {
         input: (
           <editor>
             <issueTree>
-              <issueTreeQuestion>Team 1</issueTreeQuestion>
+              <issueTreeQuestion>Question 1</issueTreeQuestion>
               <issueTreeItem indent={3} probability={IssueTreeRole.Responsible}>
                 Item 1<cursor />
               </issueTreeItem>
@@ -219,7 +220,7 @@ describe('IssueTree Tool: Insert Break', () => {
         output: (
           <editor>
             <issueTree>
-              <issueTreeQuestion>Team 1</issueTreeQuestion>
+              <issueTreeQuestion>Question 1</issueTreeQuestion>
               <issueTreeItem indent={3} probability={IssueTreeRole.Responsible}>
                 Item 1
               </issueTreeItem>
