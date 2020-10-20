@@ -26,7 +26,7 @@ export default function onKeyDownGoals(
   }
 
   if (context != null) {
-    if (isKeyHotkey('mod+space', event)) {
+    if (isKeyHotkey('mod+enter', event)) {
       return handleGoalsCompletionKey(editor, context, event);
     }
   }

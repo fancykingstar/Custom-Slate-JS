@@ -26,7 +26,7 @@ export default function onKeyDownChoices(
   }
 
   if (context != null) {
-    if (isKeyHotkey('mod+space', event)) {
+    if (isKeyHotkey('mod+enter', event)) {
       return handleChoicesCompleteKey(editor, context, event);
     }
   }
