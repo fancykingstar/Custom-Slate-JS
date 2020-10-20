@@ -1,6 +1,7 @@
-import Logo from 'components/logo/Logo';
 import Head from 'next/head';
 import { useState } from 'react';
+import { Auth } from 'aws-amplify';
+import Logo from 'components/logo/Logo';
 import styles from 'styles/LoginPage.module.scss';
 
 export default function LoginPage(): JSX.Element {
@@ -16,8 +17,18 @@ export default function LoginPage(): JSX.Element {
     }
   };
 
+  const signIn = async () => {
+    try {
+      await Auth.signIn(email, password);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log({ err });
+    }
+  };
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    signIn();
   };
 
   return (
@@ -52,6 +63,9 @@ export default function LoginPage(): JSX.Element {
             <button type="submit" className={styles.loginSubmit}>
               Login
             </button>
+            <p className={styles.loginMessage}>
+              Don't have account? Please <a href="/signup">sign up</a>
+            </p>
           </form>
         </div>
       </div>

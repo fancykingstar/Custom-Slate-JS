@@ -3,7 +3,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  // background: url(/img/login-background.jpg) no-repeat fixed;
   background-color: #edeffe;
 };
 
@@ -39,5 +38,18 @@
 
   &:active, &:focus {
     outline: none;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.loginMessage {
+  font-size: 1.2rem;
+
+  a {
+    text-decoration: none;
+    color: var(--color-black);
   }
 }

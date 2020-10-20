@@ -1,5 +1,6 @@
 import { useState, useReducer, useMemo, useEffect } from 'react';
 import Head from 'next/head';
+import { GetServerSidePropsContext } from 'next';
 
 import DecaEditor from 'components/DecaEditor';
 import { Env, EnvProps } from 'components/env';
@@ -10,7 +11,9 @@ import { reducer, Store, Action } from 'store/store';
 import styles from 'styles/Home.module.scss';
 import { HeaderContext } from 'components/header/HeaderContext';
 
-export async function getServerSideProps(): Promise<EnvProps> {
+export async function getServerSideProps(
+  context: GetServerSidePropsContext
+): Promise<EnvProps> {
   const openaiKey: string = process.env.OPENAI_KEY
     ? process.env.OPENAI_KEY
     : (process.env.NEXT_PUBLIC_OPENAI_KEY as string);
