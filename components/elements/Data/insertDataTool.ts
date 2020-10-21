@@ -1,8 +1,10 @@
 import { Editor, Transforms, Node } from 'slate';
+
 import {
   DataElement,
   DataConfidence,
 } from 'components/elements/Data/DataElement';
+import { ToolName, trackInsertTool } from 'components/metrics';
 
 /**
  * Converts the node at the current selection into an Data tool.
@@ -51,4 +53,6 @@ export default function insertDataTool(editor: Editor): void {
   );
 
   Transforms.select(editor, newSelection);
+
+  trackInsertTool(ToolName.Data);
 }

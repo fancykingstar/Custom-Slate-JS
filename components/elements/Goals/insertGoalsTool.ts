@@ -1,5 +1,7 @@
 import { Editor, Transforms } from 'slate';
+
 import { GoalsElementType } from 'components/elements/Goals/GoalsElementType';
+import { ToolName, trackInsertTool } from 'components/metrics';
 
 /**
  * Converts the node at the current selection into a Choice tool.
@@ -38,4 +40,6 @@ export default function insertGoalsTool(editor: Editor): void {
       at: paragraphPath,
     }
   );
+
+  trackInsertTool(ToolName.Goals);
 }

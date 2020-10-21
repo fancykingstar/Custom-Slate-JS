@@ -1,5 +1,7 @@
 import { Editor, Transforms } from 'slate';
+
 import { InversionElement } from 'components/elements/Inversion/InversionElement';
+import { ToolName, trackInsertTool } from 'components/metrics';
 
 /**
  * Converts the node at the current selection into an Inversion tool.
@@ -38,4 +40,6 @@ export default function insertInversionTool(editor: Editor): void {
       at: paragraphPath,
     }
   );
+
+  trackInsertTool(ToolName.Inversion);
 }

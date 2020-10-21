@@ -1,9 +1,11 @@
 import { Editor, Transforms, Node } from 'slate';
+
 import {
   SimulationElement,
   SimulationImportance,
 } from 'components/elements/Simulation/SimulationElement';
 import { ChoicesType } from 'components/elements/Choices/ChoicesType';
+import { ToolName, trackInsertTool } from 'components/metrics';
 
 /**
  * Converts the node at the current selection into an Simulation tool.
@@ -77,4 +79,6 @@ export default function insertSimulationTool(editor: Editor): void {
   );
 
   Transforms.select(editor, newSelection);
+
+  trackInsertTool(ToolName.Simulation);
 }

@@ -67,8 +67,6 @@ export default function useSlashMenu(
 
       Transforms.select(editor, range);
 
-      // @ts-ignore
-      heap.track(`CreateTool-${item.title}`);
       if (item.title === ToolName.Categorizer) {
         insertCategorizerTool(editor);
       } else if (item.title === ToolName.Choices) {

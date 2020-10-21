@@ -1,5 +1,7 @@
 import { Editor, Transforms } from 'slate';
+
 import { EmotionElement } from 'components/elements/Emotion/EmotionElement';
+import { ToolName, trackInsertTool } from 'components/metrics';
 
 /**
  * Converts the node at the current selection into an Categorizer tool.
@@ -28,4 +30,6 @@ export default function insertEmotionTool(editor: Editor): void {
       at: paragraphPath,
     }
   );
+
+  trackInsertTool(ToolName.Emotion);
 }

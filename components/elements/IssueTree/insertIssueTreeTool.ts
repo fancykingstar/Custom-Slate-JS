@@ -1,9 +1,11 @@
 import { Editor, Transforms, Node } from 'slate';
+
 import {
   IssueTreeElement,
   IssueTreeKind,
   IssueTreeRole,
 } from 'components/elements/IssueTree/IssueTreeElement';
+import { ToolName, trackInsertTool } from 'components/metrics';
 
 /**
  * Converts the node at the current selection into an IssueTree tool.
@@ -53,4 +55,6 @@ export default function insertIssueTreeTool(editor: Editor): void {
   );
 
   Transforms.select(editor, newSelection);
+
+  trackInsertTool(ToolName.IssueTree);
 }

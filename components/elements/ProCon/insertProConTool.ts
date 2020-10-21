@@ -1,6 +1,8 @@
 import { Editor, Transforms, Node } from 'slate';
+
 import { ChoicesType } from 'components/elements/Choices/ChoicesType';
 import { BasicElement } from 'components/elements/Element';
+import { ToolName, trackInsertTool } from 'components/metrics';
 
 export default function insertProConTool(editor: Editor): void {
   const { selection } = editor;
@@ -27,6 +29,7 @@ export default function insertProConTool(editor: Editor): void {
     editor.insertText(
       '<Note: Use the Choices tool first to use the Pros / Cons tool>'
     );
+    trackInsertTool(ToolName.ProCon);
     return;
   }
 
@@ -105,6 +108,7 @@ export default function insertProConTool(editor: Editor): void {
     editor.insertText(
       '<Note: Fill in a choice in the Choices tool first to use the Pros / Cons tool>'
     );
+    trackInsertTool(ToolName.ProCon);
     return;
   }
 
@@ -120,4 +124,6 @@ export default function insertProConTool(editor: Editor): void {
   );
 
   Transforms.select(editor, paragraphPath.concat([0, 1, 0, 1, 0, 0]));
+
+  trackInsertTool(ToolName.ProCon);
 }

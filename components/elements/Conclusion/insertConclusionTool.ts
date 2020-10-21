@@ -1,5 +1,7 @@
 import { Editor, Node, Transforms } from 'slate';
+
 import { ConclusionElement } from 'components/elements/Conclusion/ConclusionElement';
+import { ToolName, trackInsertTool } from 'components/metrics';
 
 /**
  * Converts the node at the current selection into a Choice tool.
@@ -45,4 +47,6 @@ export default function insertConclusionTool(editor: Editor): void {
   let newSelection = paragraphPath;
   newSelection = newSelection.concat([1, 0]);
   Transforms.select(editor, newSelection);
+
+  trackInsertTool(ToolName.Conclusion);
 }

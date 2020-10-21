@@ -1,5 +1,7 @@
 import { Editor, Transforms } from 'slate';
+
 import { CategorizerElement } from 'components/elements/Categorizer/CategorizerElement';
+import { ToolName, trackInsertTool } from 'components/metrics';
 
 /**
  * Converts the node at the current selection into an Categorizer tool.
@@ -28,4 +30,6 @@ export default function insertCategorizerTool(editor: Editor): void {
       at: paragraphPath,
     }
   );
+
+  trackInsertTool(ToolName.Categorizer);
 }

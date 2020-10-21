@@ -1,8 +1,10 @@
 import { Editor, Transforms, Node } from 'slate';
+
 import {
   PeopleElement,
   PeopleRole,
 } from 'components/elements/People/PeopleElement';
+import { ToolName, trackInsertTool } from 'components/metrics';
 
 /**
  * Converts the node at the current selection into an People tool.
@@ -51,4 +53,6 @@ export default function insertPeopleTool(editor: Editor): void {
   );
 
   Transforms.select(editor, newSelection);
+
+  trackInsertTool(ToolName.People);
 }
