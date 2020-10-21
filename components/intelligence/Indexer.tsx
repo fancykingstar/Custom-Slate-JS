@@ -373,7 +373,7 @@ function refreshIndex(textNodes: NodeEntry<Node>[]): void {
     isAfter(
       now,
       add(new Date(indexState.whenIndexedMillis), {
-        seconds: 1,
+        seconds: 5,
       })
     )
   ) {
