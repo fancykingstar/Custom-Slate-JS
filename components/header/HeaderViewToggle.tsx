@@ -15,7 +15,7 @@ function HeaderViewToggle(): JSX.Element {
   };
   return (
     <div className={styles.headerViewToggleContainer}>
-      <div style={{ marginRight: '1.6rem' }}>
+      <div className={styles.headerViewToggleIcon}>
         {viewMode === 'public' ? <Eye /> : <EyeSlash />}
       </div>
       <Toggle onToggle={onToggle} />

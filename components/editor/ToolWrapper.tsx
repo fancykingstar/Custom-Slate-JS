@@ -66,7 +66,7 @@ export default function ToolWrapper(props: Props): JSX.Element {
       )}
       {viewMode === 'public' && (
         <div className={styles.elementToggle} contentEditable={false}>
-          <div style={{ marginRight: '16px' }}>
+          <div className={styles.elementToggleIcon}>
             {componentViewMode ? <Eye /> : <EyeSlash />}
           </div>
           <Toggle onToggle={onToggle} isActive={componentViewMode} />

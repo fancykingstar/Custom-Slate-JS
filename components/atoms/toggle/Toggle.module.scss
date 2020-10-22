@@ -43,9 +43,9 @@ input:checked + .toggleSpan:before {
 }
 
 .toggleSpan.toggleSpanContainer {
-  border-radius: .4rem;
+  border-radius: var(--deca-border-radius);
 }
 
 .toggleSpan.toggleSpanContainer:before {
-  border-radius: .2rem;
+  border-radius: var(--deca-border-radius);
 }
