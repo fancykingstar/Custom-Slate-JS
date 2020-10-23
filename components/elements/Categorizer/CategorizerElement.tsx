@@ -1,5 +1,7 @@
 import { useContext, useState, useEffect } from 'react';
-import { RenderElementProps } from 'slate-react';
+import { Editor, Transforms, Path } from 'slate';
+import { ReactEditor, RenderElementProps, useEditor } from 'slate-react';
+
 import { dragHandleProps } from 'components/editor/drag';
 import { Context, DecisionCategory } from 'components/context';
 import ToolWrapper from 'components/editor/ToolWrapper';
@@ -10,44 +12,55 @@ export enum CategorizerElement {
   Wrapper = 'categorizer-wrapper',
 }
 
-export enum CategorizerReversibility {
-  Reversible,
-  NonReversible,
+enum Reversibility {
+  Reversible = 'reversible',
+  Nonreversible = 'nonreversible',
 }
 
-export enum CategorizerComplexity {
-  Simple,
-  Complex,
+enum Complexity {
+  Simple = 'simple',
+  Complex = 'complex',
+}
+
+function setReversibility(
+  editor: Editor,
+  reversibility: Reversibility,
+  path: Path
+): void {
+  Transforms.setNodes(editor, { reversibility }, { at: path });
+}
+
+function setComplexity(
+  editor: Editor,
+  complexity: Complexity,
+  path: Path
+): void {
+  Transforms.setNodes(editor, { complexity }, { at: path });
 }
 
 export function CategorizerWrapperElement(
   props: RenderElementProps & dragHandleProps
 ): JSX.Element {
-  const { attributes, children } = props;
-  // TODO: Move categorizer state to slate doc structure to preserve data on undo
-  const [
-    reversibility,
-    setReversibility,
-  ] = useState<CategorizerReversibility | null>(null);
-  const [complexity, setComplexity] = useState<CategorizerComplexity | null>(
-    null
-  );
+  const { attributes, children, element } = props;
 
   const context = useContext(Context);
+
+  const editor = useEditor();
+  const toolPath = ReactEditor.findPath(editor, element);
 
   useEffect(() => {
     let category = null;
 
-    if (reversibility === CategorizerReversibility.Reversible) {
-      if (complexity === CategorizerComplexity.Simple) {
+    if (element.reversibility === Reversibility.Reversible) {
+      if (element.complexity === Complexity.Simple) {
         category = DecisionCategory.ReversibleSimple;
-      } else if (complexity === CategorizerComplexity.Complex) {
+      } else if (element.complexity === Complexity.Complex) {
         category = DecisionCategory.ReversibleComplex;
       }
-    } else if (reversibility === CategorizerReversibility.NonReversible) {
-      if (complexity === CategorizerComplexity.Simple) {
+    } else if (element.reversibility === Reversibility.Nonreversible) {
+      if (element.complexity === Complexity.Simple) {
         category = DecisionCategory.NonreversibleSimple;
-      } else if (complexity === CategorizerComplexity.Complex) {
+      } else if (element.complexity === Complexity.Complex) {
         category = DecisionCategory.NonreversibleComplex;
       }
     }
@@ -57,7 +70,7 @@ export function CategorizerWrapperElement(
     }
 
     context.categorizer.setDecisionCategory(category);
-  }, [reversibility, complexity]);
+  }, [element.reversibility, element.complexity]);
 
   useEffect(() => {
     return () => {
@@ -83,23 +96,31 @@ export function CategorizerWrapperElement(
                 <input
                   type="radio"
                   name="reversibility"
-                  value={CategorizerReversibility.Reversible}
+                  value={Reversibility.Reversible}
+                  checked={element.reversibility === Reversibility.Reversible}
                   onChange={() =>
-                    setReversibility(CategorizerReversibility.Reversible)
+                    setReversibility(editor, Reversibility.Reversible, toolPath)
                   }
                 />
-                <span>Easy</span>
+                <span>Reversible</span>
               </label>
               <label className={styles.button}>
                 <input
                   type="radio"
                   name="reversibility"
-                  value={CategorizerReversibility.NonReversible}
+                  value={Reversibility.Nonreversible}
+                  checked={
+                    element.reversibility === Reversibility.Nonreversible
+                  }
                   onChange={() =>
-                    setReversibility(CategorizerReversibility.NonReversible)
+                    setReversibility(
+                      editor,
+                      Reversibility.Nonreversible,
+                      toolPath
+                    )
                   }
                 />
-                <span>Hard</span>
+                <span>Nonreversible</span>
               </label>
             </div>
           </div>
@@ -112,8 +133,11 @@ export function CategorizerWrapperElement(
                 <input
                   type="radio"
                   name="complexity"
-                  value={CategorizerComplexity.Simple}
-                  onChange={() => setComplexity(CategorizerComplexity.Simple)}
+                  value={Complexity.Simple}
+                  checked={element.complexity === Complexity.Simple}
+                  onChange={() =>
+                    setComplexity(editor, Complexity.Simple, toolPath)
+                  }
                 />
                 <span>Simple</span>
               </label>
@@ -121,8 +145,11 @@ export function CategorizerWrapperElement(
                 <input
                   type="radio"
                   name="complexity"
-                  value={CategorizerComplexity.Complex}
-                  onChange={() => setComplexity(CategorizerComplexity.Complex)}
+                  value={Complexity.Complex}
+                  checked={element.complexity === Complexity.Complex}
+                  onChange={() =>
+                    setComplexity(editor, Complexity.Complex, toolPath)
+                  }
                 />
                 <span>Complex</span>
               </label>
@@ -131,7 +158,10 @@ export function CategorizerWrapperElement(
         </div>
         <div className={styles.suggestion}>
           <h3 className={styles.suggestionLabel}>Suggestion</h3>
-          <Suggestion reversibility={reversibility} complexity={complexity} />
+          <Suggestion
+            reversibility={element.reversibility as Reversibility}
+            complexity={element.complexity as Complexity}
+          />
         </div>
       </div>
       {children}
@@ -140,8 +170,8 @@ export function CategorizerWrapperElement(
 }
 
 interface SuggestionProps {
-  reversibility: CategorizerReversibility | null;
-  complexity: CategorizerComplexity | null;
+  reversibility: Reversibility | null;
+  complexity: Complexity | null;
 }
 
 function Suggestion(props: SuggestionProps): JSX.Element | null {

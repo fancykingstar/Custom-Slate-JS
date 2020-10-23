@@ -32,10 +32,11 @@
 }
 
 .buttons {
-  align-items: center;
+  align-items: flex-start;
   display: flex;
   flex: 1;
-  margin-left: 1.6rem;
+  flex-direction: column;
+  margin-left: 3.6rem;
 }
 
 .button {
