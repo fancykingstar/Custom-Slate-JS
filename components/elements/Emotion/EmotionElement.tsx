@@ -1,5 +1,7 @@
 import { useCallback, useState } from 'react';
-import { RenderElementProps } from 'slate-react';
+import { Editor, Transforms, Path } from 'slate';
+import { RenderElementProps, useEditor, ReactEditor } from 'slate-react';
+
 import { dragHandleProps } from 'components/editor/drag';
 import ToolWrapper from 'components/editor/ToolWrapper';
 import { IconToolEmotion } from 'components/icons/IconTool';
@@ -248,28 +250,44 @@ function getRemoveTer(
   };
 }
 
+function setBag(editor: Editor, bag: string[], path: Path): void {
+  Transforms.setNodes(editor, { bag }, { at: path });
+}
+
 export function EmotionWrapperElement(
   props: RenderElementProps & dragHandleProps
 ): JSX.Element {
-  const { attributes, children } = props;
+  const { attributes, children, element } = props;
 
-  const [bag, setBag] = useState<string[]>([]);
+  const editor = useEditor();
+  const toolPath = ReactEditor.findPath(editor, element);
+
+  const bag = element.bag as string[];
+
   const addToBag = useCallback(
     (toAdd: string) => {
-      const b = new Set(bag);
+      let b = new Set<string>();
+      if (bag) {
+        b = new Set<string>(bag);
+      }
+
       if (!b.has(toAdd)) {
         b.add(toAdd);
-        setBag(Array.from(b));
+        setBag(editor, Array.from(b), toolPath);
       }
     },
     [bag]
   );
   const removeFromBag = useCallback(
     (toRemove: string) => {
-      const b = new Set(bag);
+      let b = new Set<string>();
+      if (bag) {
+        b = new Set<string>(bag);
+      }
+
       if (b.has(toRemove)) {
         b.delete(toRemove);
-        setBag(Array.from(b));
+        setBag(editor, Array.from(b), toolPath);
       }
     },
     [bag]
@@ -739,13 +757,14 @@ function Emotions(props: EmotionsProps): JSX.Element | null {
 
   return (
     <div className={styles.emotionsOutput}>
-      {bag.map((word) => {
-        return (
-          <div className={styles.bagWord} key={word}>
-            {word}
-          </div>
-        );
-      })}
+      {bag &&
+        bag.map((word) => {
+          return (
+            <div className={styles.bagWord} key={word}>
+              {word}
+            </div>
+          );
+        })}
     </div>
   );
 }

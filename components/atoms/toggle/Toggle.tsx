@@ -22,7 +22,7 @@ function Toggle({
   return (
     <div className={styles.toggleAtom} style={containerStyle}>
       <label className={styles.toggleLabel}>
-        <input type="checkbox" onClick={onClick} checked={active} />
+        <input type="checkbox" onClick={onClick} defaultChecked={active} />
         <span
           className={`${styles.toggleSpan} ${styles.toggleSpanContainer}`}
         />
