@@ -30,7 +30,7 @@
     "@types/react-beautiful-dnd": "^13.0.0",
     "aws-amplify": "^3.3.4",
     "aws-cognito-next": "^3.0.0",
-    "axios": "^0.20.0",
+    "axios": "^0.21.0",
     "compromise": "^13.6.0",
     "compromise-sentences": "^0.1.0",
     "date-fns": "^2.16.1",
