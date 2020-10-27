@@ -103,7 +103,7 @@ function KindSelector(props: KindSelectorProps): JSX.Element {
             <label className={styles.button}>
               <input
                 type="radio"
-                name="kind"
+                name={`${toolPath[0]}-kind`}
                 value={IssueTreeKind.Problem}
                 checked={kind === IssueTreeKind.Problem}
                 onChange={() =>
@@ -115,7 +115,7 @@ function KindSelector(props: KindSelectorProps): JSX.Element {
             <label className={styles.button}>
               <input
                 type="radio"
-                name="kind"
+                name={`${toolPath[0]}-kind`}
                 value={IssueTreeKind.Solution}
                 checked={kind === IssueTreeKind.Solution}
                 onChange={() =>
@@ -131,13 +131,16 @@ function KindSelector(props: KindSelectorProps): JSX.Element {
   );
 }
 
+function getToolPath(here: Path): Path {
+  return here.slice(0, 1);
+}
+
 function getKind(editor: ReactEditor, here: Path): IssueTreeKind {
   if (here.length === 0) {
     return IssueTreeKind.Problem;
   }
 
-  const toolPath = here.slice(0, 1);
-  const [tool] = Editor.node(editor, toolPath);
+  const [tool] = Editor.node(editor, getToolPath(here));
   return tool.kind as IssueTreeKind;
 }
 
@@ -150,8 +153,7 @@ function getPin(editor: ReactEditor, here: Path): Path | null {
     return null;
   }
 
-  const toolPath = here.slice(0, 1);
-  const [tool] = Editor.node(editor, toolPath);
+  const [tool] = Editor.node(editor, getToolPath(here));
 
   if (!tool.pin) {
     return null;
