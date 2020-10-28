@@ -1,16 +1,26 @@
 .loginPage {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
   align-items: center;
-  background-color: #edeffe;
+  background: var(--color-white);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
 };
 
+.logo {
+  margin: 0 0 3rem 0;
+}
+
 .loginFormWrapper {
-  max-width: 23rem;
-  background-color:rgba(18, 173, 175, 0.5);
-  padding: 1.5rem;
+  align-items: center;
+  border: 0.7rem solid var(--color-black);
   border-radius: var(--deca-border-radius);
+  display: flex;
+  flex-direction: column;
+  height: 40rem;
+  justify-content: center;
+  padding: 1.5rem;
+  width: 40rem;
 }
 
 .loginForm {
@@ -21,26 +31,38 @@
   margin-top: 1.5rem;
 
   & input {
-    height: 2.5rem;
-    padding: 0 1rem;
+    border: 0.3rem solid var(--color-black);
+    border-radius: var(--deca-border-radius);
+    height: 3rem;
     margin-bottom: 1rem;
-    border: none;
+    padding: 0 1rem;
 
     &:active, &:focus {
+      background-color: var(--color-bg-gray-blue);
+      border: 0.3rem solid var(--color-blue);
       outline: none;
+    }
+
+    &:hover {
+      background-color: var(--color-bg-gray-blue);
     }
   }
 }
 
 .loginSubmit {
   background-color: transparent;
-  border: none;
+  border: 0.3rem solid var(--color-black);
+  border-radius: var(--deca-border-radius);
+  height: 3rem;
 
   &:active, &:focus {
+    background-color: var(--color-bg-gray-blue);
+    border: 0.3rem solid var(--color-blue);
     outline: none;
   }
 
   &:hover {
+    background-color: var(--color-bg-gray-blue);
     cursor: pointer;
   }
 }
@@ -48,8 +70,21 @@
 .loginMessage {
   font-size: 1.2rem;
 
+}
+
+.toggleLink {
+  border-bottom: 0.3rem solid var(--color-black);
+
+  &:hover {
+    background-color: var(--color-bg-gray-blue);
+    cursor: pointer;
+  }
+
+  &:active, &:focus {
+    border-bottom: 0.3rem solid var(--color-blue);
+  }
+
   a {
     text-decoration: none;
-    color: var(--color-black);
   }
 }

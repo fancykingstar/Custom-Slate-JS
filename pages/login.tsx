@@ -45,16 +45,20 @@ export default function LoginPage(): JSX.Element {
         />
       </Head>
       <div className={styles.loginPage}>
+        <div className={styles.logo}>
+          <Logo symbolWidth={6} />
+        </div>
         <div className={styles.loginFormWrapper}>
-          <Logo />
           <form onSubmit={(e) => handleSubmit(e)} className={styles.loginForm}>
             <input
+              className={styles.input}
               type="email"
               placeholder="Enter your email"
               onChange={(e) => handleChange(e)}
               required
             />
             <input
+              className={styles.input}
               type="password"
               placeholder="Enter your password"
               onChange={(e) => handleChange(e)}
@@ -64,7 +68,11 @@ export default function LoginPage(): JSX.Element {
               Login
             </button>
             <p className={styles.loginMessage}>
-              Don't have account? Please <a href="/signup">sign up</a>
+              Don't have account? Please{' '}
+              <span className={styles.toggleLink}>
+                <a href="/signup">sign up</a>
+              </span>
+              .
             </p>
           </form>
         </div>

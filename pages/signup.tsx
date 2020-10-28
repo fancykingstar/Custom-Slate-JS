@@ -51,8 +51,10 @@ export default function SignupPage(): JSX.Element {
         />
       </Head>
       <div className={styles.loginPage}>
+        <div className={styles.logo}>
+          <Logo symbolWidth={6} />
+        </div>
         <div className={styles.loginFormWrapper}>
-          <Logo />
           <form onSubmit={(e) => handleSubmit(e)} className={styles.loginForm}>
             <input
               name="email"
@@ -70,6 +72,13 @@ export default function SignupPage(): JSX.Element {
             <button type="submit" className={styles.loginSubmit}>
               Sign Up
             </button>
+            <p className={styles.loginMessage}>
+              Already have account? Please{' '}
+              <span className={styles.toggleLink}>
+                <a href="/login">log in</a>
+              </span>
+              .
+            </p>
           </form>
         </div>
       </div>

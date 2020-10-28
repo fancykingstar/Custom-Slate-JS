@@ -9,7 +9,7 @@ export default function Header(): JSX.Element {
     <header className={styles.header}>
       <div className={styles.left}>
         <SidebarToggle />
-        <Logo />
+        <Logo symbolWidth={3.2} />
       </div>
       <div className={styles.right}>
         <HeaderDecisionCategory />
