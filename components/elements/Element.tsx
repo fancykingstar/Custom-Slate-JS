@@ -62,8 +62,9 @@ import {
   SimulationItemElement,
 } from 'components/elements/Simulation/SimulationElement';
 import ParagraphElement from 'components/elements/Paragraph/ParagraphElement';
+import UnorderedListElement from 'components/elements/UnorderedList/UnorderedList';
+import OrderedListElement from 'components/elements/OrderedList/OrderedList';
 import TitleElement from 'components/elements/Title/TitleElement';
-import styles from './Element.module.scss';
 
 export enum BasicElement {
   Paragraph = 'p',
@@ -90,17 +91,9 @@ export default function Element(props: RenderElementProps): JSX.Element {
     case BasicElement.Paragraph:
       return <ParagraphElement {...props} />;
     case BasicElement.UnorderedList:
-      return (
-        <ul {...attributes} className={styles.ul}>
-          {children}
-        </ul>
-      );
+      return <UnorderedListElement {...props} />;
     case BasicElement.OrderedList:
-      return (
-        <ol {...attributes} className={styles.ol}>
-          {children}
-        </ol>
-      );
+      return <OrderedListElement {...props} />;
     case BasicElement.ListItem:
       return <li {...attributes}>{children}</li>;
     case CategorizerElement.Wrapper:

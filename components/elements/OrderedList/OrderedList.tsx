@@ -1,19 +1,18 @@
 import { RenderElementProps, useSelected } from 'slate-react';
 import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
-import { Drag, Eye, EyeSlash } from 'components/icons/Icons';
-import styles from './ParagraphElement.module.scss';
+import { Drag } from 'components/icons/Icons';
+import styles from './OrderedList.module.scss';
 
 interface AdditionalProps {
   dragHandleProps?: DraggableProvidedDragHandleProps;
 }
-
-export default function ParagraphElement(
+export default function OrderedList(
   props: RenderElementProps & AdditionalProps
 ): JSX.Element {
   const { attributes, children, dragHandleProps } = props;
   const selected = useSelected();
   return (
-    <div className={styles.paragraphElementContainer}>
+    <div className={styles.listContainer}>
       {dragHandleProps && (
         <div
           {...dragHandleProps}
@@ -24,9 +23,9 @@ export default function ParagraphElement(
           <Drag />
         </div>
       )}
-      <p {...attributes} className={styles.p}>
+      <ol {...attributes} className={styles.ol}>
         {children}
-      </p>
+      </ol>
     </div>
   );
 }

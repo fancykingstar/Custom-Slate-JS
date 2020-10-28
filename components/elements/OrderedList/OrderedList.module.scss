@@ -1,8 +1,34 @@
-.p {
+.ol {
   font-size: 1.6rem;
   line-height: 2.4rem;
   margin: 0.4rem 0;
-  position: relative;
+  padding-left: 2.4rem;
+}
+
+.ol li p {
+  display: inline-block;
+  margin: 0;
+  vertical-align: text-top;
+}
+
+// Alternate decimal/lower-latin/lower-roman styles up to 10 levels deep
+.ol,
+.ol ol ol ol,
+.ol ol ol ol ol ol ol,
+.ol ol ol ol ol ol ol ol ol ol {
+  list-style-type: decimal;
+}
+
+.ol ol,
+.ol ol ol ol ol,
+.ol ol ol ol ol ol ol ol {
+  list-style-type: lower-latin;
+}
+
+.ol ol ol,
+.ol ol ol ol ol ol,
+.ol ol ol ol ol ol ol ol ol {
+  list-style-type: lower-roman;
 }
 
 .dragHandle {
@@ -35,6 +61,7 @@
   }
 }
 
-.paragraphElementContainer {
+.listContainer {
+  padding-left: 2rem;
   position: relative;
 }

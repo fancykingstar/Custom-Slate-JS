@@ -14,7 +14,7 @@ import { isKeyHotkey } from 'is-hotkey';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import { Context } from 'components/context';
-import Element from 'components/elements/Element';
+import Element, { BasicElement } from 'components/elements/Element';
 import withLayout from 'components/editor/withLayout';
 import withVoids from 'components/editor/withVoids';
 import withMarkdown from 'components/editor/withMarkdown';
@@ -92,21 +92,20 @@ export default function DecaEditor(props: Props): JSX.Element {
   const renderElement = useCallback(
     (elementProps) => {
       const { type } = elementProps.element;
-      const makeDraggable =
-        type.includes('-wrapper') ||
-        type === 'data' ||
-        type === 'issueTree' ||
-        type === 'people' ||
-        type === 'simulation';
-      if (makeDraggable) {
-        const slateIndexArray = ReactEditor.findPath(
-          editor,
-          elementProps.element
-        );
-        // if ReactEditor.findPath fails to produce a valid array here, drag / drog will not work
-        const slateIndex =
-          (slateIndexArray.length && slateIndexArray[0]) ||
-          elementProps.element.id;
+      const skipEmptyParagraph =
+        type === BasicElement.Paragraph &&
+        !elementProps.element.children?.[0].text;
+
+      const slateIndexArray = ReactEditor.findPath(
+        editor,
+        elementProps.element
+      );
+      if (
+        slateIndexArray.length === 1 &&
+        slateIndexArray[0] &&
+        !skipEmptyParagraph
+      ) {
+        const slateIndex = slateIndexArray[0];
         return (
           <Draggable
             key={String(slateIndexArray)}
