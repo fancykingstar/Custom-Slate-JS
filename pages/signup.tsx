@@ -6,24 +6,21 @@ import styles from 'styles/LoginPage.module.scss';
 
 export default function SignupPage(): JSX.Element {
   const [email, setEmail] = useState('');
-  const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = event.target;
     if (name === 'email') {
       setEmail(value);
-    } else if (name === 'password') {
-      setPassword(value);
     } else {
-      setUserName(value);
+      setPassword(value);
     }
   };
 
   const signUp = async () => {
     try {
       await Auth.signUp({
-        username: userName,
+        username: email,
         password,
         attributes: {
           email,
@@ -58,8 +55,8 @@ export default function SignupPage(): JSX.Element {
           <Logo />
           <form onSubmit={(e) => handleSubmit(e)} className={styles.loginForm}>
             <input
-              name="username"
-              placeholder="Enter your user name"
+              name="email"
+              placeholder="Enter your email"
               onChange={handleChange}
               required
             />
@@ -67,12 +64,6 @@ export default function SignupPage(): JSX.Element {
               name="password"
               type="password"
               placeholder="Enter your password"
-              onChange={handleChange}
-              required
-            />
-            <input
-              name="email"
-              placeholder="Enter your email"
               onChange={handleChange}
               required
             />
