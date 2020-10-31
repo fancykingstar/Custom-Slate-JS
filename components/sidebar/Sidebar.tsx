@@ -4,12 +4,7 @@ import { Store, Action, DocStatus } from 'store/store';
 import styles from './Sidebar.module.scss';
 
 export default function Sidebar(): JSX.Element | null {
-  const { state, dispatch } = useContext(Store);
-  const { sidebarVisible } = state;
-
-  if (!sidebarVisible) {
-    return null;
-  }
+  const { dispatch } = useContext(Store);
 
   return (
     <aside className={styles.wrapper}>
@@ -60,23 +55,21 @@ function FileList(): JSX.Element | null {
     .sort((a, b) => b.creationDate - a.creationDate);
 
   return (
-    <>
-      <h2 className={styles.fileListTitle}>Your docs</h2>
-      <ul className={styles.fileList}>
-        {docsOrderedByDate.map((doc) => (
-          <File
-            key={doc.id}
-            active={doc.id === activeDoc}
-            complete={doc.status === DocStatus.Complete}
-            onClick={() => {
-              dispatch({ type: Action.setActiveDocId, docId: doc.id });
-            }}
-          >
-            {doc.title || 'Untitled doc'}
-          </File>
-        ))}
-      </ul>
-    </>
+    <ul className={styles.fileList}>
+      {docsOrderedByDate.map((doc) => (
+        <File
+          key={doc.id}
+          active={doc.id === activeDoc}
+          complete={doc.status === DocStatus.Complete}
+          onClick={(e: React.SyntheticEvent) => {
+            e.stopPropagation();
+            dispatch({ type: Action.setActiveDocId, docId: doc.id });
+          }}
+        >
+          {doc.title || 'Untitled doc'}
+        </File>
+      ))}
+    </ul>
   );
 }
 
@@ -84,7 +77,7 @@ interface FileProps {
   active?: boolean;
   complete: boolean;
   children: React.ReactNode;
-  onClick: () => void;
+  onClick: (e: React.SyntheticEvent) => void;
 }
 
 function File(props: FileProps): JSX.Element {

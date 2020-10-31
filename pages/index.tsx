@@ -10,6 +10,10 @@ import Header from 'components/header/Header';
 import { reducer, Store, Action } from 'store/store';
 import styles from 'styles/Home.module.scss';
 import { HeaderContext } from 'components/header/HeaderContext';
+import { PaneContext } from 'components/panes/PaneContext';
+import NavPane from 'components/panes/navpane/NavPane';
+import ReviewPane from 'components/panes/reviewpane/ReviewPane';
+import GlobalPane from 'components/panes/globalpane/GlobalPane';
 
 export async function getServerSideProps(
   context: GetServerSidePropsContext
@@ -36,6 +40,7 @@ export default function Home(env: Env): JSX.Element {
   ] = useState<DecisionCategory | null>(null);
   const [viewMode, setViewMode] = useState('private');
   const [viewableElements, setViewableElements] = useState([] as Array<string>);
+  const [expandedPanes, setExpandedPanes] = useState([] as Array<string>);
 
   const [state, dispatch] = useReducer(reducer, {
     sidebarVisible: false,
@@ -68,6 +73,12 @@ export default function Home(env: Env): JSX.Element {
     viewMode,
     viewableElements,
   };
+
+  const paneContextValue = {
+    expandedPanes,
+    setExpandedPanes,
+  };
+  const mainContentWidth = `calc(100% - ${expandedPanes.length * 20}rem)`;
 
   return (
     <>
@@ -109,17 +120,27 @@ export default function Home(env: Env): JSX.Element {
         }}
       >
         <Store.Provider value={value}>
-          <HeaderContext.Provider value={headerContextValue}>
-            <Header />
-            <div className={styles.wrapper}>
-              <Sidebar />
-              <main className={styles.main}>
-                {activeDoc != null && currentDoc != null ? (
-                  <DecaEditor key={activeDoc} doc={currentDoc} />
-                ) : null}
-              </main>
-            </div>
-          </HeaderContext.Provider>
+          <PaneContext.Provider value={paneContextValue}>
+            <HeaderContext.Provider value={headerContextValue}>
+              <div className={styles.paneContainer}>
+                <GlobalPane />
+                <NavPane />
+                <div
+                  className={styles.mainContent}
+                  style={{ width: mainContentWidth }}
+                >
+                  <Header />
+                  <main className={styles.main}>
+                    {activeDoc != null && currentDoc != null ? (
+                      <DecaEditor key={activeDoc} doc={currentDoc} />
+                    ) : null}
+                  </main>
+                </div>
+                {/* to be added in separate PR */}
+                {/* <ReviewPane /> */}
+              </div>
+            </HeaderContext.Provider>
+          </PaneContext.Provider>
         </Store.Provider>
       </Context.Provider>
     </>

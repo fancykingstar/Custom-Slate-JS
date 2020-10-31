@@ -5,7 +5,7 @@ interface Props {
 }
 
 export default function LogoProps(props: Props): JSX.Element {
-  const { symbolWidth } = props;
+  const { symbolWidth = 4 } = props;
 
   return (
     <div className={styles.logo}>

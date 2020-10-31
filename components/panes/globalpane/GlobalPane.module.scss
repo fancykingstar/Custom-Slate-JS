@@ -1,0 +1,36 @@
+.globalPaneContainer {
+  border-right:  2px solid black;
+  cursor: pointer;
+  position: relative;
+  transition: width 0.5s ease-in-out;
+  -webkit-transition: width 0.5s ease-in-out;
+  -moz-transition: width 0.5s ease-in-out;
+  -o-transition: width 0.5s ease-in-out;
+
+  :focus {
+    outline: none;
+  }
+}
+
+.globalPaneContainer .innerContainer {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: space-between;
+  padding: 1rem;
+  position: sticky;
+  top: 0;
+
+  :focus {
+    outline: none;
+  }
+}
+
+.expanded {
+  width: 20rem
+}
+
+.collapsed {
+  width: 4rem;
+}

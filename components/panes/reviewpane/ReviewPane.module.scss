@@ -1,0 +1,36 @@
+.reviewPaneContainer {
+  border-left: 1px solid gray;
+  cursor: pointer;
+  display: flex;
+  position: relative;
+  transition: width 0.5s ease-in-out;
+  -webkit-transition: width 0.5s ease-in-out;
+  -moz-transition: width 0.5s ease-in-out;
+  -o-transition: width 0.5s ease-in-out;
+
+  :focus {
+    outline: none;
+  }
+}
+
+
+.reviewPaneContainer .innerContainer {
+  height: fit-content;
+  position: sticky;
+  top: 0;
+
+  :focus {
+    outline: none;
+  }
+}
+
+.expanded {
+  width: 20rem
+}
+
+.collapsed {
+  align-items: center;
+  text-orientation: upright;
+  writing-mode: vertical-rl;
+  width: 4rem;
+}

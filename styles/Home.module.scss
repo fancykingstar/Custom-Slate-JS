@@ -1,7 +1,10 @@
-.wrapper {
-  display: flex;
-  flex-direction: row;
+.mainContent {
   min-height: calc(100vh - var(--header-height));
+
+  transition: width 0.5s ease-in-out;
+  -webkit-transition: width 0.5s ease-in-out;
+  -moz-transition: width 0.5s ease-in-out;
+  -o-transition: width 0.5s ease-in-out;
 }
 
 .main {
@@ -12,4 +15,11 @@
   justify-content: flex-start;
   align-items: center;
   width: 100%;
+}
+
+.paneContainer {
+  display: flex;
+  flex-direction: row;
+  height: max-content;
+  min-height: 100vh;
 }
