@@ -1,6 +1,7 @@
 .navPaneContainer {
   border-right: 2px solid black;
   cursor: pointer;
+  outline: none;
   position: relative;
   transition: width 0.5s ease-in-out;
   -webkit-transition: width 0.5s ease-in-out;
@@ -14,6 +15,7 @@
 
 .navPaneContainer .innerContainer {
   height: fit-content;
+  padding: 1.2rem;
   position: sticky;
   top: 0;
 
@@ -46,4 +48,8 @@
   text-orientation: upright;
   writing-mode: vertical-rl;
   width: 4rem;
+}
+
+.collapsed:hover {
+  background-color: var(--color-bg-gray-blue);
 }

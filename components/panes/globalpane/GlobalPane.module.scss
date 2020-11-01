@@ -1,6 +1,7 @@
 .globalPaneContainer {
   border-right:  2px solid black;
   cursor: pointer;
+  outline: none;
   position: relative;
   transition: width 0.5s ease-in-out;
   -webkit-transition: width 0.5s ease-in-out;
