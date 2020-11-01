@@ -81,7 +81,7 @@ export default function ToolWrapper(props: Props): JSX.Element {
         }`}
         contentEditable={false}
       >
-        {icon}
+        {/* icon */}
         {name}
       </h2>
     </div>

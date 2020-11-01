@@ -7,7 +7,7 @@
   background: var(--color-white);
   border-radius: var(--deca-border-radius);
   box-shadow: 0 0.1rem 0.3rem var(--color-shadow-large),
-    0 0.3rem 1rem transparent, inset 0 0 0 0.1rem var(--color-bg-gray-tertiary);
+    0 0.3rem 1rem transparent, inset 0 0 0 var(--border-thin) var(--color-bg-gray-secondary);
   content: '';
   cursor: text;
   display: block;
@@ -22,13 +22,13 @@
 .wrapper.active::before {
   box-shadow: 0 0.1rem 0.3rem var(--color-shadow-large),
     0 0.3rem 1rem var(--color-shadow-large),
-    inset 0 0 0 0.1rem var(--color-bg-gray-tertiary);
+    inset 0 0 0 var(--border-thin) var(--color-black);
 }
 
 .wrapper.active h2 {
-  color: var(--color-fg-gray-primary);
+  color: var(--color-black);
   path {
-    stroke: var(--color-fg-gray-primary);
+    stroke: var(--color-black);
   }
 }
 
@@ -73,7 +73,7 @@
 }
 
 .dragHandle.active circle {
-  fill: var(--color-fg-gray-primary);
+  fill: var(--color-black);
 }
 
 .dragHandle.active,
@@ -103,4 +103,3 @@
 .lowVisibility {
   opacity: 0.2;
 }
-

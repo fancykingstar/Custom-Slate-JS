@@ -115,7 +115,7 @@
   animationDelay: 250ms;
   background: url(/img/card-dot-grid.svg) no-repeat var(--color-white);
   background-position: center bottom 0.8rem;
-  border: solid 0.1rem var(--color-bg-gray-secondary);
+  border: solid var(--border-thin) var(--color-bg-gray-secondary);
   border-radius: var(--deca-border-radius);
   box-shadow: 0 0.1rem 0.3rem rgba(16, 17, 25, 0.08),
     0 0.1rem 1rem rgba(16, 17, 25, 0.04);
