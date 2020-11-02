@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@modulz/radix-icons": "^3.2.0",
-    "@aws-amplify/auth": "^3.4.7",
+    "@aws-amplify/auth": "^3.4.9",
     "@aws-amplify/core": "^3.7.0",
     "@types/fast-levenshtein": "^0.0.1",
     "@types/react-beautiful-dnd": "^13.0.0",
