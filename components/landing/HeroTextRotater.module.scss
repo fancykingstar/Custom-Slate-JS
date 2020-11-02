@@ -1,0 +1,37 @@
+.wrapper {
+  height: 9.6rem;
+  width: 32rem;
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .wrapper {
+    height: 6.4rem;
+    width: 60rem;
+  }
+}
+
+.text {
+  background-color: var(--color-bg-gray-blue);
+  border: 0.5rem solid var(--color-black);
+  border-radius: var(--deca-border-radius);
+  line-height: 6.2rem;
+  padding: .2rem .4rem .2rem .4rem;
+  transition: transform 200ms var(--curve-spring),
+    text-shadow 200ms var(--curve-spring), opacity 200ms linear;
+}
+
+.text.hidden {
+  opacity: 0;
+}
+
+@media (min-width: 768px) {
+  .text {
+    border: 0.7rem solid var(--color-black);
+    border-radius: var(--deca-border-radius);
+    line-height: 6rem;
+    margin-top: 0;
+    padding: .2rem .6rem .2rem .6rem;
+  }
+}

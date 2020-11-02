@@ -1,0 +1,174 @@
+.wrapper {
+  align-items: center;
+  display: flex;
+  height: 58.4rem;
+  justify-content: center;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 3.2rem 1.6rem 0;
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .wrapper {
+    height: 72rem;
+    padding: 6.4rem 0 0;
+  }
+}
+
+.wrapper::before {
+  background: url("/explain-halftone.png") repeat-x center;
+  background-size: 19.4rem 76.8rem;
+  content: "";
+  display: block;
+  height: 76.8rem;
+  left: 0;
+  position: absolute;
+  top: 0;
+  transform: translate3d(0, -6rem, 0) rotate(-3deg);
+  width: 105%;
+  z-index: -1;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding: 0;
+  position: relative;
+}
+
+.list li {
+  align-items: center;
+  background: var(--color-white);
+  border: 0.5rem solid var(--color-off-black);
+  border-radius: 3rem;
+  box-shadow: -0.1rem -0.1rem 0 0 var(--color-off-black),
+    -0.2rem -0.2rem 0 0 var(--color-off-black),
+    -0.3rem -0.3rem 0 0 var(--color-off-black),
+    -0.4rem -0.4rem 0 0 var(--color-off-black),
+    -0.5rem -0.5rem 0 0 var(--color-off-black),
+    -0.6rem -0.6rem 0 0 var(--color-off-black),
+    -0.7rem -0.7rem 0 0 var(--color-off-black),
+    -0.8rem -0.8rem 0 0 var(--color-off-black),
+    -0.9rem -0.9rem 0 0 var(--color-off-black),
+    -1rem -1rem 0 0 var(--color-off-black);
+  display: flex;
+  max-width: 32rem;
+  padding: 2.4rem 2rem;
+  position: relative;
+  text-transform: lowercase;
+}
+
+.list li::before {
+  align-items: center;
+  background: var(--color-white);
+  border: 0.2rem solid var(--color-off-black);
+  border-radius: 100%;
+  box-shadow: 0 0 0 0 var(--color-off-black), 0 0 0 0 var(--color-off-black),
+    0 0 0 0 var(--color-off-black), 0 0 0 0 var(--color-off-black);
+  color: var(--color-off-black);
+  display: flex;
+  flex-shrink: 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+  height: 3.2rem;
+  justify-content: center;
+  padding: 0.2rem 0 0 0.1rem;
+  margin-right: 1.6rem;
+  text-align: center;
+  width: 3.2rem;
+  transition: transform 200ms var(--curve-spring),
+    box-shadow 200ms var(--curve-spring);
+}
+
+.list li:hover::before {
+  box-shadow: -0.1rem -0.1rem 0 0 var(--color-off-black),
+    -0.2rem -0.2rem 0 0 var(--color-off-black),
+    -0.3rem -0.3rem 0 0 var(--color-off-black),
+    -0.4rem -0.4rem 0 0 var(--color-off-black);
+  transform: translate3d(0.4rem, 0.4rem, 0);
+}
+
+.list li:nth-child(1) {
+  transform: translate3d(1.2rem, 0, 0);
+  z-index: 3;
+}
+
+.list li:nth-child(1)::before {
+  content: "1";
+}
+
+.list li:nth-child(2) {
+  transform: translate3d(-0.2rem, -0.5rem, 0);
+  z-index: 2;
+}
+
+.list li:nth-child(2)::before {
+  content: "2";
+}
+
+.list li:nth-child(3) {
+  transform: translate3d(1.2rem, -1rem, 0);
+  z-index: 1;
+}
+
+.list li:nth-child(3)::before {
+  content: "3";
+}
+
+@media (min-width: 768px) {
+  .list li:nth-child(1) {
+    transform: translate3d(2.4rem, 0, 0);
+  }
+
+  .list li:nth-child(2) {
+    transform: translate3d(-2.4rem, -0.5rem, 0);
+  }
+
+  .list li:nth-child(3) {
+    transform: translate3d(2.4rem, -1rem, 0);
+  }
+}
+
+.list li h2 {
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: 2rem;
+  margin: 0 0 0.4rem;
+}
+
+@media (min-width: 768px) {
+  .list li h2 {
+    font-size: 2.4rem;
+    line-height: 2.4rem;
+  }
+}
+
+.list li p {
+  color: var(--color-gray-primary);
+  font-size: 1.4rem;
+  line-height: 1.7rem;
+  margin: 0;
+}
+
+.rightWrapArrow {
+  left: calc(100% - 2.4rem);
+  pointer-events: none;
+  position: absolute;
+  top: calc(50% - 0.8rem);
+}
+
+.leftWrapArrow {
+  left: calc(-9.2rem);
+  pointer-events: none;
+  position: absolute;
+  top: calc(50% - 1.6rem);
+  transform: scaleX(-1);
+}
+
+@media (min-width: 768px) {
+  .downArrow {
+    margin-top: 2.4rem;
+  }
+}

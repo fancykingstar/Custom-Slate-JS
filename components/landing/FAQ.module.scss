@@ -1,0 +1,126 @@
+.faq {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding: 0 0.8rem;
+}
+
+@media (min-width: 768px) {
+  .faq {
+    padding: 0;
+  }
+}
+
+.faq details {
+  align-items: center;
+  background: var(--color-white);
+  border: 0.5rem solid var(--color-off-black);
+  border-radius: 1.6rem;
+  box-shadow: -0.1rem -0.1rem 0 0 var(--color-off-black),
+    -0.2rem -0.2rem 0 0 var(--color-off-black),
+    -0.3rem -0.3rem 0 0 var(--color-off-black),
+    -0.4rem -0.4rem 0 0 var(--color-off-black),
+    -0.5rem -0.5rem 0 0 var(--color-off-black),
+    -0.6rem -0.6rem 0 0 var(--color-off-black);
+  display: flex;
+  margin: 0 0 2.4rem;
+  max-width: 56rem;
+  position: relative;
+  text-transform: lowercase;
+  width: 100%;
+}
+
+.faq details summary {
+  cursor: pointer;
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: 2rem;
+  padding: 1.6rem 1.6rem 1.6rem 4rem;
+  outline: 0;
+}
+
+.faq details summary:focus {
+  text-decoration: underline;
+}
+
+@media (min-width: 768px) {
+  .faq details summary {
+    font-size: 2.4rem;
+    line-height: 2.4rem;
+    padding: 2rem 2rem 2rem 5.2rem;
+  }
+}
+
+.faq details summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq details > summary:first-of-type {
+  list-style-type: none;
+}
+
+.faq details summary::-mozsu .faq details summary::marker {
+  display: none;
+}
+
+.faq details summary::before {
+  content: "";
+  background: url("/twistie-closed.svg") no-repeat center;
+  display: block;
+  height: 2rem;
+  left: 1.2rem;
+  position: absolute;
+  top: 1.6rem;
+  width: 2rem;
+  z-index: 1;
+}
+
+@media (min-width: 768px) {
+  .faq details summary::before {
+    left: 2rem;
+    top: 2.4rem;
+  }
+}
+
+.faq details[open] summary::before {
+  background: url("/twistie-open.svg") no-repeat center;
+  transform: rotate(90deg);
+}
+
+.faq details[open] {
+  padding-bottom: 0.8rem;
+}
+
+.faq details p {
+  color: var(--color-gray-primary);
+  font-size: 1.5rem;
+  line-height: 2rem;
+  margin: 1.6rem 0;
+  padding: 0 2.4rem;
+}
+
+.faq details > *:first-of-type {
+  margin-top: 0;
+}
+
+.faq details ol,
+.faq details ul {
+  margin: 1.6rem 0;
+  padding: 0 2.4rem 0 4.8rem;
+}
+
+.faq details li {
+  color: var(--color-gray-primary);
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.faq details a {
+  color: var(--color-off-black);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.faq details a:hover {
+  text-decoration: underline;
+}

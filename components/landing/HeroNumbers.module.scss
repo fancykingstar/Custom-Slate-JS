@@ -1,0 +1,219 @@
+.numberWrapper {
+  align-items: center;
+  color: var(--color-off-black);
+  display: flex;
+  font-size: 2.8rem;
+  font-weight: 500;
+  justify-content: center;
+  line-height: 3.6rem;
+  margin: 0;
+  padding: 0.8rem 0;
+  position: relative;
+  text-decoration: none;
+}
+
+@media (min-width: 768px) {
+  .numberWrapper {
+    font-size: 4.8rem;
+    margin: 1.6rem 0 0.8rem;
+  }
+}
+
+.numberWrapper::before,
+.numberWrapper::after {
+  background: var(--color-off-black);
+  border-radius: 100%;
+  content: "";
+  display: block;
+  height: 0.8rem;
+  position: absolute;
+  width: 0.8rem;
+  z-index: -1;
+}
+
+.numberWrapper::before {
+  transform: translateX(-6.3rem);
+}
+
+.numberWrapper::after {
+  transform: translateX(3.6rem);
+}
+
+@media (min-width: 768px) {
+  .numberWrapper::before,
+  .numberWrapper::after {
+    height: 1rem;
+    width: 1rem;
+  }
+
+  .numberWrapper::before {
+    transform: translateX(-10.3rem);
+  }
+
+  .numberWrapper::after {
+    transform: translateX(6rem);
+  }
+}
+
+.numPart {
+  align-items: center;
+  background: var(--color-white);
+  border: 0.3rem solid var(--color-off-black);
+  border-radius: 2.5rem;
+  display: inline-flex;
+  height: 4.4rem;
+  justify-content: center;
+  margin: 0 0.8rem;
+  padding: 0.2rem 1.2rem;
+  position: relative;
+  z-index: 1;
+
+  transform: none;
+  transition: transform 200ms var(--curve-spring),
+    box-shadow 200ms var(--curve-spring);
+}
+
+@media (min-width: 768px) {
+  .numPart {
+    border-radius: 4rem;
+    border-width: 0.4rem;
+    height: 6.4rem;
+    margin: 0 1.2rem;
+    padding: 0.4rem 2rem;
+  }
+}
+
+.numPart.animatingIn {
+  transform: translate3d(-0.6rem, -0.6rem, 0);
+}
+
+.numPart1 {
+  border-color: var(--color-yellow);
+  box-shadow: -0.1rem -0.1rem 0 0 var(--color-yellow),
+    -0.2rem -0.2rem 0 0 var(--color-yellow),
+    -0.3rem -0.3rem 0 0 var(--color-yellow),
+    -0.4rem -0.4rem 0 0 var(--color-yellow),
+    -0.5rem -0.5rem 0 0 var(--color-yellow),
+    -0.6rem -0.6rem 0 0 var(--color-yellow),
+    -0.6rem -0.6rem 0 0 var(--color-yellow),
+    -0.6rem -0.6rem 0 0 var(--color-yellow),
+    -0.6rem -0.6rem 0 0 var(--color-yellow);
+}
+
+.numPart1.animatingIn {
+  box-shadow: 0 0 0 0 var(--color-yellow), 0 0 0 0 var(--color-yellow),
+    0 0 0 0 var(--color-yellow), 0 0 0 0 var(--color-yellow),
+    0 0 0 0 var(--color-yellow), 0 0 0 0 var(--color-yellow),
+    0 0 0 0 var(--color-yellow), 0 0 0 0 var(--color-yellow),
+    0 0 0 0 var(--color-yellow);
+}
+
+.numberWrapper:hover .numPart1 {
+  transform: translate3d(0.3rem, 0.3rem, 0);
+  box-shadow: -0.1rem -0.1rem 0 0 var(--color-yellow),
+    -0.2rem -0.2rem 0 0 var(--color-yellow),
+    -0.3rem -0.3rem 0 0 var(--color-yellow),
+    -0.4rem -0.4rem 0 0 var(--color-yellow),
+    -0.5rem -0.5rem 0 0 var(--color-yellow),
+    -0.6rem -0.6rem 0 0 var(--color-yellow),
+    -0.7rem -0.7rem 0 0 var(--color-yellow),
+    -0.8rem -0.8rem 0 0 var(--color-yellow),
+    -0.9rem -0.9rem 0 0 var(--color-yellow);
+}
+
+.numberWrapper:active .numPart1 {
+  transform: translate3d(0.1rem, 0.1rem, 0);
+  box-shadow: -0.1rem -0.1rem 0 0 var(--color-yellow),
+    -0.2rem -0.2rem 0 0 var(--color-yellow),
+    -0.3rem -0.3rem 0 0 var(--color-yellow),
+    -0.4rem -0.4rem 0 0 var(--color-yellow),
+    -0.5rem -0.5rem 0 0 var(--color-yellow),
+    -0.6rem -0.6rem 0 0 var(--color-yellow),
+    -0.7rem -0.7rem 0 0 var(--color-yellow),
+    -0.7rem -0.7rem 0 0 var(--color-yellow),
+    -0.7rem -0.7rem 0 0 var(--color-yellow);
+}
+
+.numPart2 {
+  transition-delay: 75ms;
+  border-color: var(--color-magenta);
+  box-shadow: -0.1rem -0.1rem 0 0 var(--color-magenta),
+    -0.2rem -0.2rem 0 0 var(--color-magenta),
+    -0.3rem -0.3rem 0 0 var(--color-magenta),
+    -0.4rem -0.4rem 0 0 var(--color-magenta),
+    -0.5rem -0.5rem 0 0 var(--color-magenta),
+    -0.6rem -0.6rem 0 0 var(--color-magenta),
+    -0.6rem -0.6rem 0 0 var(--color-magenta),
+    -0.6rem -0.6rem 0 0 var(--color-magenta),
+    -0.6rem -0.6rem 0 0 var(--color-magenta);
+}
+
+.numPart2.animatingIn {
+  box-shadow: 0 0 0 0 var(--color-magenta), 0 0 0 0 var(--color-magenta),
+    0 0 0 0 var(--color-magenta), 0 0 0 0 var(--color-magenta),
+    0 0 0 0 var(--color-magenta), 0 0 0 0 var(--color-magenta),
+    0 0 0 0 var(--color-magenta), 0 0 0 0 var(--color-magenta),
+    0 0 0 0 var(--color-magenta);
+}
+
+.numberWrapper:hover .numPart2 {
+  transform: translate3d(0.3rem, 0.3rem, 0);
+  box-shadow: -0.1rem -0.1rem 0 0 var(--color-magenta),
+    -0.2rem -0.2rem 0 0 var(--color-magenta),
+    -0.3rem -0.3rem 0 0 var(--color-magenta),
+    -0.4rem -0.4rem 0 0 var(--color-magenta),
+    -0.5rem -0.5rem 0 0 var(--color-magenta),
+    -0.6rem -0.6rem 0 0 var(--color-magenta),
+    -0.7rem -0.7rem 0 0 var(--color-magenta),
+    -0.8rem -0.8rem 0 0 var(--color-magenta),
+    -0.9rem -0.9rem 0 0 var(--color-magenta);
+}
+
+.numberWrapper:active .numPart2 {
+  transform: translate3d(0.1rem, 0.1rem, 0);
+  box-shadow: -0.1rem -0.1rem 0 0 var(--color-magenta),
+    -0.2rem -0.2rem 0 0 var(--color-magenta),
+    -0.3rem -0.3rem 0 0 var(--color-magenta),
+    -0.4rem -0.4rem 0 0 var(--color-magenta),
+    -0.5rem -0.5rem 0 0 var(--color-magenta),
+    -0.6rem -0.6rem 0 0 var(--color-magenta),
+    -0.7rem -0.7rem 0 0 var(--color-magenta),
+    -0.7rem -0.7rem 0 0 var(--color-magenta),
+    -0.7rem -0.7rem 0 0 var(--color-magenta);
+}
+
+.numPart3 {
+  transition-delay: 150ms;
+  border-color: var(--color-cyan);
+  box-shadow: -0.1rem -0.1rem 0 0 var(--color-cyan),
+    -0.2rem -0.2rem 0 0 var(--color-cyan), -0.3rem -0.3rem 0 0 var(--color-cyan),
+    -0.4rem -0.4rem 0 0 var(--color-cyan), -0.5rem -0.5rem 0 0 var(--color-cyan),
+    -0.6rem -0.6rem 0 0 var(--color-cyan), -0.6rem -0.6rem 0 0 var(--color-cyan),
+    -0.6rem -0.6rem 0 0 var(--color-cyan), -0.6rem -0.6rem 0 0 var(--color-cyan);
+}
+
+.numPart3.animatingIn {
+  box-shadow: 0 0 0 0 var(--color-cyan), 0 0 0 0 var(--color-cyan),
+    0 0 0 0 var(--color-cyan), 0 0 0 0 var(--color-cyan),
+    0 0 0 0 var(--color-cyan), 0 0 0 0 var(--color-cyan),
+    0 0 0 0 var(--color-cyan), 0 0 0 0 var(--color-cyan),
+    0 0 0 0 var(--color-cyan);
+}
+
+.numberWrapper:hover .numPart3 {
+  transform: translate3d(0.3rem, 0.3rem, 0);
+  box-shadow: -0.1rem -0.1rem 0 0 var(--color-cyan),
+    -0.2rem -0.2rem 0 0 var(--color-cyan), -0.3rem -0.3rem 0 0 var(--color-cyan),
+    -0.4rem -0.4rem 0 0 var(--color-cyan), -0.5rem -0.5rem 0 0 var(--color-cyan),
+    -0.6rem -0.6rem 0 0 var(--color-cyan), -0.7rem -0.7rem 0 0 var(--color-cyan),
+    -0.8rem -0.8rem 0 0 var(--color-cyan), -0.9rem -0.9rem 0 0 var(--color-cyan);
+}
+
+.numberWrapper:active .numPart3 {
+  transform: translate3d(0.1rem, 0.1rem, 0);
+  box-shadow: -0.1rem -0.1rem 0 0 var(--color-cyan),
+    -0.2rem -0.2rem 0 0 var(--color-cyan), -0.3rem -0.3rem 0 0 var(--color-cyan),
+    -0.4rem -0.4rem 0 0 var(--color-cyan), -0.5rem -0.5rem 0 0 var(--color-cyan),
+    -0.6rem -0.6rem 0 0 var(--color-cyan), -0.7rem -0.7rem 0 0 var(--color-cyan),
+    -0.7rem -0.7rem 0 0 var(--color-cyan), -0.7rem -0.7rem 0 0 var(--color-cyan);
+}

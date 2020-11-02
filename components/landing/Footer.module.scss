@@ -1,0 +1,37 @@
+.footer {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 16rem;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .footer {
+    min-height: 32rem;
+  }
+}
+
+.footer::before {
+  background: url("/edge-halftone.png") repeat-x;
+  background-size: 160rem 12rem;
+  content: "";
+  display: block;
+  height: 12rem;
+  left: 0;
+  position: absolute;
+  bottom: 0;
+  transform: translate3d(0, 6rem, 0) rotate(-182deg);
+  width: 100%;
+  z-index: -1;
+}
+
+.footer p {
+  color: var(--color-gray-primary);
+  font-size: 1.4rem;
+  margin: 3.2rem 0;
+  text-align: center;
+}

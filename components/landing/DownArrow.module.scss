@@ -1,0 +1,27 @@
+.arrow {
+  height: 15.2rem;
+  position: relative;
+  width: 6.4rem;
+}
+
+.arrow::before {
+  background: url(/trail.gif) no-repeat;
+  background-size: 1.5rem 1rem;
+  content: "";
+  display: block;
+  height: 1rem;
+  left: 2.4rem;
+  position: absolute;
+  top: 0.6rem;
+  transform: translate3d(0.01rem, 0, 0) rotate(90deg);
+  width: 1.5rem;
+}
+
+.arrow::after {
+  background: url(/down-arrow.svg) no-repeat;
+  background-size: 6.4rem 15.2rem;
+  content: "";
+  display: block;
+  height: 15.2rem;
+  width: 6.4rem;
+}

@@ -1,0 +1,36 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+  margin: 0 auto;
+  min-height: 60vh;
+  text-align: center;
+}
+
+.title {
+  font-size: 4rem;
+  line-height: 3.6rem;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 5.6rem;
+    line-height: 6rem;
+  }
+}
+
+.desc {
+  color: var(--color-gray-primary);
+  font-size: 1.4rem;
+  line-height: 1.7rem;
+  text-transform: lowercase;
+}
