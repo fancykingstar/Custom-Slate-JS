@@ -1,6 +1,5 @@
 import { Auth } from 'aws-amplify';
 import { useState } from 'react';
-import Head from 'next/head';
 import Link from 'next/link';
 
 import Logo from 'components/logo/Logo';
@@ -35,17 +34,6 @@ export default function LoginPage(): JSX.Element {
 
   return (
     <>
-      <Head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Monoton&display=swap"
-          rel="stylesheet"
-        />
-
-        <link
-          href="https://fonts.googleapis.com/css2?family=Baloo+Tammudu+2:wght@500&display=swap"
-          rel="stylesheet"
-        />
-      </Head>
       <div className={styles.loginPage}>
         <div className={styles.logo}>
           <Link href="/landing">

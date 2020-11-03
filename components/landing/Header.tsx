@@ -9,9 +9,13 @@ export default function Header(): JSX.Element {
   return (
     <header className={styles.header}>
       <div className={styles.content}>
-        <Link href="/">
-          <Logo symbolWidth={4.2} />
-        </Link>
+        <div className={styles.logo}>
+          <Link href="/landing">
+            <a>
+              <Logo symbolWidth={4.2} />
+            </a>
+          </Link>
+        </div>
         <div className={styles.signUp}>
           <SignUp />
         </div>

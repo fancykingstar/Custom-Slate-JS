@@ -15,6 +15,10 @@
   flex-direction: row;
 }
 
+.logo * {
+  cursor: pointer;
+}
+
 @media (min-width: 768px) {
   .content {
     flex-direction: row;
@@ -26,7 +30,6 @@
   color: var(--color-gray-primary);
   display: flex;
   flex-direction: column;
-  margin: 0 0 0.8rem;
   padding: 0.8rem;
   text-decoration: none;
 }
@@ -56,10 +59,11 @@
   border-bottom: 0.5rem solid var(--color-black);
   color: var(--color-black);
   display: block;
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: 700;
-  line-height: 2rem;
-  padding: .4rem;
+  line-height: 1.8rem;
+  margin-top: .6rem;
+  padding: .4rem .4rem .4rem .4rem;
   position: absolute;
   right: 2.4rem;
 
@@ -80,9 +84,10 @@
 @media (min-width: 768px) {
   .signUp {
     border-bottom: 0.7rem solid var(--color-black);
-    font-size: 2.4rem;
+    font-size: 2rem;
     font-weight: 700;
-    line-height: 2.4rem;
+    line-height: 2rem;
+    margin-top: .2rem;
     right: 8rem;
 
     &:active, &:focus {
