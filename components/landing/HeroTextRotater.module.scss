@@ -13,11 +13,10 @@
 }
 
 .text {
-  background-color: var(--color-bg-gray-blue);
   border: 0.5rem solid var(--color-black);
   border-radius: var(--deca-border-radius);
   line-height: 6.2rem;
-  padding: .2rem .4rem .2rem .4rem;
+  padding: .4rem;
   transition: transform 200ms var(--curve-spring),
     text-shadow 200ms var(--curve-spring), opacity 200ms linear;
 }
@@ -26,12 +25,16 @@
   opacity: 0;
 }
 
+.text:hover {
+  background-color: var(--color-bg-gray-blue);
+}
+
 @media (min-width: 768px) {
   .text {
     border: 0.7rem solid var(--color-black);
     border-radius: var(--deca-border-radius);
     line-height: 6rem;
     margin-top: 0;
-    padding: .2rem .6rem .2rem .6rem;
+    padding: .6rem
   }
 }

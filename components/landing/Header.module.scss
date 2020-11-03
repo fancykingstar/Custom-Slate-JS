@@ -52,14 +52,41 @@
   transform: translate3d(0.8rem, 0.8rem, 0);
 }
 
-.social {
-  display: none;
+.signUp {
+  border-bottom: 0.5rem solid var(--color-black);
+  color: var(--color-black);
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 2rem;
+  padding: .4rem;
+  position: absolute;
+  right: 2.4rem;
+
+  &:hover {
+    background-color: var(--color-bg-gray-blue);
+    cursor: pointer;
+  }
+
+  &:active, &:focus {
+    border-bottom: 0.5rem solid var(--color-blue);
+  }
+
+  a {
+    text-decoration: none;
+  }
 }
 
 @media (min-width: 768px) {
-  .social {
-    display: block;
-    position: absolute;
-    right: 7.2rem;
+  .signUp {
+    border-bottom: 0.7rem solid var(--color-black);
+    font-size: 2.4rem;
+    font-weight: 700;
+    line-height: 2.4rem;
+    right: 8rem;
+
+    &:active, &:focus {
+      border-bottom: 0.7rem solid var(--color-blue);
+    }
   }
 }

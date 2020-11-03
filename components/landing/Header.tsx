@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import Logo from 'components/landing/Logo';
-import SocialLinks from 'components/landing/SocialLinks';
+import SignUp from 'components/landing/SignUp';
 
 import styles from './Header.module.scss';
 
@@ -12,8 +12,8 @@ export default function Header(): JSX.Element {
         <Link href="/">
           <Logo symbolWidth={4.2} />
         </Link>
-        <div className={styles.social}>
-          <SocialLinks />
+        <div className={styles.signUp}>
+          <SignUp />
         </div>
       </div>
     </header>

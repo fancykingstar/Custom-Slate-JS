@@ -5,7 +5,7 @@ import useInterval from 'lib/useInterval';
 import styles from './HeroTextRotater.module.scss';
 
 const phrases = [
-  'fast',
+  'swiftly',
   'meeting-free',
   'together',
   'remotely',

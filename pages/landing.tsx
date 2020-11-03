@@ -37,6 +37,7 @@ export default function Home(): JSX.Element {
         <meta property="og:description" content={config.ogDesc} />
         <meta property="og:site_name" content={config.ogTitle} />
         <meta property="og:locale" content="en_US" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
       <div className={styles.container}>

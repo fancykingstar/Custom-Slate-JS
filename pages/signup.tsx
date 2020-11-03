@@ -1,6 +1,8 @@
+import { Auth } from 'aws-amplify';
 import { useState } from 'react';
 import Head from 'next/head';
-import { Auth } from 'aws-amplify';
+import Link from 'next/link';
+
 import Logo from 'components/logo/Logo';
 import styles from 'styles/LoginPage.module.scss';
 
@@ -52,7 +54,11 @@ export default function SignupPage(): JSX.Element {
       </Head>
       <div className={styles.loginPage}>
         <div className={styles.logo}>
-          <Logo symbolWidth={6} />
+          <Link href="/landing">
+            <a>
+              <Logo symbolWidth={6} />
+            </a>
+          </Link>
         </div>
         <div className={styles.loginFormWrapper}>
           <form onSubmit={(e) => handleSubmit(e)} className={styles.loginForm}>
@@ -75,7 +81,9 @@ export default function SignupPage(): JSX.Element {
             <p className={styles.loginMessage}>
               Already have account? Please{' '}
               <span className={styles.toggleLink}>
-                <a href="/login">log in</a>
+                <Link href="/login">
+                  <a>log in</a>
+                </Link>
               </span>
               .
             </p>
