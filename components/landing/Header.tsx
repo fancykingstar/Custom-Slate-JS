@@ -16,9 +16,10 @@ export default function Header(): JSX.Element {
             </a>
           </Link>
         </div>
-        <div className={styles.signUp}>
+        {/* <div className={styles.signUp}>
           <SignUp />
         </div>
+          */}
       </div>
     </header>
   );

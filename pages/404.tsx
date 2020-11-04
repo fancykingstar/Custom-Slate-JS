@@ -10,7 +10,7 @@ export default function Page404(): JSX.Element {
   return (
     <>
       <Head>
-        <title>404 | 10x decision making</title>
+        <title>404 | Make hard decisions</title>
       </Head>
 
       <div className={styles.container}>

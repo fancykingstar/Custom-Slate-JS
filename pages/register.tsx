@@ -7,19 +7,21 @@ import Explanation from 'components/landing/Explanation';
 import FAQ from 'components/landing/FAQ';
 import EndArrow from 'components/landing/EndArrow';
 import ContactBox from 'components/landing/ContactBox';
+import MailChimp from 'components/landing/MailChimp';
 import config from 'components/landing/config';
 import fetcher from 'lib/fetcher';
 
-import styles from './landing.module.scss';
+import styles from './register.module.scss';
 
 export default function Home(): JSX.Element {
   return (
     <>
       <Head>
-        <title>Deca: 10x decision making</title>
+        <title>Deca | Make hard decisions</title>
         <meta name="description" content={config.ogDesc} />
 
         {/* Twitter Cards */}
+        {/*
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:description" content={config.ogDesc} />
         <meta name="twitter:title" content={config.ogTitle} />
@@ -27,8 +29,10 @@ export default function Home(): JSX.Element {
         <meta name="twitter:image" content={config.ogCardUrl} />
         <meta name="twitter:image:alt" content={config.ogCardAltText} />
         <meta name="twitter:creator" content={config.twitterHandle} />
+        */}
 
         {/* Facebook OG */}
+        {/*
         <meta property="og:url" content={config.fullURL} />
         <meta property="og:type" content="website" />
         <meta property="og:title" content={config.ogTitle} />
@@ -38,6 +42,7 @@ export default function Home(): JSX.Element {
         <meta property="og:site_name" content={config.ogTitle} />
         <meta property="og:locale" content="en_US" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        */}
       </Head>
 
       <div className={styles.container}>
@@ -45,6 +50,7 @@ export default function Home(): JSX.Element {
 
         <main className={styles.main}>
           <Hero />
+          <MailChimp />
           {/*
           <Explanation />
           <FAQ />
