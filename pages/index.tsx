@@ -1,125 +1,66 @@
-import { useState, useReducer, useMemo, useEffect } from 'react';
 import Head from 'next/head';
-import { GetServerSidePropsContext } from 'next';
 
-import DecaEditor from 'components/DecaEditor';
-import { Env, EnvProps } from 'components/env';
-import { Context, DecisionCategory } from 'components/context';
-import Sidebar from 'components/sidebar/Sidebar';
-import Header from 'components/header/Header';
-import { reducer, Store, Action } from 'store/store';
-import styles from 'styles/Home.module.scss';
-import { HeaderContext } from 'components/header/HeaderContext';
-import { PaneContext } from 'components/panes/PaneContext';
-import NavPane from 'components/panes/navpane/NavPane';
-import ReviewPane from 'components/panes/reviewpane/ReviewPane';
-import GlobalPane from 'components/panes/globalpane/GlobalPane';
+import Header from 'components/landing/Header';
+import Footer from 'components/landing/Footer';
+import Hero from 'components/landing/Hero';
+import Explanation from 'components/landing/Explanation';
+import FAQ from 'components/landing/FAQ';
+import EndArrow from 'components/landing/EndArrow';
+import ContactBox from 'components/landing/ContactBox';
+import MailChimp from 'components/landing/MailChimp';
+import config from 'components/landing/config';
+import fetcher from 'lib/fetcher';
 
-export async function getServerSideProps(
-  context: GetServerSidePropsContext
-): Promise<EnvProps> {
-  const openaiKey: string = process.env.OPENAI_KEY
-    ? process.env.OPENAI_KEY
-    : (process.env.NEXT_PUBLIC_OPENAI_KEY as string);
-  const openaiSecretKey: string = process.env.OPENAI_SECRET_KEY
-    ? process.env.OPENAI_SECRET_KEY
-    : (process.env.NEXT_PUBLIC_OPENAI_SECRET_KEY as string);
+import styles from './index.module.scss';
 
-  return {
-    props: {
-      openaiKey,
-      openaiSecretKey,
-    },
-  };
-}
-
-export default function Home(env: Env): JSX.Element {
-  const [
-    decisionCategory,
-    setDecisionCategory,
-  ] = useState<DecisionCategory | null>(null);
-  const [viewMode, setViewMode] = useState('private');
-  const [viewableElements, setViewableElements] = useState([] as Array<string>);
-  const [expandedPanes, setExpandedPanes] = useState([] as Array<string>);
-
-  const [state, dispatch] = useReducer(reducer, {
-    sidebarVisible: false,
-    activeDocId: null,
-    docs: [],
-    showStarBar: false,
-  });
-  // Memoize reducer to avoid unnecessary re-renders
-  const value = useMemo(() => ({ state, dispatch }), [state]);
-
-  // If we have no stored docs, create a new one
-  useEffect(() => {
-    // Load state from localStorage
-    const stateData = window.localStorage.getItem('state');
-    const parsedState = stateData != null ? JSON.parse(stateData) : null;
-
-    if (parsedState == null) {
-      // Create new doc if there is not persisted localStorage state
-      dispatch({ type: Action.createNewDoc });
-    } else {
-      dispatch({ type: Action.initState, state: parsedState });
-    }
-  }, []);
-
-  const { activeDocId: activeDoc, docs } = state;
-  const currentDoc = docs.find((doc) => doc.id === activeDoc) ?? null;
-  const headerContextValue = {
-    setViewMode,
-    setViewableElements,
-    viewMode,
-    viewableElements,
-  };
-
-  const paneContextValue = {
-    expandedPanes,
-    setExpandedPanes,
-  };
-  const mainContentWidth = `calc(100% - ${expandedPanes.length * 20}rem)`;
-
+export default function Home(): JSX.Element {
   return (
     <>
       <Head>
-        <title>Deca</title>
+        <title>Deca | Make hard decisions</title>
+        <meta name="description" content={config.ogDesc} />
+
+        {/* Twitter Cards */}
+        {/*
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:description" content={config.ogDesc} />
+        <meta name="twitter:title" content={config.ogTitle} />
+        <meta name="twitter:site" content={config.twitterHandle} />
+        <meta name="twitter:image" content={config.ogCardUrl} />
+        <meta name="twitter:image:alt" content={config.ogCardAltText} />
+        <meta name="twitter:creator" content={config.twitterHandle} />
+        */}
+
+        {/* Facebook OG */}
+        {/*
+        <meta property="og:url" content={config.fullURL} />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={config.ogTitle} />
+        <meta property="og:image" content={config.ogCardUrl} />
+        <meta property="og:image:alt" content={config.ogCardAltText} />
+        <meta property="og:description" content={config.ogDesc} />
+        <meta property="og:site_name" content={config.ogTitle} />
+        <meta property="og:locale" content="en_US" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        */}
       </Head>
 
-      <Context.Provider
-        value={{
-          categorizer: {
-            decisionCategory,
-            setDecisionCategory,
-          },
-          env,
-        }}
-      >
-        <Store.Provider value={value}>
-          <PaneContext.Provider value={paneContextValue}>
-            <HeaderContext.Provider value={headerContextValue}>
-              <div className={styles.paneContainer}>
-                <GlobalPane />
-                <NavPane />
-                <div
-                  className={styles.mainContent}
-                  style={{ width: mainContentWidth }}
-                >
-                  <Header />
-                  <main className={styles.main}>
-                    {activeDoc != null && currentDoc != null ? (
-                      <DecaEditor key={activeDoc} doc={currentDoc} />
-                    ) : null}
-                  </main>
-                </div>
-                {/* to be added in separate PR */}
-                {/* <ReviewPane /> */}
-              </div>
-            </HeaderContext.Provider>
-          </PaneContext.Provider>
-        </Store.Provider>
-      </Context.Provider>
+      <div className={styles.container}>
+        <Header />
+
+        <main className={styles.main}>
+          <Hero />
+          <MailChimp />
+          {/*
+          <Explanation />
+          <FAQ />
+          <EndArrow />
+          <ContactBox />
+          */}
+        </main>
+
+        <Footer showSocialLinks />
+      </div>
     </>
   );
 }
