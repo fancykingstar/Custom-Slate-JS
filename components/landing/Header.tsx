@@ -10,7 +10,7 @@ export default function Header(): JSX.Element {
     <header className={styles.header}>
       <div className={styles.content}>
         <div className={styles.logo}>
-          <Link href="/landing">
+          <Link href="/">
             <a>
               <Logo symbolWidth={4.2} />
             </a>
