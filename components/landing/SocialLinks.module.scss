@@ -20,7 +20,7 @@
 
 .social a::before {
   background: var(--color-cyan);
-  border-radius: 100%;
+  border-radius: var(--deca-border-radius);
   content: "";
   display: block;
   height: 4rem;
@@ -35,7 +35,7 @@
 
 .social a::after {
   background: var(--color-yellow);
-  border-radius: 100%;
+  border-radius: var(--deca-border-radius);
   content: "";
   display: block;
   height: 3rem;
@@ -79,7 +79,7 @@
 
 .social a:hover::after {
   opacity: 1;
-  transform: translate3d(0.3rem, 0.3rem, 0);
+  transform: translate3d(0.5rem, 0.5rem, 0);
 }
 
 .social a img {
@@ -90,5 +90,5 @@
 }
 
 .social a:hover img {
-  transform: translate3d(0.8rem, 0.8rem, 0);
+  transform: translate3d(1.2rem, 1.2rem, 0);
 }
