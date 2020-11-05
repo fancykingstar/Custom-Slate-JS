@@ -26,11 +26,16 @@
 .input {
   border: none;
   border-bottom: .5rem solid var(--color-black);
+  border-radius: var(--deca-border-radius) var(--deca-border-radius) 0 0;
   font-size: 1.8rem;
   font-weight: 700;
   line-height: 2.4rem;
   height: 5rem;
   outline: none;
+
+  &:hover {
+    background-color: var(--color-bg-gray-blue);
+  }
 
   &:active, &:focus {
     background-color: var(--color-bg-gray-blue);
