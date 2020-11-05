@@ -1,7 +1,22 @@
-import React from 'react';
-import { useRouter } from 'next/router';
 import { useAuthRedirect } from 'aws-cognito-next';
+import { GetStaticProps, InferGetServerSidePropsType } from 'next';
+import { useRouter } from 'next/router';
 import queryString from 'query-string';
+import React from 'react';
+
+import Page404 from 'pages/404';
+
+interface Props {
+  isDevelopment: boolean;
+}
+
+export const getServerSideProps: GetStaticProps<Props> = async () => {
+  return {
+    props: {
+      isDevelopment: process.env.NODE_ENV === 'development',
+    },
+  };
+};
 
 const extractFirst = (value: string | string[]) => {
   return Array.isArray(value) ? value[0] : value;
@@ -16,8 +31,13 @@ const extractFirst = (value: string | string[]) => {
 // automatically because the id_token hash is present. Then we redirect the
 // user back to the main page. That page can now use SSR as the user will have
 // the necessary cookies ready.
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export default function TokenSetter() {
+export default function TokenSetter({
+  isDevelopment,
+}: InferGetServerSidePropsType<typeof getServerSideProps>): JSX.Element {
+  if (!isDevelopment) {
+    return <Page404 />;
+  }
+
   const router = useRouter();
   useAuthRedirect(() => {
     // We are not using the router here, since the query object will be empty
@@ -29,5 +49,5 @@ export default function TokenSetter() {
     router.replace(redirectUriAfterSignIn);
   });
 
-  return <p>loading..</p>;
+  return <p>Loading…</p>;
 }

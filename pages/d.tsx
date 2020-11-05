@@ -14,6 +14,7 @@ import { PaneContext } from 'components/panes/PaneContext';
 import NavPane from 'components/panes/navpane/NavPane';
 import ReviewPane from 'components/panes/reviewpane/ReviewPane';
 import GlobalPane from 'components/panes/globalpane/GlobalPane';
+import Page404 from 'pages/404';
 
 export async function getServerSideProps(
   context: GetServerSidePropsContext
@@ -27,6 +28,7 @@ export async function getServerSideProps(
 
   return {
     props: {
+      isDevelopment: process.env.NODE_ENV === 'development',
       openaiKey,
       openaiSecretKey,
     },
@@ -79,6 +81,11 @@ export default function Home(env: Env): JSX.Element {
     setExpandedPanes,
   };
   const mainContentWidth = `calc(100% - ${expandedPanes.length * 20}rem)`;
+
+  const { isDevelopment } = env;
+  if (!isDevelopment) {
+    return <Page404 />;
+  }
 
   return (
     <>
