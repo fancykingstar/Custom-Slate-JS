@@ -10,7 +10,7 @@ import Header from 'components/header/Header';
 import { reducer, Store, Action } from 'store/store';
 import styles from 'styles/Home.module.scss';
 import { HeaderContext } from 'components/header/HeaderContext';
-import { PaneContext } from 'components/panes/PaneContext';
+import { PaneState, PaneContext } from 'components/panes/PaneContext';
 import NavPane from 'components/panes/navpane/NavPane';
 import ReviewPane from 'components/panes/reviewpane/ReviewPane';
 import GlobalPane from 'components/panes/globalpane/GlobalPane';
@@ -43,6 +43,7 @@ export default function Home(env: Env): JSX.Element {
   const [viewMode, setViewMode] = useState('private');
   const [viewableElements, setViewableElements] = useState([] as Array<string>);
   const [expandedPanes, setExpandedPanes] = useState([] as Array<string>);
+  const [navPaneState, setNavPaneState] = useState(PaneState.Collapsed);
 
   const [state, dispatch] = useReducer(reducer, {
     sidebarVisible: false,
@@ -77,6 +78,9 @@ export default function Home(env: Env): JSX.Element {
   };
 
   const paneContextValue = {
+    navPaneState,
+    setNavPaneState,
+
     expandedPanes,
     setExpandedPanes,
   };
