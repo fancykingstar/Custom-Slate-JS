@@ -1,11 +1,27 @@
 import { Auth } from 'aws-amplify';
 import { useState } from 'react';
+import { GetStaticProps, InferGetServerSidePropsType } from 'next';
 import Link from 'next/link';
 
 import Logo from 'components/logo/Logo';
+import Page404 from 'pages/404';
 import styles from 'styles/LoginPage.module.scss';
 
-export default function SignupPage(): JSX.Element {
+interface Props {
+  isDevelopment: boolean;
+}
+
+export const getServerSideProps: GetStaticProps<Props> = async () => {
+  return {
+    props: {
+      isDevelopment: process.env.NODE_ENV === 'development',
+    },
+  };
+};
+
+export default function SignupPage({
+  isDevelopment,
+}: InferGetServerSidePropsType<typeof getServerSideProps>): JSX.Element {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -37,6 +53,10 @@ export default function SignupPage(): JSX.Element {
     event.preventDefault();
     signUp();
   };
+
+  if (!isDevelopment) {
+    return <Page404 />;
+  }
 
   return (
     <>
