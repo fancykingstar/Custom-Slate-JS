@@ -46,7 +46,7 @@
     "react-dom": "16.14.0",
     "react-mailchimp-subscribe": "^2.1.0",
     "react-spring": "^8.0.27",
-    "sass": "^1.28.0",
+    "sass": "^1.29.0",
     "slate": "^0.59.0",
     "slate-history": "^0.59.0",
     "slate-hyperscript": "^0.59.0",
