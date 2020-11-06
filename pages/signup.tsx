@@ -3,24 +3,25 @@ import { useState } from 'react';
 import { GetStaticProps, InferGetServerSidePropsType } from 'next';
 import Link from 'next/link';
 
+import { Stage } from 'components/stage';
 import Logo from 'components/logo/Logo';
 import Page404 from 'pages/404';
 import styles from 'styles/LoginPage.module.scss';
 
 interface Props {
-  isDevelopment: boolean;
+  isProd: boolean;
 }
 
 export const getServerSideProps: GetStaticProps<Props> = async () => {
   return {
     props: {
-      isDevelopment: process.env.NODE_ENV === 'development',
+      isProd: process.env.STAGE === Stage.Prod,
     },
   };
 };
 
 export default function SignupPage({
-  isDevelopment,
+  isProd,
 }: InferGetServerSidePropsType<typeof getServerSideProps>): JSX.Element {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -54,7 +55,7 @@ export default function SignupPage({
     signUp();
   };
 
-  if (!isDevelopment) {
+  if (isProd) {
     return <Page404 />;
   }
 
