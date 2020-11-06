@@ -118,11 +118,13 @@ export default function DecaEditor(props: Props): JSX.Element {
           pNode.length
         ) {
           const len = Node.string(node).length - 1;
-          Transforms.setNodes(
-            editor,
-            { type: HEADING[len - 1] },
-            { match: (n) => Editor.isBlock(editor, n) }
-          );
+          if (len < 4) {
+            Transforms.setNodes(
+              editor,
+              { type: HEADING[len - 1] },
+              { match: (n) => Editor.isBlock(editor, n) }
+            );
+          }
         }
 
         if (h1Node.length && !Node.string(node).includes('# ')) {
