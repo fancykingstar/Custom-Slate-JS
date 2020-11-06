@@ -61,12 +61,14 @@ import {
   SimulationChoiceElement,
   SimulationItemElement,
 } from 'components/elements/Simulation/SimulationElement';
+import HeadingElement from 'components/elements/Heading/HeadingElement';
 import ParagraphElement from 'components/elements/Paragraph/ParagraphElement';
 import UnorderedListElement from 'components/elements/UnorderedList/UnorderedList';
 import OrderedListElement from 'components/elements/OrderedList/OrderedList';
 import TitleElement from 'components/elements/Title/TitleElement';
 
 export enum BasicElement {
+  Heading = 'h1',
   Paragraph = 'p',
   OrderedList = 'ol',
   UnorderedList = 'ul',
@@ -88,6 +90,8 @@ export default function Element(props: RenderElementProps): JSX.Element {
   switch (element.type) {
     case ReservedElement.Title:
       return <TitleElement {...props} />;
+    case BasicElement.Heading:
+      return <HeadingElement {...props} />;
     case BasicElement.Paragraph:
       return <ParagraphElement {...props} />;
     case BasicElement.UnorderedList:

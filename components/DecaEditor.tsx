@@ -91,6 +91,36 @@ export default function DecaEditor(props: Props): JSX.Element {
 
   const renderElement = useCallback(
     (elementProps) => {
+      const { selection } = editor;
+      if (selection != null) {
+        const [selectionStart] = Range.edges(selection);
+        const [node] = Editor.node(editor, selectionStart);
+        const [match] = Editor.nodes(editor, {
+          match: (n) => n.type,
+        });
+        const type = match ? match[0].type : null;
+
+        if (
+          Node.string(node).length &&
+          Node.string(node).includes('# ') &&
+          Node.string(node).replaceAll('#', '') === ' ' &&
+          type === 'p'
+        ) {
+          Transforms.setNodes(
+            editor,
+            { type: 'h1' },
+            { match: (n) => Editor.isBlock(editor, n) }
+          );
+        }
+
+        if (type === 'h1' && !Node.string(node).includes('# ')) {
+          Transforms.setNodes(
+            editor,
+            { type: 'p' },
+            { match: (n) => Editor.isBlock(editor, n) }
+          );
+        }
+      }
       const { type } = elementProps.element;
       const skipEmptyParagraph =
         type === BasicElement.Paragraph &&
@@ -202,29 +232,6 @@ export default function DecaEditor(props: Props): JSX.Element {
   const onKeyDown = useCallback(
     (event) => {
       const { selection } = editor;
-      const [selectionStart] = Range.edges(selection);
-      const [node] = Editor.node(editor, selectionStart);
-      const [match] = Editor.nodes(editor, {
-        match: (n) => n.type,
-      });
-      const type = match ? match[0].type : null;
-
-      if (
-        Node.string(node).length &&
-        node.text.includes('#') &&
-        node.text.replaceAll('#', '') === '' &&
-        isKeyHotkey(Keys.Space, event) &&
-        type === 'p'
-      ) {
-        if (match && match[0].type === 'p') {
-          Transforms.setNodes(
-            editor,
-            { type: 'h1' },
-            { match: (n) => Editor.isBlock(editor, n) }
-          );
-        }
-      }
-
       onElementKeyDown(editor, context, event);
       onKeyDownSlashMenu(event);
 
@@ -250,6 +257,8 @@ export default function DecaEditor(props: Props): JSX.Element {
         Range.isCollapsed(selection) &&
         assistantActions.length
       ) {
+        const [selectionStart] = Range.edges(selection);
+        const [node] = Editor.node(editor, selectionStart);
         const [caretLine] = selection.anchor.path;
 
         if (
