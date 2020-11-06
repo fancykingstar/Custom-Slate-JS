@@ -95,16 +95,25 @@ export default function DecaEditor(props: Props): JSX.Element {
       if (selection != null) {
         const [selectionStart] = Range.edges(selection);
         const [node] = Editor.node(editor, selectionStart);
-        const [match] = Editor.nodes(editor, {
-          match: (n) => n.type,
-        });
-        const type = match ? match[0].type : null;
+        const { isInline } = editor;
+        const h1Node = Array.from(
+          Editor.nodes(editor, {
+            at: selection,
+            match: (n) => n.type === 'h1',
+          })
+        );
+        const pNode = Array.from(
+          Editor.nodes(editor, {
+            at: selection,
+            match: (n) => n.type === 'p',
+          })
+        );
 
         if (
           Node.string(node).length &&
           Node.string(node).includes('# ') &&
           Node.string(node).replaceAll('#', '') === ' ' &&
-          type === 'p'
+          pNode.length
         ) {
           Transforms.setNodes(
             editor,
@@ -113,7 +122,7 @@ export default function DecaEditor(props: Props): JSX.Element {
           );
         }
 
-        if (type === 'h1' && !Node.string(node).includes('# ')) {
+        if (h1Node.length && !Node.string(node).includes('# ')) {
           Transforms.setNodes(
             editor,
             { type: 'p' },
