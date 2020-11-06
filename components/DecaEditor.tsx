@@ -45,8 +45,10 @@ import Indexer, {
 import WidgetSidebar from 'components/widgets/WidgetSidebar';
 import WidgetHandler from 'components/widgets/WidgetContext';
 import StarBar from 'components/elements/Star/StarBar';
-
+import { string } from 'yargs';
 import styles from './DecaEditor.module.scss';
+
+const HEADING: string[] = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
 
 interface Props {
   doc: Doc;
@@ -99,7 +101,7 @@ export default function DecaEditor(props: Props): JSX.Element {
         const h1Node = Array.from(
           Editor.nodes(editor, {
             at: selection,
-            match: (n) => n.type === 'h1',
+            match: (n) => !!HEADING.find((ele) => ele === n.type),
           })
         );
         const pNode = Array.from(
@@ -115,9 +117,10 @@ export default function DecaEditor(props: Props): JSX.Element {
           Node.string(node).replaceAll('#', '') === ' ' &&
           pNode.length
         ) {
+          const len = Node.string(node).length - 1;
           Transforms.setNodes(
             editor,
-            { type: 'h1' },
+            { type: HEADING[len - 1] },
             { match: (n) => Editor.isBlock(editor, n) }
           );
         }

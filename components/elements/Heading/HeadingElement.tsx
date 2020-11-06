@@ -10,8 +10,10 @@ interface AdditionalProps {
 export default function HeadingElement(
   props: RenderElementProps & AdditionalProps
 ): JSX.Element {
-  const { attributes, children, dragHandleProps } = props;
+  const { attributes, children, dragHandleProps, element } = props;
   const selected = useSelected();
+  const { type } = element;
+
   return (
     <div className={styles.headingElementContainer}>
       {dragHandleProps && (
@@ -24,9 +26,7 @@ export default function HeadingElement(
           <Drag />
         </div>
       )}
-      <h1 {...attributes} className={styles.h1}>
-        {children}
-      </h1>
+      <h1 {...attributes}>{children}</h1>
     </div>
   );
 }
