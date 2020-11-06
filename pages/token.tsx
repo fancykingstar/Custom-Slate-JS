@@ -4,16 +4,17 @@ import { useRouter } from 'next/router';
 import queryString from 'query-string';
 import React from 'react';
 
+import { Stage } from 'components/stage';
 import Page404 from 'pages/404';
 
 interface Props {
-  isDevelopment: boolean;
+  isProd: boolean;
 }
 
 export const getServerSideProps: GetStaticProps<Props> = async () => {
   return {
     props: {
-      isDevelopment: process.env.NODE_ENV === 'development',
+      isProd: process.env.STAGE === Stage.Prod,
     },
   };
 };
@@ -32,9 +33,9 @@ const extractFirst = (value: string | string[]) => {
 // user back to the main page. That page can now use SSR as the user will have
 // the necessary cookies ready.
 export default function TokenSetter({
-  isDevelopment,
+  isProd,
 }: InferGetServerSidePropsType<typeof getServerSideProps>): JSX.Element {
-  if (!isDevelopment) {
+  if (isProd) {
     return <Page404 />;
   }
 

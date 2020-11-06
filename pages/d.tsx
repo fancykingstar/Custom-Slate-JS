@@ -3,8 +3,9 @@ import Head from 'next/head';
 import { GetServerSidePropsContext } from 'next';
 
 import DecaEditor from 'components/DecaEditor';
-import { Env, EnvProps } from 'components/env';
 import { Context, DecisionCategory } from 'components/context';
+import { Env, EnvProps } from 'components/env';
+import { Stage } from 'components/stage';
 import Sidebar from 'components/sidebar/Sidebar';
 import Header from 'components/header/Header';
 import { reducer, Store, Action } from 'store/store';
@@ -28,7 +29,7 @@ export async function getServerSideProps(
 
   return {
     props: {
-      isDevelopment: process.env.NODE_ENV === 'development',
+      isProd: process.env.STAGE === Stage.Prod,
       openaiKey,
       openaiSecretKey,
     },
@@ -86,8 +87,8 @@ export default function Home(env: Env): JSX.Element {
   };
   const mainContentWidth = `calc(100% - ${expandedPanes.length * 20}rem)`;
 
-  const { isDevelopment } = env;
-  if (!isDevelopment) {
+  const { isProd } = env;
+  if (isProd) {
     return <Page404 />;
   }
 
