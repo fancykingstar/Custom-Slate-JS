@@ -127,9 +127,8 @@ export default function DecaEditor(props: Props): JSX.Element {
               { type: HEADING[len - 1] },
               { match: (n) => Editor.isBlock(editor, n) }
             );
+            editor.deleteBackward('word');
           }
-
-          editor.deleteBackward('word');
         }
       }
       const { type } = elementProps.element;
