@@ -45,7 +45,8 @@ import Indexer, {
 import WidgetSidebar from 'components/widgets/WidgetSidebar';
 import WidgetHandler from 'components/widgets/WidgetContext';
 import StarBar from 'components/elements/Star/StarBar';
-import { string } from 'yargs';
+import { number, string } from 'yargs';
+import { words } from 'lodash';
 import styles from './DecaEditor.module.scss';
 
 const HEADING: string[] = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
@@ -81,6 +82,7 @@ export default function DecaEditor(props: Props): JSX.Element {
   const [assistantActions, setAssistantActions] = useState<AssistantAction[]>(
     []
   );
+  const [eventKey, setEventKey] = useState<any>();
 
   const [
     onChangeSlashMenu,
@@ -95,6 +97,7 @@ export default function DecaEditor(props: Props): JSX.Element {
     (elementProps) => {
       const { selection } = editor;
       if (selection != null) {
+        // Press backspace
         const [selectionStart] = Range.edges(selection);
         const [node] = Editor.node(editor, selectionStart);
         const { isInline } = editor;
@@ -114,10 +117,10 @@ export default function DecaEditor(props: Props): JSX.Element {
         if (
           Node.string(node).length &&
           Node.string(node).includes('# ') &&
-          Node.string(node).replaceAll('#', '') === ' ' &&
-          pNode.length
+          Node.string(node).split(' ')[0].replaceAll('#', '') === '' &&
+          (pNode.length || h1Node.length)
         ) {
-          const len = Node.string(node).length - 1;
+          const len = Node.string(node).split(' ')[0].length;
           if (len < 4) {
             Transforms.setNodes(
               editor,
@@ -125,14 +128,8 @@ export default function DecaEditor(props: Props): JSX.Element {
               { match: (n) => Editor.isBlock(editor, n) }
             );
           }
-        }
 
-        if (h1Node.length && !Node.string(node).includes('# ')) {
-          Transforms.setNodes(
-            editor,
-            { type: 'p' },
-            { match: (n) => Editor.isBlock(editor, n) }
-          );
+          editor.deleteBackward('word');
         }
       }
       const { type } = elementProps.element;
@@ -246,9 +243,33 @@ export default function DecaEditor(props: Props): JSX.Element {
   const onKeyDown = useCallback(
     (event) => {
       const { selection } = editor;
+      setEventKey(event);
       onElementKeyDown(editor, context, event);
       onKeyDownSlashMenu(event);
 
+      if (isKeyHotkey(Keys.Backspace, event) && selection) {
+        const [selectionStart] = Range.edges(selection);
+        const [node] = Editor.node(editor, selectionStart);
+        const h1Node = Array.from(
+          Editor.nodes(editor, {
+            at: selection,
+            match: (n) => !!HEADING.find((ele) => ele === n.type),
+          })
+        );
+
+        if (
+          Node.string(node).length &&
+          selectionStart.offset === 0 &&
+          h1Node.length
+        ) {
+          event.preventDefault();
+          Transforms.setNodes(
+            editor,
+            { type: 'p' },
+            { match: (n) => Editor.isBlock(editor, n) }
+          );
+        }
+      }
       // Prevent creation of a new starter node from title when pressing enter
       if (
         isKeyHotkey(Keys.Enter, event) &&
@@ -258,6 +279,7 @@ export default function DecaEditor(props: Props): JSX.Element {
       ) {
         const caretPoint = selection.anchor;
         const [caretLine] = caretPoint.path;
+
         if (caretLine === 0) {
           Transforms.select(editor, [1, 0]);
           event.preventDefault();
