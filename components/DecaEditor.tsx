@@ -49,7 +49,7 @@ import { number, string } from 'yargs';
 import { words } from 'lodash';
 import styles from './DecaEditor.module.scss';
 
-const HEADING: string[] = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+const HEADING: string[] = ['h1', 'h2', 'h3'];
 
 interface Props {
   doc: Doc;
