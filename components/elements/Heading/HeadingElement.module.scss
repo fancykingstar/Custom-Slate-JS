@@ -1,0 +1,33 @@
+.dragHandle {
+  cursor: drag;
+  left: -4.5rem;
+  position: absolute;
+  top: 0.4rem;
+  width: 3.5rem;
+  z-index: 1;
+
+  circle {
+    fill: var(--color-bg-gray-primary);
+    opacity: 0;
+    transition: visibility 0s, opacity 0.2s linear;
+    visibility: hidden;
+  }
+}
+
+.dragHandle.active circle {
+  fill: var(--color-fg-gray-primary);
+}
+
+.dragHandle.active,
+.dragHandle:active,
+.dragHandle:hover,
+.wrapper:hover .dragHandle {
+  circle {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.headingElementContainer {
+  position: relative;
+}
