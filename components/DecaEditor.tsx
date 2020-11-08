@@ -82,6 +82,7 @@ export default function DecaEditor(props: Props): JSX.Element {
   const [assistantActions, setAssistantActions] = useState<AssistantAction[]>(
     []
   );
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [eventKey, setEventKey] = useState<any>();
 
   const [

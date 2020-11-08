@@ -21,12 +21,21 @@ export default function Placeholder(): JSX.Element {
   useEffect(() => {
     const { selection } = editor;
     const nodes = editor.children;
+
+    const titleNode = nodes[0];
+    const titleIsEmpty = titleNode != null && !Node.string(titleNode).length;
+    setTitleVisible(titleIsEmpty);
+
     const firstBodyNode = nodes[1];
     const bodyIsEmpty =
       nodes.length <= 2 &&
       firstBodyNode != null &&
       !Node.string(firstBodyNode).length &&
       firstBodyNode.type === BasicElement.Paragraph;
+
+    if (!bodyIsEmpty) {
+      setBodyVisible(false);
+    }
 
     // TODO: Fix tabbing out of editor leaving assistant placeholder visible instead of body
 
