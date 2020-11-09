@@ -25,6 +25,19 @@
     inset 0 0 0 var(--border-thin) var(--color-black);
 }
 
+.wrapper:hover::before {
+  box-shadow: 0 0.1rem 0.3rem var(--color-shadow-large),
+    0 0.3rem 1rem var(--color-shadow-large),
+    inset 0 0 0 var(--border-thin) var(--color-black);
+}
+
+.wrapper:hover h2 {
+  color: var(--color-black);
+  path {
+    stroke: var(--color-black);
+  }
+}
+
 .wrapper.active h2 {
   color: var(--color-black);
   path {
@@ -70,6 +83,10 @@
     transition: visibility 0s, opacity 0.2s linear;
     visibility: hidden;
   }
+}
+
+.wrapper:hover .dragHandle circle {
+  fill: var(--color-black);
 }
 
 .dragHandle.active circle {

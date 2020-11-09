@@ -104,6 +104,12 @@ function Menu(): JSX.Element {
             changeMenuStyle(x, y);
             return;
           }
+          if (node.star) {
+            const nodeEl = ReactEditor.toDOMNode(editor, node);
+            const [x, y] = getMiddleTop(nodeEl, menuEl);
+            changeMenuStyle(x, y);
+            return;
+          }
         } else if (anchor.path.toString() === focus.path.toString()) {
           if (!checkInterestingNode(focus)) {
             setInterestingNode(false);
@@ -127,13 +133,18 @@ function Menu(): JSX.Element {
   });
 
   const closeStarBar = () => {
-    if (interestingSelected && selection) {
+    if (selection && (interestingSelected || Range.isCollapsed(selection))) {
       const { anchor, focus } = selection;
       const [node] = Editor.node(editor, focus);
       if (Text.isText(node) && selection) {
         Transforms.select(editor, {
           anchor: { path: anchor.path, offset: 0 },
-          focus: { path: focus.path, offset: node.text.length - 1 },
+          focus: {
+            path: focus.path,
+            offset: interestingSelected
+              ? node.text.length - 1
+              : node.text.length,
+          },
         });
       }
     }
