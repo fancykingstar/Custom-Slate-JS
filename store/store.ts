@@ -6,6 +6,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { BasicElement } from 'components/elements/Element';
 import { ReservedElement } from 'components/elements/ReservedElement';
 
+import { api } from 'lib/api';
+
 export enum DocStatus {
   Incomplete,
   Complete,
@@ -133,7 +135,7 @@ export function reducer(state: State, action: ActionType): State {
 
   // Naively store full copy of reducer state in localstorage
   window.localStorage.setItem('state', JSON.stringify(newState));
-
+  api({ method: 'post', url: '/api/storeToS3/', data: newState });
   return newState;
 }
 
