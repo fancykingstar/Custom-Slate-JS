@@ -39,10 +39,7 @@ function NavPane(): JSX.Element {
     >
       <div className={`${styles.innerContainer}`}>
         <div className={styles.letters}>
-          <Text>D</Text>
-          <Text>o</Text>
-          <Text>c</Text>
-          <Text>s</Text>
+          <Text>Docs</Text>
         </div>
         {navPaneState !== PaneState.Collapsed && <Sidebar />}
       </div>

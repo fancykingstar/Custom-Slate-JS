@@ -39,7 +39,7 @@
 .collapsed {
   align-items: center;
   display: flex;
-  text-orientation: upright;
+  text-orientation: mixed;
   writing-mode: vertical-rl;
   width: 4rem;
 }
@@ -62,12 +62,6 @@
 
 .collapsed .letters {
   position: relative;
-
-  p {
-    display: -webkit-inline-box;
-    float: left;
-    -webkit-transform: rotate(90deg);
-  }
 }
 
 :not(.collapsed) .letters {
