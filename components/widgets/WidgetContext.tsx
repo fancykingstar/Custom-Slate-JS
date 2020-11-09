@@ -3,9 +3,10 @@ import { createContext, useMemo, useState } from 'react';
 export enum WidgetType {
   Timer,
   Todo,
+  Insights,
 }
 
-type WidgetItem = TimerWidgetItem | TodoWidgetItem;
+type WidgetItem = TimerWidgetItem | TodoWidgetItem | InsightsWidgetItem;
 
 export interface TimerWidgetItem {
   id: string;
@@ -19,6 +20,12 @@ export interface TimerWidgetItem {
 export interface TodoWidgetItem {
   id: string;
   type: WidgetType.Todo;
+}
+
+export interface InsightsWidgetItem {
+  id: string;
+  type: WidgetType.Insights;
+  title: React.ReactNode;
 }
 
 interface WidgetButton {
@@ -46,6 +53,15 @@ export default function WidgetHandler(props: Props): JSX.Element {
   const [widgets, setWidgets] = useState<WidgetItem[]>([]);
 
   const addWidget = (item: WidgetItem): void => {
+    if (item.type === WidgetType.Insights) {
+      const itemIndex = widgets.findIndex(
+        (widget) => widget.type === item.type
+      );
+      if (itemIndex === -1) {
+        setWidgets([item, ...widgets]);
+      }
+      return;
+    }
     setWidgets([...widgets, item]);
   };
 

@@ -1,5 +1,7 @@
 interface IconProps {
   size: string;
+  fill: string;
+  stroke?: string;
 }
 
 export function Clock(): JSX.Element {
@@ -61,17 +63,17 @@ export function ChevronDown(): JSX.Element {
 }
 
 export function CloseX(props: IconProps): JSX.Element {
-  const { size } = props;
+  const { size, fill, stroke } = props;
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={size}
       height={size}
-      fill="none"
-      stroke="currentColor"
+      fill={fill}
+      stroke={stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
-      strokeWidth="2"
+      strokeWidth="1.5"
       className="feather feather-x"
       viewBox="0 0 24 24"
     >
@@ -82,17 +84,17 @@ export function CloseX(props: IconProps): JSX.Element {
 }
 
 export function Star(props: IconProps): JSX.Element {
-  const { size } = props;
+  const { size, fill, stroke } = props;
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={size}
       height={size}
-      fill="none"
-      stroke="currentColor"
+      fill={fill}
+      stroke={stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
-      strokeWidth="2"
+      strokeWidth="1.5"
       className="feather feather-star"
       viewBox="0 0 24 24"
     >
