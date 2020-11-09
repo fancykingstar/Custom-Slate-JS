@@ -36,20 +36,35 @@
   }
 }
 
-
-.expanded {
-  text-align: center;
-  width: 20rem;
-}
-
 .collapsed {
   align-items: center;
   display: flex;
-  text-orientation: upright;
+  text-orientation: mixed;
   writing-mode: vertical-rl;
   width: 4rem;
 }
 
 .collapsed:hover {
   background-color: var(--color-bg-gray-blue);
+}
+
+.expanded {
+  text-align: center;
+  width: 20rem;
+}
+
+.wide {
+  text-align: center;
+  width: 200rem;
+}
+
+// ROTATING LETTERS
+
+.collapsed .letters {
+  position: relative;
+}
+
+:not(.collapsed) .letters {
+  display: flex;
+  justify-content: center;
 }

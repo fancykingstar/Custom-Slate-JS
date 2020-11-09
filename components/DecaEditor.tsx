@@ -8,6 +8,7 @@ import {
   withReact,
   RenderLeafProps,
   ReactEditor,
+  useEditor,
 } from 'slate-react';
 import { createEditor, Editor, Node, Range, Transforms, Path } from 'slate';
 import { isKeyHotkey } from 'is-hotkey';
@@ -309,6 +310,12 @@ export default function DecaEditor(props: Props): JSX.Element {
           }
         }
       }
+      if (selection && Node.has(editor, selection.focus.path)) {
+        const [node] = Editor.node(editor, selection);
+        if (node.text === '') {
+          Editor.removeMark(editor, 'star');
+        }
+      }
     },
     [assistantActions, onElementKeyDown, onKeyDownSlashMenu]
   );
@@ -369,9 +376,9 @@ export default function DecaEditor(props: Props): JSX.Element {
                 </Droppable>
               </DragDropContext>
             </CardHandler>
+            <StarBar />
           </WidgetHandler>
           <Indexer />
-          <StarBar />
         </Slate>
       </div>
     </AssistantContext.Provider>

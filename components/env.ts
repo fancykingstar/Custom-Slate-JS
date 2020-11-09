@@ -2,7 +2,7 @@ import { AuthTokens } from '../auth';
 
 export interface Env {
   initialAuth?: AuthTokens;
-  isDevelopment: boolean;
+  isProd: boolean;
   openaiKey: string;
   openaiSecretKey: string;
 }

@@ -70,7 +70,7 @@ export default function HeroTextRotater(): JSX.Element {
         }, 50);
       }, 200);
     }, 200);
-  }, 6000);
+  }, 3000);
 
   return (
     <span className={styles.wrapper}>
