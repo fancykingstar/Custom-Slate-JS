@@ -15,6 +15,7 @@ import NavPane from 'components/panes/navpane/NavPane';
 import ReviewPane from 'components/panes/reviewpane/ReviewPane';
 import GlobalPane from 'components/panes/globalpane/GlobalPane';
 import Page404 from 'pages/404';
+import { api } from 'lib/api';
 
 export async function getServerSideProps(
   context: GetServerSidePropsContext
@@ -50,6 +51,8 @@ export default function Home(env: Env): JSX.Element {
     docs: [],
     showStarBar: false,
   });
+  // set Timer to calc 1 min
+  const [timer, setTimer] = useState(0);
   // Memoize reducer to avoid unnecessary re-renders
   const value = useMemo(() => ({ state, dispatch }), [state]);
 
@@ -65,7 +68,17 @@ export default function Home(env: Env): JSX.Element {
     } else {
       dispatch({ type: Action.initState, state: parsedState });
     }
+
+    const interval = setInterval(() => {
+      setTimer(timer + 1);
+    }, 60000);
+
+    return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    api({ method: 'post', url: '/api/storeToS3/', data: state });
+  }, [timer]);
 
   const { activeDocId: activeDoc, docs } = state;
   const currentDoc = docs.find((doc) => doc.id === activeDoc) ?? null;
