@@ -57,3 +57,20 @@
   text-align: center;
   width: 200rem;
 }
+
+// ROTATING LETTERS
+
+.collapsed .letters {
+  position: relative;
+
+  p {
+    display: -webkit-inline-box;
+    float: left;
+    -webkit-transform: rotate(90deg);
+  }
+}
+
+:not(.collapsed) .letters {
+  display: flex;
+  justify-content: center;
+}
