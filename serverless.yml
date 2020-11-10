@@ -1,0 +1,20 @@
+service: ${self:custom.name}
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: us-east-2
+
+plugins: # <- add here
+  - serverless-nextjs-plugin
+
+custom:
+  name: deca
+  serverless-nextjs: # <- add here
+    assetsBucketName: 'deca-app-assets-${self:provider.stage}'
+
+package: # <- add here
+  # exclude everything
+  # page handlers are automatically included by the plugin
+  exclude:
+    - node_modules/**

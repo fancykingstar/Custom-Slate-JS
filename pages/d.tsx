@@ -1,4 +1,4 @@
-import { useState, useReducer, useMemo, useEffect } from 'react';
+import { useState, useReducer, useMemo, useEffect, useRef } from 'react';
 import Head from 'next/head';
 import { GetServerSidePropsContext } from 'next';
 
@@ -17,6 +17,8 @@ import ReviewPane from 'components/panes/reviewpane/ReviewPane';
 import GlobalPane from 'components/panes/globalpane/GlobalPane';
 import Page404 from 'pages/404';
 import { api } from 'lib/api';
+import { Object } from 'lodash';
+import { stat } from 'fs/promises';
 
 export async function getServerSideProps(
   context: GetServerSidePropsContext
@@ -53,8 +55,10 @@ export default function Home(env: Env): JSX.Element {
     docs: [],
     showStarBar: false,
   });
+  // previous state to check if state is either changed or not changed
+  const [prevState, setPrevState] = useState({});
   // set Timer to calc 1 min
-  const [timer, setTimer] = useState(0);
+  const [timer, setTimer] = useState<number>(0);
   // Memoize reducer to avoid unnecessary re-renders
   const value = useMemo(() => ({ state, dispatch }), [state]);
 
@@ -70,16 +74,18 @@ export default function Home(env: Env): JSX.Element {
     } else {
       dispatch({ type: Action.initState, state: parsedState });
     }
-
-    const interval = setInterval(() => {
-      setTimer(timer + 1);
-    }, 60000);
-
-    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
-    api({ method: 'post', url: '/api/storeToS3/', data: state });
+    const interval = setInterval(() => {
+      setTimer(timer + 1);
+    }, 5000);
+
+    if (prevState !== state) {
+      setPrevState(state);
+      api({ method: 'post', url: '/api/storeToS3/', data: state });
+    }
+    return () => clearInterval(interval);
   }, [timer]);
 
   const { activeDocId: activeDoc, docs } = state;
